@@ -1,0 +1,3 @@
+[submodule ".claude/ichiki"]
+	path = .claude/ichiki
+	url = https://github.com/aifroide-jp/ichiki
