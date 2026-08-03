@@ -1,5 +1,5 @@
 project: nature-kitakyushu
-generated_at: '2026-06-10'
+generated_at: '2026-06-12'
 common:
   - id: header
     fields:
@@ -8,6 +8,7 @@ common:
         tab: section
         type: image
         default: ../images/2026/02/logo.png
+        alt: アーバンネイチャー北九州
   - id: cta_band
     fields:
       - element: h2
@@ -238,7 +239,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 生物多様性とは？ | アーバンネイチャー北九州
       description: 生物多様性の重要性と北九州のアーバンネイチャー資源。生態系サービス、国内外の動向、地域の課題と豊かな自然を紹介。
@@ -284,6 +289,7 @@ pages:
             tab: section
             type: image
             default: images/mayor.png
+            alt: 北九州市長 武内 和久
           - element: svg
             field_name: about_intro_icon
             tab: section
@@ -618,6 +624,10 @@ pages:
         reason: aria-hidden="true"
       - selector: svg
         reason: aria-hidden="true"
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 全体像 | アーバンネイチャー北九州
       description: アーバンネイチャー北九州の全体像。生物多様性、ネイチャーポジティブ、アーバンネイチャーの3層構造で北九州の自然共生を理解する。
@@ -662,46 +672,55 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/genkai.jpg
+            alt: 玄海国定公園
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2025/03/biotope.jpg
+            alt: 響灘ビオトープ
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2025/03/sarakurayama.jpg
+            alt: 皿倉山
           - element: img
             field_name: section_white_image_4
             tab: section
             type: image
             default: ../images/2025/03/b-2.jpg
+            alt: 合馬竹林
           - element: img
             field_name: section_white_image_5
             tab: section
             type: image
             default: ../images/2025/03/sone-higata.jpg
+            alt: 曽根干潟
           - element: img
             field_name: section_white_image_6
             tab: section
             type: image
             default: ../images/2025/03/kanmon.jpg
+            alt: 関門海峡
           - element: img
             field_name: section_white_image_7
             tab: section
             type: image
             default: ../images/2025/03/main1-scaled.jpg
+            alt: 紫川
           - element: img
             field_name: section_white_image_8
             tab: section
             type: image
             default: ../images/2026/04/hiraodai.jpg
+            alt: 平尾台
           - element: img
             field_name: section_white_image_9
             tab: section
             type: image
             default: ../images/2025/03/n-1-450x450.jpg
+            alt: 山田緑地
           - element: p
             field_name: section_white_text_2
             tab: section
@@ -816,7 +835,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 北九州市の自然スポット | アーバンネイチャー北九州
       description: 北九州市内の自然スポットを紹介。玄海国定公園・響灘ビオトープ・曽根干潟・平尾台など、都市近接の貴重な自然資源を網羅。
@@ -839,6 +862,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -846,6 +870,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/b-2.jpg
+            alt: 合馬竹林公園の整然と広がる竹林の風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -988,7 +1013,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 合馬竹林公園 | アーバンネイチャー北九州
       description: 合馬竹林公園｜日本一のたけのこ産地に広がる、150種以上の竹・笹が集う竹の博物館
@@ -1003,6 +1030,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1010,6 +1038,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/biotope.jpg
+            alt: 響灘ビオトープの湿地と葦原の風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1152,7 +1181,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 響灘ビオトープ | アーバンネイチャー北九州
       description: 響灘ビオトープ｜廃棄物処分場跡地が蘇った、日本最大級の湿地型ビオトープ
@@ -1167,6 +1198,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1174,6 +1206,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/genkai.jpg
+            alt: 玄海国定公園・若松北海岸の白砂と青い海の景色
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1316,7 +1349,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 玄海国定公園（若松北海岸） | アーバンネイチャー北九州
       description: 玄海国定公園（若松北海岸）｜ウミガメが産卵し、夕日が染める白砂の海岸線が続く、都市近郊の原風景
@@ -1331,6 +1366,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1338,6 +1374,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2026/04/soraland-hero.png
+            alt: 平尾台カルスト台地の羊群原と青空の風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1480,7 +1517,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 平尾台 | アーバンネイチャー北九州
       description: 平尾台｜羊の群れのような石灰岩が点在する、九州最大のカルスト台地
@@ -1495,6 +1534,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1502,6 +1542,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/kanmon.jpg
+            alt: 関門橋と関門海峡の雄大な風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1644,7 +1685,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 関門海峡 | アーバンネイチャー北九州
       description: 関門海峡｜幅わずか600m・流速10ノットの急流が育む、九州と本州を分ける海の回廊
@@ -1659,6 +1702,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1666,6 +1710,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/main1-scaled.jpg
+            alt: 紫川と個性的な橋が彩る小倉の水辺の風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1808,7 +1853,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 紫川 | アーバンネイチャー北九州
       description: 紫川｜小倉の街なかを流れ、アユとホタルが戻ってきた都市河川
@@ -1823,6 +1870,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1830,6 +1878,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/sarakurayama.jpg
+            alt: 皿倉山山頂からの北九州の夜景パノラマ
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -1972,7 +2021,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 皿倉山 | アーバンネイチャー北九州
       description: 皿倉山｜新日本三大夜景「100億ドルの夜景」が広がる、標高622mの市民の山
@@ -1987,6 +2038,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -1994,6 +2046,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/sone-higata.jpg
+            alt: 曽根干潟の干潮時の広大な砂泥干潟と空
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -2136,7 +2189,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 曽根干潟 | アーバンネイチャー北九州
       description: 曽根干潟｜カブトガニが産卵し、100種を超える野鳥が舞う、周防灘最大の干潟
@@ -2151,6 +2206,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: spot_hero
         fields:
           - element: img
@@ -2158,6 +2214,7 @@ pages:
             tab: main
             type: image
             default: ../../images/2025/03/n-1-450x450.jpg
+            alt: 山田緑地の豊かな森と湿生生態園の風景
           - element: h1
             field_name: spot_hero_title
             tab: main
@@ -2300,7 +2357,9 @@ pages:
           - text: 参加する
             href: ../../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 山田緑地 | アーバンネイチャー北九州
       description: 山田緑地｜「30世紀の森」をテーマに、手つかずの大自然を保全する140haの緑地公園
@@ -2538,7 +2597,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 北九州市の取り組み | アーバンネイチャー北九州
       description: 北九州市生物多様性戦略2025-2030の基本方針・3つの基本目標・主要施策と、市民にできる5つのアクション。アーバンネイチャー北九州が目指すネイチャーポジティブの実現。
@@ -2573,6 +2636,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/04/IMG_9308-450x450.jpg
+            alt: 曽根干潟の渡り鳥観察レポート
           - element: h3
             field_name: section_white_title_1
             tab: section
@@ -2588,6 +2652,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/08/APC_3057-450x450.jpg
+            alt: 山田緑地の森づくり活動
           - element: h3
             field_name: section_white_title_2
             tab: section
@@ -2603,6 +2668,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/04/IMG_8920-450x450.jpg
+            alt: 響灘ビオトープの生き物調査
           - element: h3
             field_name: section_white_title_3
             tab: section
@@ -2618,6 +2684,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/08/APC_9078-450x450.jpg
+            alt: 紫川の水質モニタリング
           - element: h3
             field_name: section_white_title_4
             tab: section
@@ -2633,6 +2700,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/04/IMG_8956-450x450.jpg
+            alt: 合馬の竹林保全活動
           - element: h3
             field_name: section_white_title_5
             tab: section
@@ -2648,6 +2716,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/08/APC_6257-450x450.jpg
+            alt: 到津の森公園の動物たち
           - element: h3
             field_name: section_white_title_6
             tab: section
@@ -2766,7 +2835,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 活動ブログ | アーバンネイチャー北九州
       description: null
@@ -2801,6 +2874,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/b-2-1-450x450.jpg
+            alt: 北九州市響灘ビオトープ
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -2978,7 +3052,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 北九州市響灘ビオトープ | アーバンネイチャー北九州
       description: 北九州市響灘ビオトープ - 日本最大級41ヘクタールのビオトープ。希少な動植物が生息する自然再生エリア。
@@ -3013,6 +3091,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/b-3-450x450.jpg
+            alt: 響灘緑地グリーンパーク
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -3190,7 +3269,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 響灘緑地グリーンパーク | アーバンネイチャー北九州
       description: 響灘緑地グリーンパーク - 四季折々の花と緑に囲まれた大型都市公園。北九州市若松区。
@@ -3225,6 +3308,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/h-0-450x450.jpg
+            alt: 北九州市ほたる館
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -3402,7 +3486,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 北九州市ほたる館 | アーバンネイチャー北九州
       description: 北九州市ほたる館 - ホタルの飼育・展示を行い、水辺の環境保全について学べる施設。北九州市小倉北区。
@@ -3487,6 +3575,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/takamiya-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_2
             tab: section
@@ -3502,6 +3591,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/inochi-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_3
             tab: section
@@ -3517,6 +3607,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/yamada-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_4
             tab: section
@@ -3532,6 +3623,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/b-2-1-450x450.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_5
             tab: section
@@ -3547,6 +3639,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/b-3-450x450.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_6
             tab: section
@@ -3562,6 +3655,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/h-0-450x450.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_7
             tab: section
@@ -3577,6 +3671,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/katsuki-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_8
             tab: section
@@ -3592,6 +3687,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/itouzu-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_9
             tab: section
@@ -3607,6 +3703,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/mizukankyokan-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_10
             tab: section
@@ -3622,6 +3719,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/soraland-1.jpg
+            alt_missing: true
           - element: h3
             field_name: section_gray_title_11
             tab: section
@@ -3647,6 +3745,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/kitakyushu-urban-center.png
+            alt: IGES 北九州アーバンセンタービル
           - element: p
             field_name: section_gray_text_13
             tab: section
@@ -3764,7 +3863,11 @@ pages:
           - text: トップ
             href: ../
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 活動拠点 | アーバンネイチャー北九州
       description: ネイチャーポジティブセンター - 北九州の自然を体験できる10の拠点施設。アーバンネイチャー北九州のセンター施設一覧です。
@@ -3799,6 +3902,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/inochi-1.jpg
+            alt: いのちのたび博物館外観
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -3976,7 +4080,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: いのちのたび博物館 | アーバンネイチャー北九州
       description: いのちのたび博物館 - 地球誕生から現代までの自然史・歴史を学べる博物館。北九州市八幡東区。
@@ -4011,6 +4119,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/itouzu-1.jpg
+            alt: 到津の森公園
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -4188,7 +4297,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 到津の森公園 | アーバンネイチャー北九州
       description: 到津の森公園 - 約80種類の動物が暮らす自然公園。北九州市小倉北区の市民に愛される動物園。
@@ -4223,6 +4336,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/katsuki-1.jpg
+            alt: 香月・黒川ほたる館
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -4399,7 +4513,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 香月・黒川ほたる館 | アーバンネイチャー北九州
       description: 香月・黒川ほたる館 - 黒川流域のホタル保全と環境学習を行う施設。北九州市八幡西区。
@@ -4434,6 +4552,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/mizukankyokan-1.jpg
+            alt: 水環境館
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -4612,7 +4731,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 水環境館 | アーバンネイチャー北九州
       description: 水環境館 - 紫川の水中を直接観察できる水環境学習施設。北九州市小倉北区。
@@ -4647,6 +4770,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/soraland-1.jpg
+            alt: ソラランド平尾台
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -4825,7 +4949,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: ソラランド平尾台 | アーバンネイチャー北九州
       description: ソラランド平尾台 - 日本有数のカルスト台地・平尾台にある自然体験公園。北九州市小倉南区。
@@ -4860,6 +4988,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/03/takamiya-1.jpg
+            alt: タカミヤ環境ミュージアム外観
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -5038,7 +5167,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: タカミヤ環境ミュージアム | アーバンネイチャー北九州
       description: タカミヤ環境ミュージアム - 環境について楽しく学べる体験型施設。北九州市八幡東区の環境学習拠点です。
@@ -5073,6 +5206,7 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/yamada-1.jpg
+            alt: 山田緑地
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -5251,7 +5385,11 @@ pages:
           - text: 活動拠点
             href: ../center/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 山田緑地 | アーバンネイチャー北九州
       description: 山田緑地 - 約140ヘクタールの広大な森林公園。北九州市小倉北区の自然体験拠点。
@@ -5476,7 +5614,11 @@ pages:
             tag: input
             type: checkbox
             placeholder: ''
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: お問合せ | アーバンネイチャー北九州
       description: null
@@ -5511,6 +5653,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt: 企業向け生態系保全体験プログラム ― ビオトープづくり
       - id: applyform
         fields:
           - element: p
@@ -5646,6 +5789,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt: 響灘ビオトープで生態系保全作業を体験する参加者たち
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -5760,16 +5904,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟クリーンアップ大作戦 2026春
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2026/04/平尾台トゥクトゥク-450x450.jpg
+            alt: 平尾台トゥクトゥクで巡る自然ツアー
     nav:
       - selector: nav.header__nav
         links:
@@ -5878,7 +6025,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 企業向け生態系保全体験プログラム ― ビオトープづくり | アーバンネイチャー北九州
       description: 企業向け生態系保全体験プログラム ― ビオトープづくり｜2026年6月7日(日)開催。響灘ビオトープで湿地・池の外来種除去・植生管理を体験するCSR向けプログラム。
@@ -5913,6 +6062,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
       - id: applyform
         fields:
           - element: p
@@ -6053,6 +6203,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台カルスト草原で野草を観察する参加者たち
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -6175,16 +6326,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/hiraodai.jpg
+            alt: 平尾台シャボン玉フェスティバル
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2025/03/biotope.jpg
+            alt: 響灘ビオトープ観察会
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2025/03/sone-higata.jpg
+            alt: 曽根干潟バードウォッチング
     nav:
       - selector: nav.header__nav
         links:
@@ -6293,7 +6447,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 平尾台 春の自然観察会 〜カルスト台地の野草を楽しむ〜 | アーバンネイチャー北九州
       description: 平尾台 春の自然観察会 〜カルスト台地の野草を楽しむ〜｜2026年5月10日(日)開催。平尾台のカルスト草原に咲く春の野草を専門ガイドと一緒に観察する体験イベント。参加費無料。
@@ -6315,6 +6471,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/平尾台トゥクトゥク-450x450.jpg
+            alt: 平尾台カルスト台地をトゥクトゥクで走るツアー
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -6429,16 +6586,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt: 企業向け生態系保全体験プログラム
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 夏休み自然体験キャンプ ― 2泊3日
     nav:
       - selector: nav.header__nav
         links:
@@ -6547,7 +6707,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 平尾台トゥクトゥクで巡る自然ツアー | アーバンネイチャー北九州
       description: 平尾台トゥクトゥクで巡る自然ツアー｜2026年6月14日(日)開催。タイ発祥の三輪タクシーでカルスト台地・平尾台を巡る人気ガイドツアー。ソラランド平尾台主催。
@@ -6603,6 +6765,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
           - element: h3
             field_name: eventgrid_title_1
             tab: section
@@ -6618,6 +6781,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟クリーンアップ
           - element: h3
             field_name: eventgrid_title_2
             tab: section
@@ -6633,6 +6797,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台フクロウ-450x450.jpg
+            alt: 子ども自然教室
           - element: h3
             field_name: eventgrid_title_3
             tab: section
@@ -6648,6 +6813,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt: 企業向け生態系保全プログラム
           - element: h3
             field_name: eventgrid_title_4
             tab: section
@@ -6663,6 +6829,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台トゥクトゥク-450x450.jpg
+            alt: 平尾台トゥクトゥクツアー
           - element: h3
             field_name: eventgrid_title_5
             tab: section
@@ -6678,6 +6845,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 夏休み自然体験キャンプ
           - element: h3
             field_name: eventgrid_title_6
             tab: section
@@ -6796,7 +6964,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: イベント | アーバンネイチャー北九州
       description: null
@@ -6819,6 +6991,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/hiraodai.jpg
+            alt: 青空と白い石灰岩が広がる平尾台の草原
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -6941,16 +7114,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/hiraodai.jpg
+            alt: 平尾台野焼きウォーク
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2025/03/biotope.jpg
+            alt: 響灘ビオトープ観察会
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2025/03/sone-higata.jpg
+            alt: 曽根干潟バードウォッチング
     nav:
       - selector: nav.header__nav
         links:
@@ -7059,7 +7235,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 平尾台シャボン玉フェスティバル | アーバンネイチャー北九州
       description: 平尾台シャボン玉フェスティバル｜2026年5月3日(日)開催。九州最大のカルスト台地・平尾台の草原でシャボン玉を楽しむ親子向けイベント。参加無料。
@@ -7093,6 +7271,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟クリーンアップ大作戦 2026春
       - id: applyform
         fields:
           - element: p
@@ -7229,6 +7408,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟の海岸でクリーンアップ活動をする参加者たち
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -7343,16 +7523,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2026/04/平尾台フクロウ-450x450.jpg
+            alt: 子ども自然教室「森の生きもの探検隊」
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt: 企業向け生態系保全プログラム
     nav:
       - selector: nav.header__nav
         links:
@@ -7461,7 +7644,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 曽根干潟クリーンアップ大作戦 2026春 | アーバンネイチャー北九州
       description: 曽根干潟クリーンアップ大作戦 2026春｜2026年5月17日(日)開催。国際的重要湿地・曽根干潟の海浜清掃ボランティア活動。参加費無料。
@@ -7495,6 +7680,7 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然
       - id: applyform
         fields:
           - element: p
@@ -7638,6 +7824,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 北九州の自然の中でキャンプを楽しむ子どもたち
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -7751,16 +7938,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/平尾台フクロウ-450x450.jpg
+            alt: 子ども自然教室「森の生きもの探検隊」
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟クリーンアップ大作戦
     nav:
       - selector: nav.header__nav
         links:
@@ -7869,7 +8059,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然 | アーバンネイチャー北九州
       description: 夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然｜2026年7月26日(土)〜28日(月)開催。野外炊事・昆虫観察・星空観察など本格的な自然体験プログラム。小学3〜6年生対象。
@@ -7894,6 +8086,7 @@ pages:
             tab: main
             type: image
             default: ../images/2026/04/平尾台フクロウ-450x450.jpg
+            alt: 山田緑地の森の中で生き物を探す子どもたち
           - element: h1
             field_name: ev_hero_title
             tab: main
@@ -8007,16 +8200,19 @@ pages:
             tab: section
             type: image
             default: ../images/2026/04/Clap屋外マルシェの様子-450x450.jpg
+            alt: 曽根干潟クリーンアップ大作戦 2026春
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 夏休み自然体験キャンプ ― 2泊3日
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台 春の自然観察会
     nav:
       - selector: nav.header__nav
         links:
@@ -8125,7 +8321,9 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 子ども自然教室「森の生きもの探検隊」 | アーバンネイチャー北九州
       description: 子ども自然教室「森の生きもの探検隊」｜2026年5月24日(日)開催。山田緑地の森で昆虫・鳥・植物などの生き物を探す子ども向け自然観察プログラム。参加費無料。
@@ -8147,6 +8345,7 @@ pages:
             tab: section
             type: image
             default: images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: hero
         fields:
           - element: h1
@@ -8221,67 +8420,67 @@ pages:
             tab: section
             type: textarea
             default: 教育・広報・制作活動に使える北九州の自然写真素材を無料で公開しています。美しい生態系の記録を、学校・行政・メディア・デザインの現場でご活用ください。
-      - id: home_content
+      - id: section_3
         fields:
           - element: h2
-            field_name: home_content_title_1
+            field_name: section_3_title
             tab: section
             type: text
             default: アーバンネイチャー北九州 動画一覧
           - element: p
-            field_name: home_content_text_1
+            field_name: section_3_text_1
             tab: section
             type: textarea
             default: 北九州の自然とネイチャーポジティブを映像でご覧ください
           - element: p
-            field_name: home_content_text_2
+            field_name: section_3_text_2
             tab: section
             type: textarea
             default: お使いのブラウザは動画の再生に対応していません。テキスト版を下記よりご覧ください。
           - element: p
-            field_name: home_content_text_3
+            field_name: section_3_text_3
             tab: section
             type: textarea
             default: アーバンネイチャー北九州
           - element: p
-            field_name: home_content_text_4
+            field_name: section_3_text_4
             tab: section
             type: textarea
             default: >-
               北九州市は、大都市の利便性と豊かな生態系が隣接する「アーバンネイチャー」という独自の魅力を発信しています。現在、世界的に生物多様性の損失が危惧される中、市は自然を再生させるネイチャーポジティブの実現を共通目標に掲げました。その具体的な施策として、環境保全活動を支援する拠点となるネイチャーポジティブセンターを新たに設立しています。この取り組みは、貴重な野生生物を守り育むことで、都市と自然が共生する価値をさらに高めることを目的としています。北九州市は、身近にある自然の面白さを伝えるとともに、持続可能な未来に向けた積極的な姿勢を強調しています。
           - element: p
-            field_name: home_content_text_5
+            field_name: section_3_text_5
             tab: section
             type: textarea
             default: お使いのブラウザは動画の再生に対応していません。テキスト版を下記よりご覧ください。
           - element: p
-            field_name: home_content_text_6
+            field_name: section_3_text_6
             tab: section
             type: textarea
             default: 北九州ネイチャーポジティブセンター PR動画：屋内施設編
           - element: p
-            field_name: home_content_text_7
+            field_name: section_3_text_7
             tab: section
             type: textarea
             default: 制作：北九州市立大学映像制作集団 ROMANDOM
           - element: p
-            field_name: home_content_text_8
+            field_name: section_3_text_8
             tab: section
             type: textarea
             default: >-
               北九州市は、自然環境の回復と経済活動を両立させるネイチャーポジティブを推進しており、その理念を学べる多様な屋内施設を紹介しています。いのちのたび博物館では生命の進化の歴史を辿ることができ、北九州市ほたる館や香月・黒川ほたる館では水辺の生態系の美しさや命の尊さを肌で感じられます。また、環境ミュージアムは過去の公害克服の歴史から未来へのヒントを提示し、水環境館では再生された河川の現状をリアルタイムで観察できる場となっています。これらの拠点を巡ることで、市民は都市と自然が共生する「アーバンネイチャー」の魅力を再発見し、環境保護の重要性を理解できます。最終的にこの動画は、一人ひとりが楽しみながら行動を起こすことで、次世代へ豊かな自然を繋いでいく大切さを呼びかけています。
           - element: p
-            field_name: home_content_text_9
+            field_name: section_3_text_9
             tab: section
             type: textarea
             default: Kitakyushu — The City of Altruism and Regeneration
           - element: p
-            field_name: home_content_text_10
+            field_name: section_3_text_10
             tab: section
             type: textarea
             default: 『利他』と『再生』のまち、北九州市
           - element: p
-            field_name: home_content_text_11
+            field_name: section_3_text_11
             tab: section
             type: textarea
             default: >-
@@ -8289,7 +8488,7 @@ pages:
               united efforts of its citizens, businesses, and government. Today, it stands as one of
               the world's leading sustainable cities.
           - element: p
-            field_name: home_content_text_12
+            field_name: section_3_text_12
             tab: section
             type: textarea
             default: >-
@@ -8297,62 +8496,57 @@ pages:
               to urban nature where people and the environment coexist in harmony. Here, the spirit
               of altruism and regeneration thrives in everyday life.
           - element: p
-            field_name: home_content_text_13
+            field_name: section_3_text_13
             tab: section
             type: textarea
             default: >-
               Kitakyushu — a city that overcame its past and creates the future. Discover the story
               of its "Deep Sustainability."
           - element: p
-            field_name: home_content_text_14
+            field_name: section_3_text_14
             tab: section
             type: textarea
             default: かつて"公害の街"と呼ばれた北九州市。しかし、市民・企業・行政が手を取り合い、それを克服したこの街は、いまや世界でもトップクラスのサステナブルシティへと生まれ変わりました。
           - element: p
-            field_name: home_content_text_15
+            field_name: section_3_text_15
             tab: section
             type: textarea
             default: 沿岸に広がる洋上風力、資源循環の拠点であるエコタウン、人と自然が寄り添うアーバンネイチャー。そして、"利他"と"再生"の心が、市民の暮らしの中に息づいています。
           - element: p
-            field_name: home_content_text_16
+            field_name: section_3_text_16
             tab: section
             type: textarea
             default: 北九州－それは、過去を乗り越え、未来をつくる力。ぜひこのまちの"ディープ・サステナビリティ"の物語に触れてください。
+      - id: section_4
+        fields:
           - element: h2
-            field_name: home_content_title_2
+            field_name: section_4_title
             tab: section
             type: text
             default: 北九州市の自然スポット
           - element: p
-            field_name: home_content_text_17
+            field_name: section_4_text
             tab: section
             type: textarea
             default: 都市から近い距離に広がる、多彩な自然資源
           - element: img
-            field_name: home_content_image_1
+            field_name: section_4_image_1
             tab: section
             type: image
             default: images/2025/03/sone-higata.jpg
+            alt: 曽根干潟
           - element: img
-            field_name: home_content_image_2
+            field_name: section_4_image_2
             tab: section
             type: image
             default: images/2026/04/hiraodai.jpg
+            alt: 平尾台
           - element: img
-            field_name: home_content_image_3
+            field_name: section_4_image_3
             tab: section
             type: image
             default: images/2025/03/biotope.jpg
-          - element: h2
-            field_name: home_content_title_3
-            tab: section
-            type: text
-            default: お知らせ
-          - element: p
-            field_name: home_content_text_18
-            tab: section
-            type: textarea
-            default: アーバンネイチャー北九州からの最新情報
+            alt: 響灘ビオトープ
       - id: facilities
         fields:
           - element: h2
@@ -8370,6 +8564,7 @@ pages:
             tab: section
             type: image
             default: images/2026/03/takamiya-1.jpg
+            alt: タカミヤ環境ミュージアム
           - element: p
             field_name: facilities_text_2
             tab: section
@@ -8380,6 +8575,7 @@ pages:
             tab: section
             type: image
             default: images/2026/03/inochi-1.jpg
+            alt: いのちのたび博物館
           - element: p
             field_name: facilities_text_3
             tab: section
@@ -8390,6 +8586,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/yamada-1.jpg
+            alt: 山田緑地
           - element: p
             field_name: facilities_text_4
             tab: section
@@ -8400,6 +8597,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/b-2-1-450x450.jpg
+            alt: 北九州市響灘ビオトープ
           - element: p
             field_name: facilities_text_5
             tab: section
@@ -8410,6 +8608,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/b-3-450x450.jpg
+            alt: 響灘緑地グリーンパーク
           - element: p
             field_name: facilities_text_6
             tab: section
@@ -8420,6 +8619,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/h-0-450x450.jpg
+            alt: 北九州市ほたる館
           - element: p
             field_name: facilities_text_7
             tab: section
@@ -8430,6 +8630,7 @@ pages:
             tab: section
             type: image
             default: images/2026/03/katsuki-1.jpg
+            alt: 香月・黒川ほたる館
           - element: p
             field_name: facilities_text_8
             tab: section
@@ -8440,6 +8641,7 @@ pages:
             tab: section
             type: image
             default: images/2026/03/itouzu-1.jpg
+            alt: 到津の森公園
           - element: p
             field_name: facilities_text_9
             tab: section
@@ -8450,6 +8652,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/mizukankyokan-1.jpg
+            alt: 水環境館
           - element: p
             field_name: facilities_text_10
             tab: section
@@ -8460,6 +8663,7 @@ pages:
             tab: section
             type: image
             default: images/2025/03/soraland-1.jpg
+            alt: ソラランド平尾台
           - element: p
             field_name: facilities_text_11
             tab: section
@@ -8482,6 +8686,7 @@ pages:
             tab: section
             type: image
             default: images/2026/04/mine-450x269.png
+            alt: 株式会社マイン ─ 竹バイオマス循環モデル
           - element: h3
             field_name: network_title_2
             tab: section
@@ -8514,6 +8719,7 @@ pages:
             tab: section
             type: image
             default: images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+            alt_missing: true
           - element: h3
             field_name: events_title_2
             tab: section
@@ -8529,6 +8735,7 @@ pages:
             tab: section
             type: image
             default: images/2026/04/平尾台シャボン玉-1-450x450.jpg
+            alt: 平尾台シャボン玉イベント
           - element: h3
             field_name: events_title_3
             tab: section
@@ -8544,6 +8751,7 @@ pages:
             tab: section
             type: image
             default: images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+            alt: 平尾台そば倶楽部
           - element: h3
             field_name: events_title_4
             tab: section
@@ -8554,6 +8762,18 @@ pages:
             tab: section
             type: textarea
             default: 平尾台自然の郷 / 要予約・有料
+      - id: section_8
+        fields:
+          - element: h2
+            field_name: section_8_title
+            tab: section
+            type: text
+            default: お知らせ
+          - element: p
+            field_name: section_8_text
+            tab: section
+            type: textarea
+            default: アーバンネイチャー北九州からの最新情報
       - id: photos
         fields:
           - element: h2
@@ -8571,41 +8791,49 @@ pages:
             tab: section
             type: image
             default: images/2025/04/IMG_8716-450x450.jpg
+            alt: 海
           - element: img
             field_name: photos_image_2
             tab: section
             type: image
             default: images/2025/04/IMG_8742-450x450.jpg
+            alt: 山
           - element: img
             field_name: photos_image_3
             tab: section
             type: image
             default: images/2025/04/IMG_8789-450x450.jpg
+            alt: 川
           - element: img
             field_name: photos_image_4
             tab: section
             type: image
             default: images/2025/04/カルガモ-450x450.jpg
+            alt: 動物
           - element: img
             field_name: photos_image_5
             tab: section
             type: image
             default: images/2025/04/カノコソウ-450x450.jpg
+            alt: 植物
           - element: img
             field_name: photos_image_6
             tab: section
             type: image
             default: images/2025/04/IMG_8808-450x450.jpg
+            alt: 街と自然
           - element: img
             field_name: photos_image_7
             tab: section
             type: image
             default: images/2025/04/IMG_8920-450x450.jpg
+            alt: 農産品
           - element: img
             field_name: photos_image_8
             tab: section
             type: image
             default: images/2025/04/ヨツボシトンボ-450x450.jpg
+            alt: 昆虫・その他
       - id: stats
         fields:
           - element: p
@@ -8807,6 +9035,8 @@ pages:
         reason: aria-hidden="true"
       - selector: svg
         reason: aria-hidden="true"
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: アーバンネイチャー北九州 | 都市と自然、近いからこそおもしろい。
       description: アーバンネイチャー北九州は、北九州市の都市と自然の共生を推進するプラットフォームです。10の自然・環境施設が連携し、ネイチャーポジティブな地域づくりに取り組んでいます。
@@ -9195,7 +9425,11 @@ pages:
             tag: input
             type: checkbox
             placeholder: ''
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 会員募集 | アーバンネイチャー北九州
       description: null
@@ -9466,7 +9700,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 自然共生サイト | アーバンネイチャー北九州
       description: null
@@ -9489,6 +9727,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: main_content
         fields:
           - element: h1
@@ -9516,6 +9755,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/04/mine-450x269.png
+            alt: 株式会社マイン - 竹バイオマスと循環モデル
           - element: h3
             field_name: section_gray_title_1
             tab: section
@@ -9536,6 +9776,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/05/nature-450x269.jpg
+            alt: 株式会社ネイチャー - 企業体験農園
           - element: h3
             field_name: section_gray_title_2
             tab: section
@@ -9792,7 +10033,11 @@ pages:
           - text: 地域との繋がり
             href: ../
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 活動実績 | アーバンネイチャー北九州
       description: アーバンネイチャー北九州ネットワーク会員によるネイチャーポジティブの実践事例をご紹介します。
@@ -9815,6 +10060,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: main_content
         fields:
           - element: h1
@@ -9834,6 +10080,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/04/mine-450x269.png
+            alt: 株式会社マイン - 竹バイオマスと循環モデル
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -10062,7 +10309,11 @@ pages:
           - text: 活動実績
             href: ./
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 株式会社マイン | 実践事例 | アーバンネイチャー北九州
       description: 株式会社マインの実践事例。竹バイオマスと循環モデルで、未来をつなぐ。放置竹林を資源として活用する循環型ビジネスモデル。
@@ -10085,6 +10336,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/02/logo.png
+            alt: アーバンネイチャー北九州
       - id: main_content
         fields:
           - element: h1
@@ -10104,6 +10356,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/05/nature-450x269.jpg
+            alt: 株式会社ネイチャー 天野代表 - トマト農場にて
           - element: h2
             field_name: section_white_title_1
             tab: section
@@ -10126,6 +10379,7 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/05/nature-amano.jpg
+            alt: 天野代表 - トマト農場でトマトを手に取る様子
           - element: h2
             field_name: section_white_title_2
             tab: section
@@ -10194,16 +10448,19 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/05/nature-kids1.jpg
+            alt: 農場で説明を受けるイオンチアーズクラブの子どもたち
           - element: img
             field_name: section_white_image_4
             tab: section
             type: image
             default: ../../images/2026/05/nature-kids2.jpg
+            alt: ジャガイモの植え付け作業をする子どもたち
           - element: img
             field_name: section_white_image_5
             tab: section
             type: image
             default: ../../images/2026/05/nature-harvest.jpg
+            alt: 収穫されたジャガイモ
           - element: p
             field_name: section_white_text_9
             tab: section
@@ -10215,11 +10472,13 @@ pages:
             tab: section
             type: image
             default: ../../images/2026/05/nature-cooking.jpg
+            alt: 収穫したジャガイモを調理する子どもたち
           - element: img
             field_name: section_white_image_7
             tab: section
             type: image
             default: ../../images/2026/05/nature-potato.jpg
+            alt: スライスして並べたジャガイモ
           - element: h2
             field_name: section_white_title_8
             tab: section
@@ -10360,7 +10619,11 @@ pages:
           - text: 活動実績
             href: ./
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 株式会社ネイチャー | 実践事例 | アーバンネイチャー北九州
       description: 株式会社ネイチャーの実践事例。環境への貢献と地域活性化を育む「企業体験農園」の可能性。農業体験を通じた自然共生とネイチャーポジティブの実践。
@@ -10411,11 +10674,13 @@ pages:
             tab: section
             type: image
             default: ../images/2025/03/b-2-1-450x450.jpg
+            alt: ヨシ原と木道が広がる響灘ビオトープの湿地
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2025/04/チュウヒ-450x450.jpg
+            alt: 響灘ビオトープで観察されたチュウヒ（絶滅危惧種）
           - element: h2
             field_name: section_white_title_2
             tab: section
@@ -10666,6 +10931,10 @@ pages:
         reason: aria-hidden="true"
       - selector: svg
         reason: aria-hidden="true"
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 響灘ビオトープ共同事業体 | アーバンネイチャー北九州
       description: >-
@@ -10933,6 +11202,10 @@ pages:
     decoration:
       - selector: svg.member-item__external-icon
         reason: aria-hidden="true"
+      - selector: section.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: 地域との繋がり | アーバンネイチャー北九州
       description: 企業・団体・教育機関・個人がつながり、ネイチャーポジティブの取組を広げるネットワーク。参加費無料。
@@ -11080,7 +11353,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: お知らせ | アーバンネイチャー北九州
       description: null
@@ -11263,7 +11540,9 @@ pages:
           - text: お知らせ一覧に戻る
             href: ../news/
     forms: []
-    decoration: []
+    decoration:
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: アーバンネイチャー北九州のサイトをリニューアルしました | お知らせ | アーバンネイチャー北九州
       description: アーバンネイチャー北九州のウェブサイトをリニューアルしました。北九州市の豊かな自然資源・自然スポット・活動拠点・イベント情報などをより見やすくお届けします。
@@ -11304,191 +11583,229 @@ pages:
             tab: section
             type: image
             default: ../images/2025/04/IMG_9308-450x450.jpg
+            alt: 海・干潟の風景
           - element: img
             field_name: section_white_image_2
             tab: section
             type: image
             default: ../images/2025/04/20250419_031114641-450x450.jpg
+            alt: 干潟の夕景
           - element: img
             field_name: section_white_image_3
             tab: section
             type: image
             default: ../images/2025/04/IMG_9214-450x450.jpg
+            alt: 曽根干潟
           - element: img
             field_name: section_white_image_4
             tab: section
             type: image
             default: ../images/2025/04/IMG_8789-450x450.jpg
+            alt: 響灘ビオトープ
           - element: img
             field_name: section_white_image_5
             tab: section
             type: image
             default: ../images/2025/08/APC_2329-450x450.jpg
+            alt: 海岸の風景
           - element: img
             field_name: section_white_image_6
             tab: section
             type: image
             default: ../images/2025/08/APC_8523-450x450.jpg
+            alt: 干潟の生き物
           - element: img
             field_name: section_white_image_7
             tab: section
             type: image
             default: ../images/2025/04/20250418_053344333-450x450.jpg
+            alt: 平尾台カルスト
           - element: img
             field_name: section_white_image_8
             tab: section
             type: image
             default: ../images/2025/04/IMG_9092-450x450.jpg
+            alt: 山の風景
           - element: img
             field_name: section_white_image_9
             tab: section
             type: image
             default: ../images/2025/04/IMG_5901-450x450.jpg
+            alt: 森林の小道
           - element: img
             field_name: section_white_image_10
             tab: section
             type: image
             default: ../images/2025/08/APC_3057-450x450.jpg
+            alt: 山田緑地
           - element: img
             field_name: section_white_image_11
             tab: section
             type: image
             default: ../images/2025/08/IMG_4016-450x450.jpg
+            alt: 山頂からの眺め
           - element: img
             field_name: section_white_image_12
             tab: section
             type: image
             default: ../images/2025/04/IMG_9012-450x450.jpg
+            alt: 紫川の風景
           - element: img
             field_name: section_white_image_13
             tab: section
             type: image
             default: ../images/2025/04/IMG_8894-450x450.jpg
+            alt: 川辺の自然
           - element: img
             field_name: section_white_image_14
             tab: section
             type: image
             default: ../images/2025/08/APC_9078-450x450.jpg
+            alt: 清流
           - element: img
             field_name: section_white_image_15
             tab: section
             type: image
             default: ../images/2025/08/IMG_2944-450x450.jpg
+            alt: 川と緑
           - element: img
             field_name: section_white_image_16
             tab: section
             type: image
             default: ../images/2025/04/20250418_051733075-450x450.jpg
+            alt: 渓谷の風景
           - element: img
             field_name: section_white_image_17
             tab: section
             type: image
             default: ../images/2025/04/カルガモ-450x450.jpg
+            alt: カルガモ
           - element: img
             field_name: section_white_image_18
             tab: section
             type: image
             default: ../images/2025/08/APC_6257-450x450.jpg
+            alt: 野生動物
           - element: img
             field_name: section_white_image_19
             tab: section
             type: image
             default: ../images/2025/04/チュウヒ-450x450.jpg
+            alt: チュウヒ
           - element: img
             field_name: section_white_image_20
             tab: section
             type: image
             default: ../images/2025/03/sagisou-450x450.jpg
+            alt: サギソウ
           - element: img
             field_name: section_white_image_21
             tab: section
             type: image
             default: ../images/2025/04/IMG_8814-450x450.jpg
+            alt: 野草
           - element: img
             field_name: section_white_image_22
             tab: section
             type: image
             default: ../images/2025/04/IMG_6702-450x450.jpg
+            alt: 花
           - element: img
             field_name: section_white_image_23
             tab: section
             type: image
             default: ../images/2025/04/カノコソウ-450x450.jpg
+            alt: カノコソウ
           - element: img
             field_name: section_white_image_24
             tab: section
             type: image
             default: ../images/2025/04/IMG_9050-450x450.jpg
+            alt: 植物
           - element: img
             field_name: section_white_image_25
             tab: section
             type: image
             default: ../images/2025/04/IMG_2265-450x450.jpg
+            alt: 草花
           - element: img
             field_name: section_white_image_26
             tab: section
             type: image
             default: ../images/2025/04/IMG_8920-450x450.jpg
+            alt: 街と自然の共生
           - element: img
             field_name: section_white_image_27
             tab: section
             type: image
             default: ../images/2025/04/IMG_8808-450x450.jpg
+            alt: 都市の緑
           - element: img
             field_name: section_white_image_28
             tab: section
             type: image
             default: ../images/2025/04/IMG_8716-450x450.jpg
+            alt: 公園の風景
           - element: img
             field_name: section_white_image_29
             tab: section
             type: image
             default: ../images/2025/08/APC_6937-450x450.jpg
+            alt: 街の中の自然
           - element: img
             field_name: section_white_image_30
             tab: section
             type: image
             default: ../images/2025/04/IMG_8956-450x450.jpg
+            alt: 農産品
           - element: img
             field_name: section_white_image_31
             tab: section
             type: image
             default: ../images/2025/04/IMG_8941-450x450.jpg
+            alt: 地元の農産物
           - element: img
             field_name: section_white_image_32
             tab: section
             type: image
             default: ../images/2025/04/IMG_8938-450x450.jpg
+            alt: 収穫物
           - element: img
             field_name: section_white_image_33
             tab: section
             type: image
             default: ../images/2025/04/IMG_8964-450x450.jpg
+            alt: 里山の恵み
           - element: img
             field_name: section_white_image_34
             tab: section
             type: image
             default: ../images/2025/04/IMG_8983-450x450.jpg
+            alt: 合馬たけのこ
           - element: img
             field_name: section_white_image_35
             tab: section
             type: image
             default: ../images/2025/04/IMG_8982-450x450.jpg
+            alt: 農産品
           - element: img
             field_name: section_white_image_36
             tab: section
             type: image
             default: ../images/2025/04/20230517ハタケシメジ-450x450.jpg
+            alt: ハタケシメジ
           - element: img
             field_name: section_white_image_37
             tab: section
             type: image
             default: ../images/2025/04/ヨツボシトンボ-450x450.jpg
+            alt: ヨツボシトンボ
           - element: img
             field_name: section_white_image_38
             tab: section
             type: image
             default: ../images/2025/04/20241020キイボカサタケ-450x450.jpg
+            alt: キイボカサタケ
     nav:
       - selector: nav.header__nav
         links:
@@ -11597,7 +11914,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: みんなの写真展 | アーバンネイチャー北九州
       description: null
@@ -11613,15 +11934,15 @@ pages:
     title: 写真を投稿する | みんなの写真展 | アーバンネイチャー北九州
     file: photos/submit.html
     sections:
-      - id: page_header
+      - id: container
         fields:
           - element: h1
-            field_name: page_header_title
+            field_name: container_title
             tab: section
             type: text
             default: 写真を投稿する
           - element: p
-            field_name: page_header_text
+            field_name: container_text
             tab: section
             type: textarea
             default: 北九州の自然写真をアーカイブに提供していただけますか
@@ -11820,7 +12141,9 @@ pages:
             tag: textarea
             type: textarea
             placeholder: 写真に写っている生き物や風景、撮影時のエピソードなどをお書きください。
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
     meta:
       title: 写真を投稿する | みんなの写真展 | アーバンネイチャー北九州
       description: 北九州の自然写真をアーバンネイチャー北九州の写真アーカイブに投稿できます。
@@ -12089,7 +12412,11 @@ pages:
           - text: 参加する
             href: ../join/
     forms: []
-    decoration: []
+    decoration:
+      - selector: div.page-header
+        reason: background-image
+      - selector: section.cta-band
+        reason: background-image
     meta:
       title: プライバシーポリシー | アーバンネイチャー北九州
       description: null
@@ -12103,7 +12430,7 @@ pages:
         og:locale: ja_JP
 coverage:
   acf_candidates: 1021
-  decoration: 46
+  decoration: 121
   by_tab:
     main: 89
     section: 932
