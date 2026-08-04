@@ -1,6 +1,6 @@
 # 案件用 CLAUDE.md — nature-kitakyushu（Ichiki / mockup→WordPress）
 
-<!-- Ichiki Phase 0 (mockup2wp scan) で自動生成 / generated: 2026-06-10 -->
+<!-- Ichiki Phase 0 (mockup2wp scan) で自動生成 / generated: 2026-06-12 -->
 <!-- 固定ルールは下の import で読み込む。人手で触るのは「ACF化除外」ブロックだけ -->
 @.claude/ichiki/rules/ichiki.md
 
@@ -67,6 +67,14 @@
 - `acf-map.yaml` の機械命名は意味ベースの名前にリネームし、対応を `field-map.json` に記録する
 - 型・ページ種別・トップ・nav解決・画像方式は固定ルールに従い、判断に迷う境界は止めて確認する
 
+## トップページ（front-page.php）の仕様
+- front-page.php は「お手本」対象外だが、CPT系お手本と同様に **mockup(`index.html`)のHTML構造・class名に1:1で合わせる**こと。独自のWP_Query整形・独自クラスへの置き換えは禁止（例: `.more-link`を`.btn`に変えない、`<ul><li>`への構造変更をしない）
+- 「地域との繋がり」セクションは acf-map.yaml 定義の単体カード（network_image/title_2/text_2/text_3）をそのまま出力する。動的一覧（WP_Query による複数カード化）にしない
+- 「みんなの写真展」セクションは nkk_photo の動的クエリではなく、acf-map.yaml 定義の固定8枠（photos_image_1〜8 + カテゴリ名キャプション）の静的グリッドとして出力する。各画像は `.photo-category` > 画像 + `.photo-category-overlay > .photo-category-name` の構造でmockupに1:1で合わせる
+- ヒーロー（`.hero`）セクションにボタンを追加しない。mockupのヒーローはスライド＋見出し＋本文＋ドット＋スクロール指示のみで、CTAボタンは存在しない
+- 画像フィールドのフォールバックは、値が空文字列になり得ないようにする（例: ACF画像→サムネイル→**静的デフォルト画像パス**の順。空文字列に落として`continue`でスキップする書き方は禁止。他CPTセクション nkk_center/nkk_case/nkk_event の書き方に倣うこと）
+- ページ専用CSS（例: `assets/css/front-page.css`）には、mockup該当ページの`<style>`内 `:root` 変数とセクション背景定義を漏れなく転記すること（グローバル`css/style.css`だけでなくページ内styleも対象）
+
 ## お手本（ゴールデンサンプル）
 - 参照先: 検証案件 nature-kitakyushu の既存実装
   - `inc/acf-spot.php`（ACFフィールド定義の構造・粒度・命名・instructions）
@@ -79,11 +87,43 @@
 <!-- 【人手】ここだけ確認・追記する。宣言ゼロでも動作する -->
 - CSSアニメーション用SVG
 - `<style>` タグ内のインラインSVG
-- `aria-hidden="true"` のSVG・img（スキャンが page.decoration に分類済み、ACFフィールドは不要）
-  - about/index.html: concept-pyramid / world-context / cycle-card の装飾アイコン × 9件
-  - index.html: `a.facility-card[aria-hidden="true"]` × 10件（カルーセル複製）+ persona/hero SVG × 5件
-  - network/hibikinadabiotope.html: hb-badge / hb-feature__icon / hb-activity__icon × 11件
+- （案件固有の除外をここに追記）
 
-## 境界ケース（Phase 1 で要確認）
-- `index` / `home_content` セクション: 動画一覧・北九州市の自然スポット・お知らせ の3匿名 `<section>` がID/クラス無しのためスキャンで統合された。Phase 1 では3つに分離して実装すること
-- `section_white` / `section_gray`: CSS クラス名由来の仮セクション名。Phase 1 で意味名にリネームする
+## CF7 6.x 固有の注意事項（再実行時に必ず守ること）
+
+### 1. フォームタグの属性順序
+CF7 6.x の `parse_atts()` はクォートされた値（`"..."`）がすべての無引用オプションの**後ろ**に来ることを要求する。
+違反するとタグがパースされず素テキストとして出力される。
+
+**NG:** `[text* your-name placeholder "例：山田 太郎" class:form-input id:c-name]`
+**OK:** `[text* your-name class:form-input id:c-name placeholder "例：山田 太郎"]`
+
+→ `placeholder "..."` は必ず末尾に置くこと。
+
+### 2. フォーム作成 API
+`WPCF7_ContactForm::set_form()` は CF7 6.x に存在しない。`set_properties()` を使う。
+
+```php
+$cf7 = WPCF7_ContactForm::get_template( [ 'title' => $title ] );
+$cf7->set_properties( [ 'form' => $form_body, 'mail' => $mail, 'mail_2' => $mail_2 ] );
+$id = $cf7->save();
+```
+
+## グローバル CSS の扱い
+
+モックアップの `css/style.css`（1259行）がすべての共通スタイルの正とする。
+テーマの `assets/css/style.css` はこのファイルを全取込みし、末尾に WordPress/CF7 固有スタイルを追記する。
+ページ別 CSS ファイルはページ内 `<style>` タグのみを抽出したもので、グローバル定義は含まない。
+
+## seed-posts.php の責務
+
+`inc/seed-posts.php` は以下をすべて自動投入すること（`wp eval-file` 1コマンドで完結）：
+
+1. 固定ページ（テンプレート指定込み）
+2. CF7 フォーム（4件：お問合せ・会員申込・イベント申込・写真投稿）
+3. フロントページ設定（`show_on_front` / `page_on_front`）
+4. CPT 初期記事（nkk_spot×5・nkk_center×4・nkk_event×3・nkk_news×1・nkk_case×2・nkk_photo×1・nkk_network×1）
+   - モックアップの既存コンテンツから抽出したテキストを ACF フィールドに `update_field()` で投入する
+5. サイト設定ページ（site-options）の ACF 初期値（CTA・フッターテキスト等）
+
+画像フィールドは seed では skip し、管理画面から手動入力または別途 sideload で対応。
