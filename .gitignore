@@ -1,4 +1,5 @@
 # 環境依存の設定（絶対パスを含むためコミットしない）
 .ichiki.json
 scripts/visual-diff/node_modules
-scripts/visual-diff/report
+scripts/visual-diff/report.DS_Store
+**/.DS_Store
