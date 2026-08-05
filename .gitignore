@@ -6,3 +6,4 @@ scripts/test-spec/node_modules
 scripts/test-spec/out
 **/.DS_Store
 report
+.claude/settings.local.json
