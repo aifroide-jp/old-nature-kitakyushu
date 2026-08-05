@@ -5,9 +5,10 @@
  * スクリーンショット比較し、HTML レポートを生成する。
  *
  * 使い方:
- *   node diff.js             # デスクトップ (1280px)
- *   node diff.js --mobile    # モバイル (375px)
- *   node diff.js --both      # 両方
+ *   node diff.js                        # デスクトップ (1280px) 全ページ
+ *   node diff.js --mobile               # モバイル (375px)
+ *   node diff.js --both                 # 両方
+ *   node diff.js --only=トップ,全体像    # ラベル部分一致・カンマ区切りで複数指定可
  */
 
 const http        = require('http');
@@ -32,7 +33,10 @@ const MOBILE  = args.includes('--mobile');
 const BOTH    = args.includes('--both');
 const DESKTOP = !MOBILE || BOTH;
 const ONLY    = (args.find(a => a.startsWith('--only=')) || '').slice('--only='.length);
-const TARGET_PAGES = ONLY ? PAGES.filter(p => p.label.includes(ONLY)) : PAGES;
+const ONLY_LABELS  = ONLY ? ONLY.split(',').map(s => s.trim()).filter(Boolean) : [];
+const TARGET_PAGES = ONLY_LABELS.length
+  ? PAGES.filter(p => ONLY_LABELS.some(label => p.label.includes(label)))
+  : PAGES;
 
 const VIEWPORTS = [
   ...(DESKTOP ? [{ name: 'desktop', width: 1280, height: 900 }] : []),
