@@ -1,0 +1,13 @@
+{
+  "name": "test-spec",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Phase2 C1/C3 テスト仕様書生成スクリプト",
+  "main": "generate.js",
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

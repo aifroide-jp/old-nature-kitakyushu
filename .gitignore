@@ -2,5 +2,7 @@
 .ichiki.json
 scripts/visual-diff/node_modules
 scripts/visual-diff/report.DS_Store
+scripts/test-spec/node_modules
+scripts/test-spec/out
 **/.DS_Store
 report
