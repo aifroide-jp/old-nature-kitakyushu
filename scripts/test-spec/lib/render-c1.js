@@ -29,11 +29,14 @@ function buildPageRows(page, result) {
     evidence: visualDiffEvidence(result.visualDiff),
   });
 
-  const acf = result.acf || { total: 0, matched: 0, missing: [] };
+  const acf = result.acf || { total: 0, matched: 0, missing: [], excludedImages: 0 };
   const acfOk = acf.missing.length === 0;
   let acfEvidence = `${acf.matched}/${acf.total} 一致`;
   if (acf.missing.length > 0) {
     acfEvidence += ` / 未検出: ${acf.missing.map(m => m.field_name).join(', ')}`;
+  }
+  if (acf.excludedImages > 0) {
+    acfEvidence += ` / image型${acf.excludedImages}件は自動チェック対象外（要目視）`;
   }
   rows.push({
     type: 'ACF差し替え',

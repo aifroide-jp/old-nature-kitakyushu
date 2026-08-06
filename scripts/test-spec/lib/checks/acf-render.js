@@ -7,10 +7,12 @@ async function checkAcfRender(page, siteUrl) {
 
   let total = 0;
   let matched = 0;
+  let excludedImages = 0;
   const missing = [];
 
   for (const section of page.sections || []) {
     for (const field of section.fields || []) {
+      if (field.type === 'image') { excludedImages++; continue; }
       if (field.type !== 'text' && field.type !== 'textarea') continue;
       const raw = field.default;
       if (raw === undefined || raw === null) continue;
@@ -31,7 +33,7 @@ async function checkAcfRender(page, siteUrl) {
     }
   }
 
-  return { total, matched, missing };
+  return { total, matched, missing, excludedImages };
 }
 
 module.exports = { checkAcfRender };
