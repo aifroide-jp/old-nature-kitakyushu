@@ -13,18 +13,22 @@ function readA11yReport(reportPath) {
     return null;
   }
 
-  const entries = Array.isArray(raw)
-    ? raw
-    : (raw.results || raw.pages || raw.reports || []);
-
+  // pa11y-ci の実際の形式: { total, passes, errors, results: { [pageUrl]: issues[] } }
+  // pa11y-ci はURL接続失敗時も同じ results[url] に catch したエラーを1件だけ積む
+  // （lib/pa11y-ci.js: `report.results[url] = [error]`）。本物のissueは必ず code を持つので、
+  // code を持たないエントリが1件でも混ざっていたら「違反」ではなく「接続失敗」と判断して落とす。
   const map = new Map();
-  for (const entry of entries) {
-    if (!entry) continue;
-    const url = entry.pageUrl || entry.documentTitle || entry.url;
-    if (!url) continue;
-    const issues = entry.issues || entry.violations || [];
-    const count = Array.isArray(issues) ? issues.length : (typeof issues === 'number' ? issues : 0);
-    map.set(url, { violations: count });
+  const results = (raw && raw.results) || {};
+  for (const [url, issues] of Object.entries(results)) {
+    if (!Array.isArray(issues)) continue;
+    const connectionFailure = issues.find(issue => issue && !('code' in issue));
+    if (connectionFailure) {
+      throw new Error(
+        `pa11y-ci: ${url} への接続に失敗した（${connectionFailure.message}）。` +
+        'Localサイトが起動しているか、.ichiki.json の site_url が正しいか確認してから再実行すること。'
+      );
+    }
+    map.set(url, { violations: issues.length });
   }
 
   return map;
