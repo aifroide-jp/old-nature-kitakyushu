@@ -2,4 +2,10 @@
 .ichiki.json
 scripts/visual-diff/node_modules
 scripts/visual-diff/report.DS_Store
+scripts/test-spec/node_modules
+scripts/test-spec/out
+scripts/test-spec/.pa11yci.json
+scripts/test-spec/pa11y-report.json
 **/.DS_Store
+report
+.claude/settings.local.json
