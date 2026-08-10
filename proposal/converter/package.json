@@ -1,0 +1,11 @@
+{
+  "name": "mockup-converter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "proposal/vocabulary.md 準拠モックアップ -> WordPress クラシックテーマ 決定的変換器 (PoC)",
+  "main": "convert.js",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

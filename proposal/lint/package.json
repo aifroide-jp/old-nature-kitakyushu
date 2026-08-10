@@ -1,0 +1,17 @@
+{
+  "name": "mockup-constraint-lint",
+  "version": "0.1.0",
+  "private": true,
+  "description": "proposal/vocabulary.md L01-L21 を検査する lint (poc/mockup-constraint-lint)",
+  "main": "lint.js",
+  "bin": {
+    "mockup-lint": "./lint.js"
+  },
+  "scripts": {
+    "lint": "node lint.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

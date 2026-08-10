@@ -1,0 +1,385 @@
+# モックアップ制約語彙 v0.1（草案）
+
+Ichiki の Phase0（mockup → acf-map.yaml）から**推測を排除**し、Phase1（→ WordPress）を
+AI の自由記述ではなく**決定的な変換**にするための、モックアップ側の記述規約。
+
+この1枚が lint ルールと制約プロンプトの共通の親になる。二重管理しない。
+
+---
+
+## 0. 設計原則
+
+1. **デザインは自由、構造は宣言必須。** 見た目（色・レイアウト・雰囲気）は主観なので人がモックで合意する。
+   構造（何がACF化されるか・何がCPTか・どこが共通か）は客観なので機械が検査する。
+2. **推測しない。** 現行 Phase0 は祖先探索・クラス名の部分一致でセクション名や hero/main を推測しており、
+   ichiki.md 自身が「人手レビュー対象」と認めている。宣言があれば推測は発生しない。
+3. **エスケープハッチを作らない。** 変換器がカバーできない入力は**エラーで停止**する。
+   AI へのフォールバックを許すと、決定的な部分と非決定的な部分が混ざって検証不能になる。
+4. **属性で宣言し、class は使わない。** class は CSS の持ち物。構造宣言を class に混ぜると、
+   デザイン変更が構造を壊す。`data-*` なら CSS に一切影響しない。
+   - 例外的に既存モックは `.bg-overlay` `.deco-line` `.pattern-dots` という
+     **CSSを持たない純粋な意味マーカー**を既に使っている（実測: 定義ゼロで使用のみ）。
+     本語彙はこの既存慣行を `data-*` に移設・拡張したものであって、新発明ではない。
+
+---
+
+## 1. ページ宣言
+
+すべての HTML は `<body>` に**必ず** `data-page` を持つ。
+
+```html
+<body data-page="front">                        <!-- front-page.php -->
+<body data-page="page" data-page-id="about_strategy">  <!-- page-<slug>.php -->
+<body data-page="archive" data-cpt="spot">      <!-- archive-nkk_spot.php -->
+<body data-page="single" data-cpt="spot">       <!-- single-nkk_spot.php -->
+```
+
+| 属性 | 必須 | 値 |
+|---|---|---|
+| `data-page` | ○ | `front` / `page` / `archive` / `single` |
+| `data-page-id` | `page` のみ○ | ASCII小文字・数字・`_`。ファイルパス由来（`about/strategy.html` → `about_strategy`、`index.html` は畳む） |
+| `data-cpt` | `archive`/`single` のみ○ | CPT のスラッグ。`nkk_` 接頭辞は変換器が付ける |
+
+**これが本語彙の最重要点。** 現行手法は「セクション構成が完全一致するページが2件以上あるか」で
+CPT を推定しており、インスタンスが1件しかない CPT（`nkk_photo` / `nkk_network`）は
+**原理的に検出不可能**だった。宣言にすれば1件でも検出できる。
+また、CPT と同じレイアウト語彙を使う単発固定ページとの取り違えも起きない。
+
+---
+
+## 2. フィールド宣言（ACF化）
+
+編集対象の要素に `data-acf` を付ける。**付いていない要素は更新対象外**（＝固定文言）。
+
+```html
+<h1 data-acf="hero_title">都市と自然、近いからこそおもしろい。</h1>
+<p  data-acf="hero_lead">北九州の自然を、もっと身近に。</p>
+<img data-acf="hero_image" src="../images/index/hero.jpg" alt="皿倉山からの眺望">
+```
+
+### 2.1 型は省略可（タグから決定的に導出）
+
+| タグ | 導出される型 |
+|---|---|
+| `h1`〜`h6` | `text` |
+| `p`, `li`, `dd`, `td`, `span` | `textarea` |
+| `img` | `image` |
+| `a` | `text`（リンクテキスト。href は 2.2 の `data-acf-url`） |
+| その他（`div` / `section` 等） | **導出しない → `data-acf-type` 必須** |
+
+導出と違う型にしたいときだけ明示する。明示が常に優先。
+
+```html
+<p data-acf="fee_note" data-acf-type="text">無料</p>
+<div data-acf="body" data-acf-type="wysiwyg"><h3>…</h3><p>…</p></div>
+```
+
+有効な型: `text` / `textarea` / `wysiwyg` / `url` / `image`
+（ichiki.md の型マッピングに準拠。ACF PRO 専用型は使わない）
+
+### 2.2 リンク
+
+`<a>` はテキストと URL が別物なので属性を分ける。
+
+```html
+<a href="../contact/" data-acf-url="cta_link" data-acf="cta_label">お問合せはこちら</a>
+```
+
+- `data-acf-url` → `url` 型フィールド（`href` が値）
+- `data-acf` → リンクテキストのフィールド（型導出は `text`）
+- 片方だけでもよい（固定リンク＋可変ラベル、等）
+
+**`data-acf-url` の無い `<a>` は固定リンク**として、変換器が href をパーマリンクへ機械的に解決する。
+モック内ファイルへの相対パス（`../about/spots/auma.html`）は `data-page-id` / `data-cpt` から
+一意に解決できる。外部URL・`#` アンカー・`mailto:` はそのまま通す。
+
+> 実測メモ: 既存モックは `about/spots/auma.html` で href 94本のうち acf-map.yaml が拾っているのは
+> nav 配下の51本のみ。残る43本（パンくず・カード・本文中・CTA）は Phase0 に一度も現れず、
+> 下流のどのゲートでも検査されていない。本節はこの穴を塞ぐためにある。
+
+### 2.3 命名規則
+
+- `{セクション}_{種別}` ＋ 同種が複数あるときだけ `_{連番}`（例: `hero_title`, `features_icon_1`）
+- ASCII 小文字・数字・アンダースコアのみ。**数字始まり禁止**（PHP変数・ACFキーになるため）
+- **同一スコープ内で重複禁止。** スコープはページ本体と `data-loop-item` ごとに分かれる。
+  ループ項目のフィールド名は「そのループが指す CPT の詳細ページ」の名前空間に属するため、
+  ページ本体や別 CPT のループと同名になるのは正しい（実測: `index.html` に spot / center /
+  event / news の4ループがあり `hero_title` が4回出る）
+- 意味ベースの名前を人（AI）が書く。**機械命名→意味名のリネーム工程と `field-map.json` は本語彙では不要**
+
+### 2.4 装飾要素
+
+`aria-hidden="true"` の要素、および `data-deco` を持つ要素は ACF 化しない（ichiki.md の③タブ相当）。
+
+```html
+<div class="hero-wave" data-deco aria-hidden="true"><svg>…</svg></div>
+```
+
+---
+
+## 2.5 セクション宣言
+
+`<section>` には `data-section` を付ける。acf-map.yaml の `sections[].id` になる。
+
+```html
+<section data-section="spot_detail" class="section section--white">…</section>
+```
+
+- `data-common` を持つ section には不要（common 側に回るため）
+- 値は ASCII 小文字・数字・`_`
+
+**なぜ必要か（実測で判明）**: v0.1 はフィールドだけ宣言させ、セクションを宣言させていなかった。
+その結果、制約モックの `<section>` が持つのは `section--white` / `section--gray` という
+レイアウト用クラスだけになり、KNOWN-LIMITATIONS の根本原因メモが既存モックについて指摘していた
+「セクション名が CSS クラス名由来で意味を持たない」問題を**そのまま再生産していた**。
+
+フィールド名の接頭辞からの導出も不可能である。実測: `spots/auma.html` の `spot_detail` セクションは
+`overview_body` / `season_note` / `related_label` / `address` / `fee` / `hours` と
+6種類の接頭辞が混在しており、共通接頭辞が存在しない。
+
+---
+
+## 3. 繰り返し（一覧ループ）
+
+`data-page="archive"` および一覧セクションで使う。
+
+```html
+<div data-loop="spot" data-loop-order="date_desc" data-loop-count="12">
+  <article data-loop-item>              <!-- ← これがテンプレート。ちょうど1個 -->
+    <img data-acf="thumbnail" src="…" alt="…">
+    <h3 data-acf="title">合馬竹林公園</h3>
+  </article>
+  <article data-loop-sample>…</article>  <!-- ← 見た目確認用。変換時に破棄。0個以上 -->
+  <article data-loop-sample>…</article>
+</div>
+```
+
+| 属性 | 必須 | 値 |
+|---|---|---|
+| `data-loop` | ○ | CPT スラッグ |
+| `data-loop-order` | | `date_desc`(既定) / `date_asc` / `menu_order` |
+| `data-loop-count` | | 整数。既定 `-1`（全件） |
+| `data-loop-item` | ○ | ちょうど1個 |
+| `data-loop-sample` | | 0個以上。デザイン確認用のダミー。変換器が捨てる |
+
+`data-loop-item` の中の `data-acf` は、そのCPTの**詳細ページのフィールド名と一致**させる。
+一致しないものは lint がエラーにする（一覧と詳細でフィールド名がずれる事故の防止）。
+
+---
+
+## 4. 共通領域
+
+```html
+<header data-common="header">…</header>
+<section data-common="cta">…</section>
+<footer data-common="footer">…</footer>
+```
+
+- 全ページで**同一**であること（lint L09 が全ページ横断で検査）
+  - ただし `href` / `src` は 7章・8章により**ページ階層に応じた相対パス**になるため、
+    同じ行き先でも文字列は深さごとに異なる（`index.html` と `../index.html`）。
+    L09 はパスをサイトルート基準に正規化してから比較する。**それ以外は文字列一致を要求する。**
+- 現行の「半数以上のページで一致したら common」という閾値ロジックは廃止。宣言で決める
+- `data-common` 内の `data-acf` はサイト共通フィールド（site-options）になる
+
+---
+
+## 5. ナビゲーション
+
+```html
+<nav data-nav="global">…</nav>
+<nav data-nav="footer">…</nav>
+<nav data-nav="mobile">…</nav>
+```
+
+`data-nav` の値が `register_nav_menus()` のメニュー位置に 1:1 で対応する。
+同じ値の nav は同一メニューとして名寄せされ、内容の不一致は lint がエラーにする。
+
+---
+
+## 6. フォーム（CF7）
+
+```html
+<form data-cf7="contact">
+  <input type="text" data-cf7-field="your-name" data-cf7-required
+         placeholder="例：山田 太郎" class="form-input" id="c-name">
+  <textarea data-cf7-field="your-message" data-cf7-required class="form-textarea"></textarea>
+  <button type="submit" data-cf7-submit>送信する</button>
+</form>
+```
+
+| 属性 | 必須 | 内容 |
+|---|---|---|
+| `data-cf7` | ○ | フォーム識別子（CF7投稿のタイトルになる） |
+| `data-cf7-field` | ○ | CF7 のフィールド名。`your-name` 等の CF7 慣行名を推奨 |
+| `data-cf7-required` | | 付いていれば必須（CF7 の `*` 付きタグ） |
+| `data-cf7-submit` | ○ | 送信ボタン。ちょうど1個 |
+
+CF7 タグの生成は変換器がテンプレート化して行う。
+**CF7 6.x の属性順序（クォート付き値は全ての無引用オプションより後ろ）はモック側の関心事ではない** —
+`placeholder "…"` を末尾に置くのは変換器の責務。ここを人が書かないことで、
+CLAUDE.md に記録されている既知の事故（タグがパースされず素テキスト出力）が構造的に起きなくなる。
+
+---
+
+## 7. CSS 配置
+
+```
+css/
+  base.css          ← 全ページ共通。:root 変数はここだけ
+  page/
+    front.css       ← data-page="front" は front.css 固定
+    about_strategy.css  ← data-page="page" は data-page-id 名
+    spot.css        ← CPT は data-cpt 名（single/archive 共用）
+```
+
+- **ページ内 `<style>` タグ禁止**
+- **`style="…"` 属性禁止**
+- `:root` の CSS 変数定義は `base.css` のみ
+- `base.css` と `page/*.css` で**同じセレクタを二重定義しない**
+- **内部参照はすべて相対パスで書く。ルート絶対パス（`/` 始まり）は禁止。**
+  `<link href>` はページの階層に応じた正しい相対パス（例: 深さ1のページなら `../css/base.css`）で書く。
+  理由: モックは単体で開いて閲覧・回遊できる必要があり、ルート絶対パスは `file://` で開くと解決できないため。
+
+> 実測メモ: 既存モックは 53ページ中 37ページが `<style>` を持つ。ただし `about/spots/*.html` 9枚の
+> `<style>` は MD5 完全一致（分岐ではなく単なる複製）で、global と inner の二重定義も14件のみ。
+> つまり既存モックは本節の構成へ**機械的に畳める**状態にある。禁止の代償は小さい。
+
+---
+
+## 8. 画像配置
+
+```
+images/
+  common/           ← ヘッダーロゴ・CTA背景など全ページ共通
+  index/            ← data-page-id / data-cpt 単位
+  spot/
+  meta.yaml         ← 全画像のメタ（後述）
+```
+
+- 参照は `images/` 配下のみ。外部CDN・データURI 禁止
+- `alt` は全 `<img>` に必須（空 `alt=""` は `data-deco` が付いている場合のみ許可）
+- **内部参照はすべて相対パスで書く。ルート絶対パス（`/` 始まり）は禁止。**
+  `<img src>` もページの階層に応じた正しい相対パス（例: 深さ1のページなら `../images/...`）で書く。
+  理由: モックは単体で開いて閲覧・回遊できる必要があり、ルート絶対パスは `file://` で開くと解決できないため。
+
+### 8.1 `images/meta.yaml`
+
+```yaml
+- file: spot/auma-hero.jpg
+  subject: 合馬竹林公園の竹林を見上げた構図。人物なし。
+  usage: spot 詳細のヒーロー
+```
+
+画像の内容を**先に**書いておく。AI がモックを生成するとき、画像の中身を推測して配置し、
+その推測のまま alt を書くと、誤配置と誤 alt が同時に発生して整合してしまい気づけない。
+メタがあれば配置も alt も検証可能になる。lint は「`images/` の全ファイルが meta.yaml に載っているか」を見る。
+
+---
+
+## 9. lint ルール一覧
+
+| # | ルール | 深刻度 |
+|---|---|---|
+| L01 | `<body>` に `data-page` がある | error |
+| L02 | `data-page="page"` に `data-page-id` がある / `archive`・`single` に `data-cpt` がある | error |
+| L03 | `data-acf` 値が命名規則（ASCII小文字・数字・`_`、数字始まり不可）に適合 | error |
+| L04 | `data-acf` が**同一スコープ内**で重複していない。スコープはページ本体と `data-loop-item` ごとに分かれる（ループ項目のフィールドは対象 CPT の名前空間に属するため、トップに spot / center / event / news の4ループがあれば `hero_title` が4回出るのが正しい） | error |
+| L05 | 型が導出できないタグに `data-acf-type` がある | error |
+| L06 | `data-acf-type` の値が有効な5型のいずれか | error |
+| L07 | `data-loop` 直下の `data-loop-item` がちょうど1個 | error |
+| L08 | `data-loop-item` 内の `data-acf` が対応 CPT 詳細のフィールド名に存在する。対応する `data-page="single"` のページが1枚も無い場合も error（一覧はあるが詳細テンプレートが無い構成ミス） | error |
+| L09 | 同じ `data-common` / `data-nav` の内容が全ページで一致 | error |
+| L10 | `data-cf7-submit` がフォーム内にちょうど1個 | error |
+| L11 | ページ内 `<style>` タグが無い | error |
+| L12 | `style="…"` 属性が無い | error |
+| L13 | class 名・`data-*` 値が全て ASCII | error |
+| L14 | 画像参照が `images/` 配下のみ（検査対象は `<img src>`。CSS の `background-image` と favicon は v0.1 では対象外） | error |
+| L15 | 全 `<img>` に `alt`（空 alt は `data-deco` **または `aria-hidden="true"`** が自身か祖先に付いている場合のみ。カルーセルの無限ループ用に複製されたカード等が該当） | error |
+| L16 | `images/` の全ファイルが `meta.yaml` に載っている | error |
+| L17 | `base.css` と `page/*.css` にセレクタの二重定義が無い | error |
+| L18 | 見出しレベルの飛びが無い（h1→h3 等） | error |
+| L19 | `<section>` に class か `data-*` の**少なくとも一方**がある（両方あってよい。デザイン用 class と構造宣言は併存する） | error |
+| L20 | **`data-acf` の無いテキストノードの一覧**（＝更新対象外になる文言） | **warn** |
+| L21 | 内部参照（`<link href>` / `<img src>` / `<a href>`）がルート絶対パスでない（外部URL・`mailto:`・`tel:`・`#`アンカーは対象外） | error |
+
+**L20 が運用上いちばん重要。** 唯一の残存リスクは「宣言の付け忘れ」で、これは静かに失敗する
+（ACF化されず固定文言になり、誰も気づかない）。lint がこの一覧をレポートとして出し、
+**「これらは更新対象外」としてお客様と合意する**ところまでやって、初めて取りこぼしが
+事故ではなく合意事項になる。
+
+### 9.1 lint 以外の受入条件
+
+- **pa11y（axe-core ランナー・WCAG2AA）通過**。モック段階で通す。WP化後に直すと
+  モックとの差分が生まれ、「モックで合意したもの＝納品物」という前提（柱①）が崩れる。
+  本案件で検出された axe-core 違反204件は、その大半がモック由来と見られる。
+- **実行方法**: `node proposal/a11y/check.js [mockupDir]`。
+  `proposal/mockup/` 配下の全 `*.html` に pa11y を `--standard WCAG2AA --runner axe`
+  相当の設定でかけ、**error が1件でもあれば非ゼロ終了**する。人が読める出力
+  （ページ別の違反件数・ルールID・セレクタ・該当要素）と `--json` の両方に対応する。
+  CI・pre-commit 等はこのコマンドの終了コードをゲートにすること。
+- **既知の除外は `frame-tested` の1ルールのみ**。地図の `<iframe>` は `file://` で
+  開くと cross-origin になり、axe-core がフレーム内部を検査できないために出る
+  偽陽性で、実サイト（同一オリジン配信）では発生しない。除外理由は
+  `proposal/a11y/check.js` 内のコメントに明記し、除外した件数は実行結果に
+  必ず表示する（黙って消さない）。これ以外のルールを「直すのが面倒だから」
+  という理由で除外リストに追加してはならない。
+- **プロンプトに書くだけでは守られない。ゲート（`proposal/a11y/check.js` の
+  非ゼロ終了）が唯一の担保である。** モック生成プロンプトに「WCAG 2.0 AA を
+  通す前提」と明記していても、それを実行する仕組みが無ければ守られない
+  ことが実測（axe-core 違反31件、うち color-contrast 30件・frame-tested 1種）
+  で判明している。
+
+### 9.2 既存51ページの扱い
+
+既存モックを lint に通して**合格させるためにルールを緩めてはならない**。
+lint を先に確定し、既存が落ちるなら落ちたままでよい。既存モックの用途は
+「この語彙で実案件のページを表現しきれるか」というカバレッジ検査であって、手本ではない。
+
+---
+
+## 10. 変換器が保証すること（本語彙の対価）
+
+モック側がこの語彙を守る代わりに、変換器は以下を**決定的に**生成する。AI は介在しない。
+
+| 生成物 | 入力 |
+|---|---|
+| `inc/acf-<slug>.php` | `data-acf` / `data-acf-type` |
+| `functions.php` の CPT 登録・`register_nav_menus()` | `data-cpt` / `data-nav` |
+| `front-page.php` / `page-*.php` / `archive-*.php` / `single-*.php` | `data-page` ＋ モック HTML |
+| フィールド出力（`the_field()` 置換） | `data-acf` の位置 |
+| CF7 フォーム定義 | `data-cf7-*` |
+| `assets/css` / `assets/images` | `css/` / `images/` |
+
+置換元・宣言が見つからない場合は**エラーで停止**する。黙って握りつぶさない。
+これにより、現行手法で発生していた「ACF に登録したがテンプレートに出力し忘れる」
+（実測: 活動ブログ 2/14 一致、活動拠点 22/34 一致）が構造的に発生しなくなる。
+
+---
+
+## 未決事項
+
+- `wysiwyg` の粒度（どこまでを1フィールドにまとめるか）は人の判断が残る
+- 一覧のページング宣言（`data-loop-paged`）は v0.1 では未定義
+- 条件表示（値が空なら非表示にする等）の宣言方法は未定義
+- 多言語は対象外（ichiki.md: 日本語単一）
+- ~~内部参照が絶対パス（`/about/x.html`）と相対パス（`../about/x.html`）のどちらの記法か未定義~~
+  → **解決済み。** 内部参照（CSS・画像・ページリンク）は相対パス必須、ルート絶対パス禁止と確定した
+  （本節末尾の §7・§8 参照。lint L21 で機械検査する）。この曖昧点は変換器側
+  （`proposal/converter/lib/link-resolve.js` のコメント）から報告されたもので、
+  v0.1 の実例（`proposal/mockup/`）がルート絶対パスを使っていたために発覚した。
+
+### v0.1 の PoC（`proposal/mockup/` 7ページ）で判明した穴
+
+1. **文中リンクの分断**（実測で発見）。`<p>…については<a data-acf-url=… data-acf=…>リンク</a>。</p>` と書くと、
+   `<a>` だけが宣言され前後の地の文が未宣言のまま残り、L20 に断片（「…については」「。」）として出る。
+   文ごと編集させたいなら `<p data-acf-type="wysiwyg">` にすべきだが、その場合内側の
+   `data-acf-url` が「祖先が data-acf を持つ」状態になり、扱いが未定義。**v0.2 で決める必要がある。**
+2. **パンくずリスト**が未定義。`data-nav` にも `data-common` にも該当しない。
+3. **単一インスタンス CPT の archive テンプレートの要否**が未定義（`network` のような CPT で
+   `archive-<cpt>.php` を生成すべきか）。
+4. **`data-loop-sample` 内に `data-acf` を書いてよいか**が未定義（現状 lint は L20 の対象外としている）。
+5. **`<a>` 以外の URL 属性**（`<iframe src>` の地図等）への宣言方法が未定義。
+6. **CF7 の `<select>` / チェックボックス**の宣言が未定義（`[acceptance]` と `[checkbox]` の区別）。
+7. **未使用画像の検査が無い**。L16 は「`images/` の全ファイルが meta.yaml に載っているか」の一方向のみで、
+   どのページからも参照されない画像は検出できない（L21 候補）。

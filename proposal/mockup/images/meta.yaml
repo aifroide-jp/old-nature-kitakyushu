@@ -1,0 +1,63 @@
+# images/meta.yaml — 全画像のメタ情報（vocabulary.md 8.1）
+# 既存リポジトリの images/ 配下（169ファイル）からこのPoCの題材に合う画像を複製して使用している。
+# 外部URL・データURIは使用していない。
+
+- file: common/logo.png
+  subject: 「アーバンネイチャー北九州」のロゴタイプ（テキストロゴ、背景透過）。
+  usage: 全ページ共通ヘッダーのブランドロゴ（site_logo）
+
+- file: common/cta-bg.png
+  subject: 樹冠を見上げた緑の葉が画面いっぱいに広がる構図。人物・文字なし。
+  usage: 全ページ共通CTAバンドの背景画像（CSS背景、img要素ではない）
+
+- file: index/hero.jpg
+  subject: 皿倉山山頂付近から見下ろす北九州市街地と海。都市と緑が近接する構図。
+  usage: フロントページのメインビジュアル（front_hero_image）
+
+- file: index/center-yamada.jpg
+  subject: 山田緑地の森の遊歩道。木漏れ日が差す落葉樹林。人物なし。
+  usage: フロントページ「活動拠点」ループのサンプルカード1
+
+- file: index/center-itouzu.jpg
+  subject: 到津の森公園の入口付近、緑に囲まれた園内風景。
+  usage: フロントページ「活動拠点」ループのサンプルカード2
+
+- file: index/center-takamiya.jpg
+  subject: タカミヤ環境ミュージアムの外観と周辺の植栽。
+  usage: フロントページ「活動拠点」ループのサンプルカード3
+
+- file: index/network-highlight.jpg
+  subject: 響灘ビオトープの湿地とヨシ原を広角で捉えた風景。人物なし。
+  usage: フロントページ「地域との繋がり」単体カード（network CPTへのリンクカード）
+
+- file: spot/auma-hero.jpg
+  subject: 合馬竹林公園の整然と並んだ竹林を見上げた構図。人物なし。
+  usage: spots/auma.html のヒーロー画像／spots/index.html 一覧カード（実データ）／フロントページ spot ループの実データ
+
+- file: spot/hiraodai-hero.jpg
+  subject: 平尾台の羊群原（石灰岩が点在するカルスト草原）と青空。
+  usage: spots/hiraodai.html のヒーロー画像
+
+- file: spot/sample-genkai.jpg
+  subject: 玄海国定公園（若松北海岸）の白砂の海岸線と松林。
+  usage: spots/index.html 一覧のダミーサンプルカード（data-loop-sample、変換時に破棄）
+
+- file: spot/sample-kanmon.jpg
+  subject: 関門海峡を行き交う船と対岸の下関市街。
+  usage: spots/index.html 一覧のダミーサンプルカード（data-loop-sample、変換時に破棄）
+
+- file: network/hibikinada-hero.jpg
+  subject: 響灘ビオトープの水辺と草原が広がる全景。人物なし。
+  usage: network/hibikinada.html のヒーロー画像
+
+- file: network/hibikinada-wetland.jpg
+  subject: ヨシ原の中に敷かれた木道のクローズアップ。
+  usage: network/hibikinada.html フォトグリッドの1枚目
+
+- file: network/hibikinada-bird.jpg
+  subject: 響灘ビオトープで観察された猛禽類チュウヒ（絶滅危惧種）の写真。
+  usage: network/hibikinada.html フォトグリッドの2枚目
+
+- file: about_strategy/hero.jpg
+  subject: 皿倉山の斜面に広がる樹林と登山道。
+  usage: about/strategy.html のページヒーロー画像

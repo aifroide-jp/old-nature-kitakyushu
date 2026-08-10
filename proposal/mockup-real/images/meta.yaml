@@ -1,0 +1,96 @@
+- file: 2025/03/b-2-1-450x450.jpg
+  subject: 北九州市響灘ビオトープ
+  usage: facilities セクション
+- file: 2025/03/b-2.jpg
+  subject: 響灘ビオトープの湿地とヨシ原
+  usage: ヒーロースライド 2枚目の背景
+- file: 2025/03/b-3-450x450.jpg
+  subject: 響灘緑地グリーンパーク
+  usage: facilities セクション
+- file: 2025/03/biotope.jpg
+  subject: 響灘ビオトープの遠景
+  usage: ヒーロースライド 6枚目の背景
+- file: 2025/03/h-0-450x450.jpg
+  subject: 北九州市ほたる館
+  usage: facilities セクション
+- file: 2025/03/higata.jpg
+  subject: 曽根干潟の干潟と水路
+  usage: ヒーロースライド 4枚目の背景
+- file: 2025/03/main1-scaled.jpg
+  subject: 北九州市街地と自然を俯瞰した風景
+  usage: ヒーロースライド 1枚目の背景
+- file: 2025/03/mizukankyokan-1.jpg
+  subject: 水環境館
+  usage: facilities セクション
+- file: 2025/03/sarakurayama.jpg
+  subject: 皿倉山から見た市街地の眺望
+  usage: ヒーロースライド 5枚目の背景
+- file: 2025/03/sone-higata.jpg
+  subject: 曽根干潟
+  usage: spots セクション
+- file: 2025/03/soraland-1.jpg
+  subject: ソラランド平尾台
+  usage: facilities セクション
+- file: 2025/03/wakamatsu-coast.jpg
+  subject: 若松北海岸の海岸線
+  usage: ヒーロースライド 3枚目の背景
+- file: 2025/03/yamada-1.jpg
+  subject: 山田緑地
+  usage: facilities セクション
+- file: 2025/04/IMG_8716-450x450.jpg
+  subject: 海
+  usage: photos セクション
+- file: 2025/04/IMG_8742-450x450.jpg
+  subject: 山
+  usage: photos セクション
+- file: 2025/04/IMG_8789-450x450.jpg
+  subject: 川
+  usage: photos セクション
+- file: 2025/04/IMG_8808-450x450.jpg
+  subject: 街と自然
+  usage: photos セクション
+- file: 2025/04/IMG_8920-450x450.jpg
+  subject: 農産品
+  usage: photos セクション
+- file: 2025/04/カノコソウ-450x450.jpg
+  subject: 植物
+  usage: photos セクション
+- file: 2025/04/カルガモ-450x450.jpg
+  subject: 動物
+  usage: photos セクション
+- file: 2025/04/ヨツボシトンボ-450x450.jpg
+  subject: 昆虫・その他
+  usage: photos セクション
+- file: 2026/02/logo.png
+  subject: アーバンネイチャー北九州
+  usage: common:header セクション
+- file: 2026/03/inochi-1.jpg
+  subject: いのちのたび博物館
+  usage: facilities セクション
+- file: 2026/03/itouzu-1.jpg
+  subject: 到津の森公園
+  usage: facilities セクション
+- file: 2026/03/katsuki-1.jpg
+  subject: 香月・黒川ほたる館
+  usage: facilities セクション
+- file: 2026/03/takamiya-1.jpg
+  subject: タカミヤ環境ミュージアム
+  usage: facilities セクション
+- file: 2026/04/hiraodai.jpg
+  subject: 平尾台
+  usage: spots セクション
+- file: 2026/04/mine-450x269.png
+  subject: 株式会社マイン ─ 竹バイオマス循環モデル
+  usage: network セクション
+- file: 2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg
+  subject: （alt が空。装飾扱いか alt 記入漏れ。lint L15 参照）
+  usage: events セクション
+- file: 2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg
+  subject: 平尾台そば倶楽部
+  usage: events セクション
+- file: 2026/04/平尾台シャボン玉-1-450x450.jpg
+  subject: 平尾台シャボン玉イベント
+  usage: events セクション
+- file: cta-bg.png
+  subject: 自然を背景にした CTA 用の帯画像
+  usage: 共通CTAバンドの背景（暗いオーバーレイを重ねて使用）

@@ -1,0 +1,7 @@
+# 依存ライブラリ（package.json から復元できる）
+node_modules/
+
+# 生成物（スクリプトで再生成できる）
+scan/out/
+scan/out-real/
+visual-check/out/
