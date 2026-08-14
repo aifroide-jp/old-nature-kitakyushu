@@ -9,7 +9,7 @@ function generateFunctionsPhp(model, errors) {
   lines.push('<?php');
   lines.push('/**');
   lines.push(' * functions.php');
-  lines.push(' * proposal/mockup から変換器(proposal/converter)が機械生成したテーマ設定。');
+  lines.push(' * モックから変換器(proposal/converter)が機械生成したテーマ設定。');
   lines.push(' * 手編集しない。再生成すれば同じ入力から同じ出力になる(決定的変換)。');
   lines.push(' */');
   lines.push('');

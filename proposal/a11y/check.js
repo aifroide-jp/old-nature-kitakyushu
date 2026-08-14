@@ -2,7 +2,7 @@
 'use strict';
 
 // proposal/vocabulary.md 9.1 節の実行機構。
-// proposal/mockup/ 配下の全 *.html に pa11y（axe-core ランナー・WCAG2AA）をかけ、
+// モック配下の全 *.html に pa11y（axe-core ランナー・WCAG2AA）をかけ、
 // error が1件でもあれば非ゼロ終了するゲート。
 //
 // 「モック生成プロンプトに『WCAG2AA を通す前提』と書くだけ」では守られない

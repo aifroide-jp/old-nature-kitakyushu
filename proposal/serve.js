@@ -1,12 +1,12 @@
 'use strict';
 
-// proposal/mockup を配信するだけの静的サーバ（依存なし）。
+// proposal/mockup-real を配信するだけの静的サーバ（依存なし）。
 // python3 -m http.server はプレビュー起動時のサンドボックスで os.getcwd() が
 // EPERM になり起動できなかったため、Node で置き換えている。
 //
 //   node proposal/serve.js [rootDir] [port]
 //
-// 既定のルートは proposal/mockup。モックの内部参照はページ階層に応じた相対パス
+// 既定のルートは proposal/mockup-real。モックの内部参照はページ階層に応じた相対パス
 // （vocabulary.md 7章・8章）なので、モックのルートをそのままドキュメントルートに
 // 据えないと css/ images/ が解決しない。
 
@@ -14,7 +14,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const rootDir = path.resolve(process.argv[2] || path.join(__dirname, 'mockup'));
+const rootDir = path.resolve(process.argv[2] || path.join(__dirname, 'mockup-real'));
 const port = Number(process.argv[3] || 8080);
 
 const MIME = {

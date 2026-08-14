@@ -2,12 +2,6 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "urban-nature",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["proposal/serve.js", "proposal/mockup", "8080"],
-      "port": 8080
-    },
-    {
       "name": "urban-nature-real",
       "runtimeExecutable": "node",
       "runtimeArgs": ["proposal/serve.js", "proposal/mockup-real", "8081"],
