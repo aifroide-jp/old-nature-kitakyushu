@@ -137,11 +137,42 @@ function renderFragment(page, model, el, includeSelf, errors) {
         errors.add(page.relPath, line, `data-loop-count="${count}" は整数である必要があります`);
         return;
       }
+      // data-loop-repeat: 同じ並びを N 周ぶん出す。
+      // 無限マーキー（CSS で translateX(-50%) して繋ぐ形）は、DOM に2周ぶんの
+      // カードが無いと繋がらない。モックには複製が直接書かれているが、変換後は
+      // 実データが1周ぶん出るだけなので、宣言が無いと生成物だけが途切れる
+      // （モックを見ても気づけない壊れ方。設計原則4）。
+      // 2周目以降は読み上げ・タブ移動から外す（同じ項目が複数回読まれるのを防ぐ）。
+      const repeatRaw = attrs['data-loop-repeat'] || '1';
+      const repeat = Number(repeatRaw);
+      if (!Number.isInteger(repeat) || repeat < 1) {
+        errors.add(page.relPath, line, `data-loop-repeat="${repeatRaw}" は1以上の整数である必要があります`);
+        return;
+      }
+
       const qv = `$nkk_loop_${cpt}`;
-      const openPhp =
-        `<?php ${qv} = new WP_Query( array( 'post_type' => 'nkk_${cpt}', 'posts_per_page' => ${countNum}, ` +
-        `'orderby' => '${pair[0]}', 'order' => '${pair[1]}' ) ); if ( ${qv}->have_posts() ) : while ( ${qv}->have_posts() ) : ${qv}->the_post(); ?>`;
-      const closePhp = `<?php endwhile; wp_reset_postdata(); endif; ?>`;
+      const rv = `$nkk_rep_${cpt}`;
+      const query =
+        `${qv} = new WP_Query( array( 'post_type' => 'nkk_${cpt}', 'posts_per_page' => ${countNum}, ` +
+        `'orderby' => '${pair[0]}', 'order' => '${pair[1]}' ) );`;
+
+      let openPhp;
+      let closePhp;
+      if (repeat === 1) {
+        openPhp = `<?php ${query} if ( ${qv}->have_posts() ) : while ( ${qv}->have_posts() ) : ${qv}->the_post(); ?>`;
+        closePhp = `<?php endwhile; wp_reset_postdata(); endif; ?>`;
+      } else {
+        openPhp =
+          `<?php ${query} for ( ${rv} = 0; ${rv} < ${repeat}; ${rv}++ ) : if ( ${qv}->have_posts() ) : ` +
+          `while ( ${qv}->have_posts() ) : ${qv}->the_post(); ?>`;
+        closePhp = `<?php endwhile; ${qv}->rewind_posts(); endif; endfor; wp_reset_postdata(); ?>`;
+        // 2周目以降の項目に aria-hidden / tabindex を足す（開始タグの末尾に差し込む）
+        const st = item.sourceCodeLocation.startTag;
+        const selfClosing = page.html[st.endOffset - 2] === '/';
+        const insertAt = st.endOffset - (selfClosing ? 2 : 1);
+        addAbs(insertAt, insertAt, `<?php if ( ${rv} > 0 ) echo ' aria-hidden="true" tabindex="-1"'; ?>`);
+      }
+
       addAbs(item.sourceCodeLocation.startOffset, item.sourceCodeLocation.startOffset, openPhp);
       addAbs(item.sourceCodeLocation.endOffset, item.sourceCodeLocation.endOffset, closePhp);
       for (const c of node.children || []) visit(c);
