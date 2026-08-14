@@ -65,7 +65,8 @@ function buildModel(pages, errors) {
     pageMap: new Map(), // pageId -> { page, fields }
     cptMap: new Map(), // cpt -> { archivePage, singlePages: [], fields, canonicalSingle }
     commonMap: new Map(), // name -> { el, page, html, fields }
-    navMap: new Map(), // name -> { el, page, kind, ulClass, groups }
+    navMap: new Map(), // name -> { el, page, html }（テンプレート抽出に使う最初の出現）
+    navCompare: new Map(), // "name#出現順" -> { page, html, line }（ページ間の食い違い検出用）
     forms: new Map(), // cf7 name -> { el, page }
     linkRegistry: null,
   };
@@ -145,17 +146,45 @@ function buildModel(pages, errors) {
         );
       }
     }
+    // 比較の単位は「値 × ページ内での出現順」。値だけでまとめてはいけない。
+    // 同じメニューを複数の位置に出すのは正しい書き方(vocabulary.md 5章)で、位置ごとに
+    // 見せ方が違えば内容も違う。lint L09 と同じ規則にしてある(片方だけ直すとズレる)。
+    let navIndex = 0;
+    const pageFirstNav = new Map(); // このページで最初に出た同名 nav
     for (const el of findAll($('body').get(0), $, 'data-nav')) {
       const name = $(el).attr('data-nav');
       const html = normalizeOuterForCompare(outerHtml(page, el), page.relPath);
-      const entry = model.navMap.get(name);
+      const key = `${name}#${navIndex}`;
+      navIndex += 1;
+
+      // テンプレート抽出には最初の出現を使う
+      if (!model.navMap.has(name)) model.navMap.set(name, { el, page, html });
+
+      const entry = model.navCompare.get(key);
       if (!entry) {
-        model.navMap.set(name, { el, page, html });
+        model.navCompare.set(key, { page, html, line: page.lineOf($(el)) });
       } else if (entry.html !== html) {
         errors.add(
           page.relPath,
           page.lineOf($(el)),
-          `data-nav="${name}" の内容が ${entry.page.relPath} と一致しません(vocabulary.md 5章: 同名navは全ページで一致が必須)`
+          `data-nav="${name}" の内容が ${entry.page.relPath}:${entry.line} と一致しません(ページ間で共通領域が食い違っています)`
+        );
+      }
+
+      // 同じ値を「同じページの複数の位置」に置き、内容が違う場合の扱いは未定義。
+      // 「1つのツリーをどこから決めるか」が決まっていないため(vocabulary.md 5.2)、
+      // 片方の形を勝手に採用せず停止する。
+      // ページ間の食い違いは上の navCompare で見るので、ここでは同一ページ内だけを見る。
+      const firstInPage = pageFirstNav.get(name);
+      if (!firstInPage) {
+        pageFirstNav.set(name, { el, html });
+      } else if (firstInPage.html !== html) {
+        errors.add(
+          page.relPath,
+          page.lineOf($(el)),
+          `data-nav="${name}" が複数の位置にあり、内容が異なります。` +
+            `同じメニューを違う見せ方で複数箇所に出す仕組みは未定義です(vocabulary.md 5.2)。` +
+            `値を分けるか、どちらの形を採るかを決めてください`
         );
       }
     }
@@ -196,6 +225,38 @@ function buildModel(pages, errors) {
           1,
           `data-cpt="${cpt}" の single ページ間でフィールド構成が一致しません(${canonical.relPath}: [${a.join(',')}] / ${other.relPath}: [${b.join(',')}])。1つの CPT に対し single テンプレートは1つしか生成できません`
         );
+      }
+    }
+  }
+
+  // --- 4.5 一覧カードにしか出てこないフィールドを CPT に足す ---
+  // 一覧のカードが詳細ページに無い要約を出すのは普通のこと
+  // （実例: トップのイベントカードの「ソラランド平尾台 / 要予約」。詳細では会場がタグと
+  // 概要表に分かれて入っており、この1行に当たる要素が無い）。
+  // 以前はこれを禁止していたが、禁止すると「カードのためだけに詳細へ要素を足す」ことになり
+  // デザインが歪む。許可して、ここで CPT のフィールド集合へ合流させる。
+  // 足さないと ACF 定義に載らず、一覧テンプレートが常に空を出力してしまう。
+  for (const page of pages) {
+    const $ = page.$;
+    const body = $('body').get(0);
+    if (!body) continue;
+    for (const loopEl of findAll(body, $, 'data-loop')) {
+      const cpt = $(loopEl).attr('data-loop');
+      const entry = model.cptMap.get(cpt);
+      if (!entry || !entry.fields) continue;
+      const items = (loopEl.children || []).filter((c) => c.type === 'tag' && 'data-loop-item' in (c.attribs || {}));
+      if (items.length !== 1) continue;
+      const known = new Set(entry.fields.map((f) => f.name));
+      const itemFields = collectFieldsShallow(page, $, items[0], errors, null);
+      const itemAttrs = items[0].attribs || {};
+      if (itemAttrs['data-acf'] !== undefined || itemAttrs['data-acf-url'] !== undefined) {
+        const { fields } = analyzeField(page, $, items[0], {}, errors);
+        itemFields.push(...fields);
+      }
+      for (const f of itemFields) {
+        if (known.has(f.name)) continue;
+        known.add(f.name);
+        entry.fields.push({ ...f, listOnly: true });
       }
     }
   }

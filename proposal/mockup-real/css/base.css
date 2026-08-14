@@ -409,19 +409,27 @@ h1, h2, h3, h4, h5, h6 {
   background-color: rgba(44, 95, 45, 0.06);
 }
 
-.dropdown li.nav-sub a {
+/* 第3階層（例: 活動拠点 > 拠点一覧 > 各施設）。
+   以前は同じ階層にフラットに並べて .nav-sub で見た目だけ下げていたが、
+   「n件目だけ class が違う」状態はテンプレートとして再現できないため、
+   DOM を実際に入れ子にして深さで当てるようにした。見た目は同一。 */
+.dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown li li a {
   padding-left: 28px;
   font-size: 0.8rem;
   color: var(--text-light);
 }
 
-.mobile-nav__children a.nav-sub {
-  padding-left: 32px;
-  font-size: 0.85rem;
-  color: var(--text-light);
-}
+/* モバイルは .mobile-nav__children a の !important が勝つため、
+   もともと .nav-sub のインデントが効いていなかった（実測で確認）。
+   見た目を変えないため、第3階層にも指定を足していない。既知の不具合として別管理。 */
 
-.footer__links a.nav-sub {
+.footer__links .footer__sub a {
   padding-left: 12px;
   font-size: 0.8rem;
   color: rgba(255,255,255,0.75);
@@ -763,6 +771,21 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
   margin-bottom: 40px;
+}
+
+/* フッターのリンク3列は1つの <nav> でまとめて宣言する。
+   nav 自体はレイアウトに関与させず、中の3列をそのままグリッドの子にする。 */
+.footer__grid > nav {
+  display: contents;
+}
+
+/* 1列に2グループ並ぶときの間隔。
+   以前は2つ目の見出しに位置依存の class(fp-u44/fp-u45)を直接付けていたが、
+   「n番目だけ class が違う」状態はテンプレートとして再現できない
+   （変換器が1項目分の形を型として繰り返すため）。隣接セレクタに移し、
+   どのグループも同じマークアップで書けるようにしている。見た目は同一。 */
+.footer__group + .footer__group {
+  margin-top: 24px;
 }
 
 .footer__brand {

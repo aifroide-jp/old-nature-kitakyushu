@@ -2,6 +2,7 @@
 
 const { CPT_PREFIX } = require('../constants');
 const { phpSingleQuote } = require('../php-util');
+const { generateNavWalkers } = require('./nav-walker');
 
 function generateFunctionsPhp(model, errors) {
   const lines = [];
@@ -28,49 +29,9 @@ function generateFunctionsPhp(model, errors) {
   lines.push("add_action( 'after_setup_theme', 'nkk_setup' );");
   lines.push('');
 
-  // --- フラットナビ(単一<ul><li><a>形式)の <li>/<a> class 保持 ---
-  // 背景(バグ修正): items_wrap で <ul> の class は保持できるが、<li> は wp_nav_menu() が
-  // 各項目ごとに動的生成するため、items_wrap には書けない。何もしないと wp_nav_menu() の
-  // 既定class(menu-item, menu-item-type-…等)に置き換わり、モックの class(例: site-nav__item)が
-  // 消えてCSSが当たらなくなる(実際に発生した欠陥。ichiki.md「モックと1:1」契約違反)。
-  // theme_location ごとにモックから読み取った実class(nav-structure.jsが決定的に確定した値)を
-  // 保持し、nav_menu_css_class / nav_menu_link_attributes フィルタで丸ごと差し替える。
-  // grouped(footer等)は専用Walkerが start_el を独自実装しており、この2フィルタは
-  // 呼ばれない(Walker側でclassを直接埋め込む。下記 Nkk_Grouped_Nav_Walker 参照)ため対象外。
-  const flatNavs = [...model.navInfo.entries()].filter(([, info]) => info.kind === 'flat');
-  if (flatNavs.length > 0) {
-    lines.push('$nkk_nav_flat_classes = array(');
-    for (const [name, info] of flatNavs) {
-      const liVal = info.liClass ? phpSingleQuote(info.liClass) : 'null';
-      const aVal = info.aClass ? phpSingleQuote(info.aClass) : 'null';
-      lines.push(`    ${phpSingleQuote(name)} => array( 'li' => ${liVal}, 'a' => ${aVal} ),`);
-    }
-    lines.push(');');
-    lines.push('');
-    lines.push('function nkk_nav_menu_css_class( $classes, $item, $args, $depth ) {');
-    lines.push('    global $nkk_nav_flat_classes;');
-    lines.push("    if ( empty( $args->theme_location ) || ! isset( $nkk_nav_flat_classes[ $args->theme_location ] ) ) {");
-    lines.push('        return $classes;');
-    lines.push('    }');
-    lines.push("    $li_class = $nkk_nav_flat_classes[ $args->theme_location ]['li'];");
-    lines.push('    return $li_class ? array( $li_class ) : array();');
-    lines.push('}');
-    lines.push("add_filter( 'nav_menu_css_class', 'nkk_nav_menu_css_class', 10, 4 );");
-    lines.push('');
-    lines.push('function nkk_nav_menu_link_attributes( $atts, $item, $args, $depth ) {');
-    lines.push('    global $nkk_nav_flat_classes;');
-    lines.push("    if ( empty( $args->theme_location ) || ! isset( $nkk_nav_flat_classes[ $args->theme_location ] ) ) {");
-    lines.push('        return $atts;');
-    lines.push('    }');
-    lines.push("    $a_class = $nkk_nav_flat_classes[ $args->theme_location ]['a'];");
-    lines.push('    if ( $a_class ) {');
-    lines.push("        $atts['class'] = $a_class;");
-    lines.push('    }');
-    lines.push('    return $atts;');
-    lines.push('}');
-    lines.push("add_filter( 'nav_menu_link_attributes', 'nkk_nav_menu_link_attributes', 10, 4 );");
-    lines.push('');
-  }
+  // ナビは theme_location ごとに専用 Walker を生成する(下記 --- ナビ Walker --- )。
+  // 以前は「形を2種類に分類して class 名だけ抜き出し、フィルタで差し戻す」方式だったが、
+  // 形が増えるたびに分類と Walker が増える作りだった。テンプレート方式に置き換え済み。
 
   // --- CPT登録 ---
   lines.push('function nkk_register_post_types() {');
@@ -158,52 +119,9 @@ function generateFunctionsPhp(model, errors) {
   lines.push('}');
   lines.push('');
 
-  // --- グループ化ナビ(footer等)のWalker。data-navの入れ子構造(見出し+ul)を再現する ---
-  // divClass/ulClass/liClass/aClass はモックから読み取った実class(nav-structure.js)。
-  // 生成時に確定する静的文字列としてPHPソースへ直接埋め込む(items_wrapと違い、Walkerの
-  // start_el/start_lvlは変換器がPHPコードそのものを生成するため、フラットナビのような
-  // 実行時フィルタは不要。headingClassは元々このように埋め込まれていたが、divClass/ulClassは
-  // これまでパース済みなのに未使用のまま捨てられていた取りこぼしだったため、併せて修正する)。
-  const grouped = [...model.navInfo.entries()].filter(([, info]) => info.kind === 'grouped');
-  if (grouped.length > 0) {
-    const sample = grouped[0][1].groups[0];
-    const headingTag = sample.headingTag;
-    const headingClassAttr = sample.headingClass ? ` class="${sample.headingClass}"` : '';
-    const divClassAttr = sample.divClass ? ` class="${sample.divClass}"` : '';
-    const ulClassAttr = sample.ulClass ? ` class="${sample.ulClass}"` : '';
-    const liClassAttr = sample.liClass ? ` class="${sample.liClass}"` : '';
-    const aClassAttr = sample.aClass ? ` class="${sample.aClass}"` : '';
-    lines.push('/**');
-    lines.push(' * data-nav="footer" のような「<div><h?>見出し</h?><ul>…</ul></div>」の繰り返し構造を');
-    lines.push(' * wp_nav_menu() で再現するための Walker。トップレベルの菜单项目=見出し(リンクなし表示)、');
-    lines.push(' * 子項目=実リンクという2階層メニューを wp-admin 側で組む運用を前提にする。');
-    lines.push(' * vocabulary.md 5章はnavの入れ子構造を定義していないため、この構造は変換器側の判断。');
-    lines.push(' */');
-    lines.push('class Nkk_Grouped_Nav_Walker extends Walker_Nav_Menu {');
-    lines.push('    public function start_lvl( &$output, $depth = 0, $args = null ) {');
-    lines.push(`        $output .= '<ul${ulClassAttr}>';`);
-    lines.push('    }');
-    lines.push('    public function end_lvl( &$output, $depth = 0, $args = null ) {');
-    lines.push("        $output .= '</ul>';");
-    lines.push('    }');
-    lines.push('    public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {');
-    lines.push('        if ( 0 === $depth ) {');
-    lines.push(`            $output .= '<div${divClassAttr}>';`);
-    lines.push(`            $output .= '<${headingTag}${headingClassAttr}>' . esc_html( $item->title ) . '</${headingTag}>';`);
-    lines.push('        } else {');
-    lines.push(`            $output .= '<li${liClassAttr}>';`);
-    lines.push(`            $output .= '<a${aClassAttr} href="' . esc_url( $item->url ) . '">' . esc_html( $item->title ) . '</a>';`);
-    lines.push("            $output .= '</li>';");
-    lines.push('        }');
-    lines.push('    }');
-    lines.push('    public function end_el( &$output, $item, $depth = 0, $args = null ) {');
-    lines.push('        if ( 0 === $depth ) {');
-    lines.push("            $output .= '</div>';");
-    lines.push('        }');
-    lines.push('    }');
-    lines.push('}');
-    lines.push('');
-  }
+  // --- ナビ Walker(theme_location ごとに1クラス) ---
+  // 実装は lib/gen/nav-walker.js。生成PHPを単体テストできるよう切り出してある。
+  for (const line of generateNavWalkers(model.navInfo)) lines.push(line);
 
   // --- inc/ の読み込み ---
   lines.push('foreach ( glob( get_template_directory() . \'/inc/*.php\' ) as $nkk_inc_file ) {');

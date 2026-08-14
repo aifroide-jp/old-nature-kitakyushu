@@ -28,6 +28,7 @@ const MANAGED_ELSEWHERE = [
   'data-nav', // WP カスタムメニューで編集する
   'data-cf7', // CF7 のフォーム定義側で編集する
   'data-loop-sample', // デザイン確認用ダミー。変換器が破棄する
+  'data-breadcrumb', // 祖先は固定リンク・現在地は投稿タイトル。どちらも編集対象ではない
 ];
 
 function isManagedElsewhere(ancestors) {

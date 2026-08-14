@@ -1,0 +1,61 @@
+/* 活動拠点（data-cpt="center"）。一覧・詳細で共用。
+   元は center/*.html の style 属性に散っていたものを、L12（style属性禁止）に従って
+   意味のあるクラスへ移したもの。見た目は同一。 */
+
+/* ページヘッダーの背景画像。
+   元は style="background-image: url(...)" で1件ずつ指定されていたが、
+   拠点ごとに違う画像＝編集対象なので CSS には置けない（固定になる）。
+   <img> として置き、オーバーレイ（.page-header::before, z-index:1）の下に敷く。 */
+.page-header > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* 施設情報の見出し。.section__title 等の共通見出しとは別扱い */
+.facility-detail__heading {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+  border: none;
+  padding: 0;
+}
+
+/* 本文を読みやすい幅に絞る */
+.content--narrow {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 地図の枠 */
+.map-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 24px;
+}
+.map-frame iframe {
+  border: 0;
+  display: block;
+}
+
+/* 「まだありません」の空状態 */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+.empty-state .btn {
+  margin-top: 16px;
+}
+
+/* 一覧に戻るだけの帯 */
+.section--compact {
+  padding: 32px 0;
+}
+.section--compact .container {
+  text-align: center;
+}

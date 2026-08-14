@@ -3,6 +3,7 @@
 const { EditList } = require('./edits');
 const { analyzeField } = require('./field-extract');
 const { resolveFixedHref } = require('./link-resolve');
+const { navWalkerClass } = require('./php-util');
 
 // data-* で始まる属性をすべて洗い出す(値は問わない。属性名だけで判定する)。
 function dataAttrNames(el) {
@@ -36,16 +37,12 @@ function renderFragment(page, model, el, includeSelf, errors) {
     }
   }
 
-  function buildNavCall(name, navInfo) {
-    if (navInfo.kind === 'flat') {
-      return (
-        `<?php wp_nav_menu( array( 'theme_location' => '${name}', 'container' => false, ` +
-        `'items_wrap' => '<ul class="${navInfo.ulClass}">%3$s</ul>', 'fallback_cb' => false ) ); ?>`
-      );
-    }
+  // nav の中身は theme_location 専用の Walker が丸ごと組み立てる。
+  // 骨組み(器・静的ブロック)も Walker 側が持っているので items_wrap は素通しにする。
+  function buildNavCall(name) {
     return (
       `<?php wp_nav_menu( array( 'theme_location' => '${name}', 'container' => false, ` +
-      `'items_wrap' => '%3$s', 'walker' => new Nkk_Grouped_Nav_Walker(), 'fallback_cb' => false ) ); ?>`
+      `'items_wrap' => '%3$s', 'walker' => new ${navWalkerClass(name)}(), 'fallback_cb' => false ) ); ?>`
     );
   }
 
@@ -75,6 +72,28 @@ function renderFragment(page, model, el, includeSelf, errors) {
       return;
     }
 
+    // data-breadcrumb: パンくず。祖先の項目はモックに書かれた固定リンクのまま
+    // （リンク解決は通常の <a> 処理が行う）、末尾の「現在地」だけを動的にする。
+    // 現在地はリンクを持たない項目として書かれているので、そこから機械的に決まる。
+    // ここを固定のままにすると、CPT詳細テンプレートが1件目の名前を全件で出す。
+    if ('data-breadcrumb' in attrs) {
+      const items = [];
+      (function collect(n) {
+        for (const c of n.children || []) {
+          if (c.type !== 'tag') continue;
+          if ((c.name || '').toLowerCase() === 'li') items.push(c);
+          else collect(c);
+        }
+      })(node);
+      const current = [...items].reverse().find((li) => !(li.children || []).some((c) => c.type === 'tag' && c.name === 'a'));
+      if (!current) {
+        errors.add(page.relPath, line, 'data-breadcrumb にリンクを持たない項目(現在地)がありません');
+        return;
+      }
+      const cloc = current.sourceCodeLocation;
+      addAbs(cloc.startTag.endOffset, cloc.endTag.startOffset, '<?php the_title(); ?>');
+    }
+
     stripAllDataAttrs(node);
 
     // data-nav: 中身を丸ごと wp_nav_menu() 呼び出しに置換する(実際のURL/文言はwp-adminの
@@ -86,7 +105,7 @@ function renderFragment(page, model, el, includeSelf, errors) {
         errors.add(page.relPath, line, `data-nav="${name}" の内部構造を解析できなかったため出力できません`);
         return;
       }
-      addAbs(nloc.startTag.endOffset, nloc.endTag.startOffset, buildNavCall(name, navInfo));
+      addAbs(nloc.startTag.endOffset, nloc.endTag.startOffset, buildNavCall(name));
       return;
     }
 

@@ -3,6 +3,14 @@
 // L09: 同じ data-common / data-nav の内容が全ページで一致(バイト単位)。
 // ページ横断チェックのため全ページを読んでから判定する。
 //
+// 比較の単位は「値 × ページ内での出現順」である。値だけでまとめてはいけない。
+// 同じメニューを複数の位置に出すのは普通のことで(ヘッダーとフッターに同じ
+// data-nav="global" を置く等)、位置ごとに見せ方が違えば内容も違う。これは
+// 事故ではなく設計であり、エラーにすると「同じメニューなのに値を分ける」という
+// 誤った書き方を強制してしまう(実際にそれで footer が5つに割れた)。
+// 検出したいのは「ページ間で共通領域が食い違っている」ことなので、
+// 同じ位置(=ページ内の同じ出現順)どうしだけを突き合わせる。
+//
 // 比較前に href/src の相対パスを「mockupルートからのサイトパス」へ正規化する。
 // L21(相対パス化)適用後、同じ共通ヘッダー/フッターでもページの深さによって
 // 正しい相対パス表記が変わる(例: ホームリンクは index.html から見て "index.html"、
@@ -24,10 +32,10 @@ function run(pages) {
   for (const page of pages) {
     const $ = page.$;
     for (const attrName of TARGET_ATTRS) {
-      $(`[${attrName}]`).each((_, el) => {
+      $(`[${attrName}]`).each((occurrence, el) => {
         const $el = $(el);
         const value = $el.attr(attrName);
-        const key = `${attrName}=${value}`;
+        const key = `${attrName}=${value}#${occurrence}`;
         const loc = el.sourceCodeLocation;
         const rawOuter = loc ? page.html.slice(loc.startOffset, loc.endOffset) : $.html($el);
         const outer = normalizeOuterForCompare(rawOuter, page.relPath);

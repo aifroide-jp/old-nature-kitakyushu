@@ -57,17 +57,20 @@
         <div class="nav-item">
           <a href="center/">活動拠点</a>
           <ul class="dropdown">
-            <li><a href="center/">拠点一覧</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/biotope.html">響灘ビオトープ</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/greenpark.html">グリーンパーク</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/hotarukan.html">北九州市ほたる館</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/inochi.html">いのちのたび博物館</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/itouzu.html">到津の森公園</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/katsuki-hotaru.html">香月・黒川ほたる館</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/mizukankyokan.html">水環境館</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/soraland.html">ソラランド平尾台</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/takamiya.html">タカミヤ環境ミュージアム</a></li>
-            <li class="nav-sub"><a class="nav-sub" href="center/yamada.html">山田緑地</a></li>
+            <li><a href="center/">拠点一覧</a>
+              <ul>
+                <li><a href="center/biotope.html">響灘ビオトープ</a></li>
+                <li><a href="center/greenpark.html">グリーンパーク</a></li>
+                <li><a href="center/hotarukan.html">北九州市ほたる館</a></li>
+                <li><a href="center/inochi.html">いのちのたび博物館</a></li>
+                <li><a href="center/itouzu.html">到津の森公園</a></li>
+                <li><a href="center/katsuki-hotaru.html">香月・黒川ほたる館</a></li>
+                <li><a href="center/mizukankyokan.html">水環境館</a></li>
+                <li><a href="center/soraland.html">ソラランド平尾台</a></li>
+                <li><a href="center/takamiya.html">タカミヤ環境ミュージアム</a></li>
+                <li><a href="center/yamada.html">山田緑地</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         <div class="nav-item">
@@ -116,17 +119,21 @@
         </button>
       </div>
       <div class="mobile-nav__children">
-        <a href="center/">拠点一覧</a>
-        <a class="nav-sub" href="center/biotope.html">響灘ビオトープ</a>
-        <a class="nav-sub" href="center/greenpark.html">グリーンパーク</a>
-        <a class="nav-sub" href="center/hotarukan.html">北九州市ほたる館</a>
-        <a class="nav-sub" href="center/inochi.html">いのちのたび博物館</a>
-        <a class="nav-sub" href="center/itouzu.html">到津の森公園</a>
-        <a class="nav-sub" href="center/katsuki-hotaru.html">香月・黒川ほたる館</a>
-        <a class="nav-sub" href="center/mizukankyokan.html">水環境館</a>
-        <a class="nav-sub" href="center/soraland.html">ソラランド平尾台</a>
-        <a class="nav-sub" href="center/takamiya.html">タカミヤ環境ミュージアム</a>
-        <a class="nav-sub" href="center/yamada.html">山田緑地</a>
+        <div class="mobile-nav__subgroup">
+          <a href="center/">拠点一覧</a>
+          <div class="mobile-nav__sub">
+            <a href="center/biotope.html">響灘ビオトープ</a>
+            <a href="center/greenpark.html">グリーンパーク</a>
+            <a href="center/hotarukan.html">北九州市ほたる館</a>
+            <a href="center/inochi.html">いのちのたび博物館</a>
+            <a href="center/itouzu.html">到津の森公園</a>
+            <a href="center/katsuki-hotaru.html">香月・黒川ほたる館</a>
+            <a href="center/mizukankyokan.html">水環境館</a>
+            <a href="center/soraland.html">ソラランド平尾台</a>
+            <a href="center/takamiya.html">タカミヤ環境ミュージアム</a>
+            <a href="center/yamada.html">山田緑地</a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="mobile-nav__group">
@@ -188,6 +195,7 @@
     <!-- ===== ペルソナ選択 ===== -->
     <section class="persona" data-section="persona">
       <div class="container">
+        <h2 class="sr-only" data-acf="persona_section_title">対象者別のご案内</h2>
         <div class="persona-grid">
 
           <div class="persona-card">
@@ -500,7 +508,7 @@
         <div class="events-grid" data-loop="event" data-loop-order="date_desc" data-loop-count="3">
           <a href="events/" class="event-card" data-loop-item>
             <div class="event-card-image">
-              <img data-acf="hero_image" src="images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg" alt="" width="450" height="450" loading="lazy">
+              <img data-acf="hero_image" src="images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg" alt="カルストジャングル冒険ツアー" width="450" height="450" loading="lazy">
             </div>
             <div class="event-card-body">
               <span class="event-date" data-acf="event_date" data-acf-type="text">2026.04.26 (日)</span>
@@ -661,7 +669,9 @@
           <span class="footer__brand-name" data-acf="footer_brand_name" data-acf-type="text">アーバンネイチャー北九州</span>
           <p class="footer__desc" data-acf="footer_desc">都市と自然が近接する北九州の強みを活かし、市民・企業・行政が一体となってネイチャーポジティブの実現を目指すプラットフォームです。</p>
         </div>
+        <nav data-nav="footer" aria-label="フッターナビゲーション">
         <div>
+          <div class="footer__group" data-nav-item>
           <h3 class="footer__heading">アーバンネイチャー北九州とは？</h3>
           <div class="footer__links">
             <a href="about/">全体像</a>
@@ -669,31 +679,41 @@
             <a href="about/strategy.html">北九州市の取り組み</a>
             <a href="about/spots.html">北九州市の自然スポット</a>
           </div>
-          <h3 class="footer__heading fp-u44">地域との繋がり</h3>
+          </div>
+          <div class="footer__group" data-nav-item>
+          <h3 class="footer__heading">地域との繋がり</h3>
           <div class="footer__links">
             <a href="network/">北九州NPネットワーク</a>
             <a href="network/cases/">活動実績</a>
             <a href="blog/">活動ブログ</a>
             <a href="join/">会員募集</a>
           </div>
-        </div>
-        <div>
-          <h3 class="footer__heading">活動拠点</h3>
-          <div class="footer__links">
-            <a href="center/">拠点一覧</a>
-            <a class="nav-sub" href="center/biotope.html">響灘ビオトープ</a>
-            <a class="nav-sub" href="center/greenpark.html">グリーンパーク</a>
-            <a class="nav-sub" href="center/hotarukan.html">北九州市ほたる館</a>
-            <a class="nav-sub" href="center/inochi.html">いのちのたび博物館</a>
-            <a class="nav-sub" href="center/itouzu.html">到津の森公園</a>
-            <a class="nav-sub" href="center/katsuki-hotaru.html">香月・黒川ほたる館</a>
-            <a class="nav-sub" href="center/mizukankyokan.html">水環境館</a>
-            <a class="nav-sub" href="center/soraland.html">ソラランド平尾台</a>
-            <a class="nav-sub" href="center/takamiya.html">タカミヤ環境ミュージアム</a>
-            <a class="nav-sub" href="center/yamada.html">山田緑地</a>
           </div>
         </div>
         <div>
+          <div class="footer__group" data-nav-item>
+          <h3 class="footer__heading">活動拠点</h3>
+          <div class="footer__links">
+            <div class="footer__subgroup">
+              <a href="center/">拠点一覧</a>
+              <div class="footer__sub">
+                <a href="center/biotope.html">響灘ビオトープ</a>
+                <a href="center/greenpark.html">グリーンパーク</a>
+                <a href="center/hotarukan.html">北九州市ほたる館</a>
+                <a href="center/inochi.html">いのちのたび博物館</a>
+                <a href="center/itouzu.html">到津の森公園</a>
+                <a href="center/katsuki-hotaru.html">香月・黒川ほたる館</a>
+                <a href="center/mizukankyokan.html">水環境館</a>
+                <a href="center/soraland.html">ソラランド平尾台</a>
+                <a href="center/takamiya.html">タカミヤ環境ミュージアム</a>
+                <a href="center/yamada.html">山田緑地</a>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div>
+          <div class="footer__group" data-nav-item>
           <h3 class="footer__heading">その他</h3>
           <div class="footer__links">
             <a href="events/">イベントを探す</a>
@@ -702,13 +722,20 @@
             <a href="contact/">お問合せ</a>
             <a href="privacy/">プライバシーポリシー</a>
           </div>
-          <h3 class="footer__heading fp-u45">ソーシャル</h3>
+          </div>
+          <!-- data-nav-item を付けない = メニュー項目ではない。nav の骨組みの一部として
+               そのまま出力される。項目ごとに aria-disabled の有無が変わるため
+               メニューの型として再現できず、URL はサイト設定として持つ。 -->
+          <div class="footer__group">
+          <h3 class="footer__heading">ソーシャル</h3>
           <div class="footer__links">
             <a href="#" aria-disabled="true" aria-label="Facebook（準備中）">Facebook</a>
             <a href="#" aria-disabled="true" aria-label="Instagram（準備中）">Instagram</a>
             <a href="#" aria-disabled="true" aria-label="YouTube（準備中）">YouTube</a>
           </div>
+          </div>
         </div>
+        </nav>
       </div>
       <div class="footer__bottom">
         <span data-acf="footer_copyright" data-acf-type="text">&copy; 2026 アーバンネイチャー北九州</span>

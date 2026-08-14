@@ -31,4 +31,19 @@ function phpArrayLiteral(value, indent = 0) {
   return phpSingleQuote(value);
 }
 
-module.exports = { phpSingleQuote, phpArrayLiteral };
+// theme_location 名から Walker のクラス名を作る。
+// functions.js(定義側)と render.js(呼び出し側)の両方で使うため、ここに一本化する。
+// 同じ規則を2箇所で書くと必ずズレる(本検証で実際に起きた)。
+function navWalkerClass(location) {
+  const safe = String(location)
+    .replace(/[^A-Za-z0-9_]/g, '_')
+    .replace(/^(\d)/, '_$1');
+  const pascal = safe
+    .split('_')
+    .filter(Boolean)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join('_');
+  return `Nkk_Nav_${pascal}`;
+}
+
+module.exports = { phpSingleQuote, phpArrayLiteral, navWalkerClass };

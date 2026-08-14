@@ -50,13 +50,19 @@ function run(pages) {
           const $field = $(fieldEl);
           const name = $field.attr('data-acf');
           if (name && !known.has(name)) {
+            // 一覧カードにしか出てこないフィールドは正当（実例: イベントカードの
+            // 「会場 / 要予約」のような要約行。詳細では会場がタグと概要表に分かれており、
+            // この1行に当たる要素が無い）。禁止すると「カードのためだけに詳細へ要素を足す」
+            // ことになりデザインが歪むため、error ではなく warn で見せるだけにする。
+            // 変換器は model.js 4.5 でこのフィールドを CPT に合流させる。
+            // ただし誤字も同じ形で現れるので、一覧に出して必ず目に入るようにしておく。
             issues.push(
               mk(
                 page,
                 'L08',
-                'error',
+                'warn',
                 page.attrLineOf($field, 'data-acf'),
-                `data-loop-item 内の data-acf="${name}" は data-cpt="${cpt}" の詳細ページのフィールドに存在しません`
+                `data-acf="${name}" は data-cpt="${cpt}" の詳細ページに出てきません(一覧専用フィールドとして登録されます。名前の書き間違いでないか確認してください)`
               )
             );
           }

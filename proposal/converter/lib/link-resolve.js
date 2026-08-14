@@ -42,6 +42,11 @@ function classifyHref(href, currentRel) {
   // からサブディレクトリへの固定リンクが軒並み解決不能になっていた)。
   const currentDir = path.posix.dirname(currentRel);
   let resolved = path.posix.normalize(path.posix.join(currentDir, clean));
+  // サイトルートを指す形を空文字（front のサイトパス）に寄せる。
+  // normalize() は末尾スラッシュを保つため "./" が返ることがあり、
+  // '.' だけを見ているとヘッダーのロゴリンク(href="./")や
+  // 下層からのトップリンク(href="../../")が軒並み解決不能になっていた。
+  if (resolved.startsWith('./')) resolved = resolved.slice(2);
   if (resolved === '.') resolved = '';
   if (resolved.endsWith('/index.html')) resolved = resolved.slice(0, -'index.html'.length);
   else if (resolved === 'index.html') resolved = '';

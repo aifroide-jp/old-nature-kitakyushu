@@ -1,0 +1,66 @@
+/* 自然スポット詳細（data-cpt="spot"）。
+   元は about/spots/*.html のページ内 <style> にあったもの。L11（<style>タグ禁止）に従い外出し。
+   一覧・詳細で共用する（vocabulary.md 7章: CPT は data-cpt 名のファイル1つ）。 */
+
+.spot-hero { position: relative; height: 480px; overflow: hidden; }
+.spot-hero img { width: 100%; height: 100%; object-fit: cover; }
+.spot-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 48px 0 40px;
+}
+.spot-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.spot-hero__title { font-size: 2.6rem; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+.spot-hero__sub { font-size: 1.05rem; color: rgba(255,255,255,0.9); margin-bottom: 20px; line-height: 1.6; }
+.spot-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.spot-tag {
+  background: rgba(255,255,255,0.2); color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 20px; padding: 4px 14px; font-size: 0.82rem;
+  backdrop-filter: blur(4px);
+}
+.spot-overview {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
+}
+.spot-overview__text h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+.spot-overview__text p { line-height: 1.8; color: var(--text); margin-bottom: 16px; }
+.spot-season {
+  background: rgba(44,95,45,0.06); border-left: 3px solid var(--primary);
+  border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin-top: 20px;
+}
+.spot-season__title { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.spot-season__list { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; }
+.spot-info-card {
+  background: var(--bg-white); border-radius: var(--radius-lg);
+  box-shadow: 0 2px 16px var(--shadow); overflow: hidden;
+}
+.spot-info-card__head {
+  background: var(--primary); color: #fff;
+  padding: 16px 20px; font-weight: 700; font-size: 0.95rem;
+}
+.spot-info-table { width: 100%; border-collapse: collapse; }
+.spot-info-table th, .spot-info-table td {
+  padding: 12px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border);
+  text-align: left; vertical-align: top;
+}
+.spot-info-table th { width: 35%; color: var(--text-light); font-weight: 600; background: rgba(0,0,0,0.02); white-space: nowrap; }
+.spot-info-table td { color: var(--text); line-height: 1.6; }
+.spot-info-table tr:last-child th, .spot-info-table tr:last-child td { border-bottom: none; }
+.spot-map { margin-top: 40px; }
+.spot-map h2 { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+.spot-map iframe { width: 100%; height: 360px; border: none; border-radius: var(--radius-lg); box-shadow: 0 2px 16px var(--shadow); }
+.spot-bio-link {
+  background: rgba(2,128,144,0.06); border: 1px solid rgba(2,128,144,0.2);
+  border-radius: var(--radius-lg); padding: 20px 24px; margin-top: 32px;
+  display: flex; align-items: center; gap: 16px;
+}
+.spot-bio-link__icon { font-size: 1.8rem; flex-shrink: 0; }
+.spot-bio-link__text { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+.spot-bio-link__text a { color: var(--accent); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .spot-hero { height: 360px; }
+  .spot-hero__title { font-size: 1.8rem; }
+  .spot-overview { grid-template-columns: 1fr; gap: 24px; }
+}

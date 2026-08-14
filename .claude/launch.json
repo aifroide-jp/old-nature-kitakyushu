@@ -3,9 +3,15 @@
   "configurations": [
     {
       "name": "urban-nature",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8080"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["proposal/serve.js", "proposal/mockup", "8080"],
       "port": 8080
+    },
+    {
+      "name": "urban-nature-real",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["proposal/serve.js", "proposal/mockup-real", "8081"],
+      "port": 8081
     }
   ]
 }

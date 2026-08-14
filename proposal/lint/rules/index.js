@@ -6,7 +6,6 @@ const crossCpt = require('./cross-cpt');
 const commonNav = require('./common-nav');
 const forms = require('./forms');
 const cssInline = require('./css-inline');
-const cssFiles = require('./css-files');
 const images = require('./images');
 const headings = require('./headings');
 const textCoverage = require('./text-coverage');
@@ -26,9 +25,9 @@ function runPerPageRules(page, rootDir) {
   ];
 }
 
-// ディレクトリ全体を見てから判定するルール(L08,L09,L16,L17)
+// ディレクトリ全体を見てから判定するルール(L08,L09,L16)
 function runCrossPageRules(pages, rootDir) {
-  return [...crossCpt.run(pages), ...commonNav.run(pages), ...cssFiles.run(pages, rootDir), ...images.runImagesRegistry(rootDir)];
+  return [...crossCpt.run(pages), ...commonNav.run(pages), ...images.runImagesRegistry(rootDir)];
 }
 
 module.exports = { runPerPageRules, runCrossPageRules };

@@ -1,0 +1,32 @@
+/* お知らせ（data-cpt="news"）。一覧・詳細で共用。
+   元は news/*.html のページ内 <style> にあったもの。L11（<style>タグ禁止）に従い外出し。 */
+
+.article-wrap { max-width: 760px; margin: 0 auto; }
+.article-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.article-tag {
+  display: inline-block; padding: 3px 14px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 700;
+  background: rgba(2,128,144,0.1); color: var(--accent); margin-bottom: 16px;
+}
+.article-title { font-size: 1.75rem; font-weight: 800; line-height: 1.4; color: var(--text); margin-bottom: 16px; }
+.article-meta { font-size: 0.85rem; color: var(--text-light); }
+.article-body { font-size: 0.975rem; line-height: 2; color: var(--text); }
+.article-body h2 {
+  font-size: 1.2rem; font-weight: 700; color: var(--primary);
+  border-left: 4px solid var(--primary); padding-left: 12px; margin: 40px 0 16px;
+}
+.article-body p { margin-bottom: 20px; }
+.article-body ul { padding-left: 1.5em; margin-bottom: 20px; }
+.article-body li { margin-bottom: 8px; }
+
+/* 本文中のリンク。元は style 属性で1本ずつ指定していた（L12 に従い移設）。
+   本文は wysiwyg フィールドなので、L1 が後から挿れたリンクにも同じ体裁が当たる。 */
+.article-body a { color: var(--accent); text-decoration: underline; }
+
+.article-nav { display: flex; justify-content: flex-start; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
+.article-nav a { font-size: 0.875rem; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.article-nav a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .article-title { font-size: 1.35rem; }
+}
