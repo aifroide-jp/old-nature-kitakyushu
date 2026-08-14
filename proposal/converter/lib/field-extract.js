@@ -1,6 +1,8 @@
 'use strict';
 
 const { DERIVABLE_TAGS, TAG_TO_TYPE, VALID_ACF_TYPES } = require('./constants');
+const { phpRaw, phpConcat } = require('./php-util');
+const { resolveHrefExpr } = require('./link-resolve');
 
 // data-acf / data-acf-url を持つ要素1個を解析し、
 //   - ACFフィールド定義（name/type/defaultValue）
@@ -11,6 +13,67 @@ const { DERIVABLE_TAGS, TAG_TO_TYPE, VALID_ACF_TYPES } = require('./constants');
 // 戻り値: { fields: [{name, type, defaultValue}], edits: [{start,end,replacement}] }
 // 想定外の構造（型が導出できない・置換対象のテキストノードが複数に分裂している等）は
 // errors に積んで null 相当（fields:[], edits:[]）を返す。呼び出し側は最後に errors.throwIfAny()。
+
+// wysiwyg のデフォルト値を作る。
+//
+// 中身は1つの塊として ACF の default_value に入るが、そこにモック内リンクが含まれていると
+// 相対パス（../contact/index.html）のまま本番に残り、WordPress では解決できない。
+// 実測でこの不具合が出たため、内側の <a href> だけパーマリンクへ解決する。
+// ACF 定義は PHP ソースなので、文字列連結で埋め込める。
+//
+// data-acf-url を持つ <a> は wysiwyg の中に書けない（別途エラーにする）。
+// まとまり全体を L1 が編集するフィールドなので、その中のリンクだけ別フィールドにする
+// 意味が無く、エディタ上で直接張り替えるほうが自然なため。
+function wysiwygDefault(page, el, innerStart, innerEnd, opts, errors) {
+  const raw = page.html.slice(innerStart, innerEnd);
+  const registry = opts && opts.linkRegistry;
+
+  const links = [];
+  (function walk(n) {
+    for (const c of n.children || []) {
+      if (c.type !== 'tag') continue;
+      if ((c.name || '').toLowerCase() === 'a') links.push(c);
+      walk(c);
+    }
+  })(el);
+
+  for (const a of links) {
+    const attrs = a.attribs || {};
+    if (attrs['data-acf-url'] !== undefined || attrs['data-acf'] !== undefined) {
+      errors.add(
+        page.relPath,
+        a.sourceCodeLocation ? a.sourceCodeLocation.startLine : null,
+        'data-acf-type="wysiwyg" の中に data-acf / data-acf-url を書くことはできません(まとまり全体を1フィールドとして編集するため。リンクはエディタ上で張り替えます)'
+      );
+    }
+  }
+
+  if (!registry) return raw.trim();
+
+  const parts = [];
+  let cur = innerStart;
+  for (const a of links) {
+    const aloc = a.sourceCodeLocation;
+    if (!aloc || !aloc.attrs || !aloc.attrs.href) continue;
+    const href = (a.attribs || {}).href;
+    const expr = resolveHrefExpr(page, aloc.startLine, href, registry, errors);
+    if (!expr) continue; // 外部URL / # / mailto: はそのまま。解決不能は errors に積み済み
+    const hl = aloc.attrs.href;
+    parts.push({ text: page.html.slice(cur, hl.startOffset) });
+    parts.push({ text: 'href="' });
+    parts.push({ php: expr });
+    parts.push({ text: '"' });
+    cur = hl.endOffset;
+  }
+  if (parts.length === 0) return raw.trim();
+  parts.push({ text: page.html.slice(cur, innerEnd) });
+
+  // 前後の空白を落とす（従来の trim() 相当）
+  parts[0].text = parts[0].text.replace(/^\s+/, '');
+  const last = parts[parts.length - 1];
+  last.text = last.text.replace(/\s+$/, '');
+  return phpRaw(phpConcat(parts));
+}
 
 function directChildren(el) {
   return el.children || [];
@@ -128,7 +191,7 @@ function analyzeField(page, $, el, opts, errors) {
       }
       const innerStart = loc.startTag.endOffset;
       const innerEnd = loc.endTag.startOffset;
-      const defaultValue = page.html.slice(innerStart, innerEnd).trim();
+      const defaultValue = wysiwygDefault(page, el, innerStart, innerEnd, opts, errors);
       results.fields.push({ name, type: 'wysiwyg', defaultValue });
       results.edits.push({ start: innerStart, end: innerEnd, replacement: phpFieldOutput(name) });
     } else if (type === 'url') {

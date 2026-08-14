@@ -17,14 +17,14 @@ function outerHtml(page, el) {
 
 // data-common / data-nav 部分木の下に data-acf を持つ要素だけを集める（浅いスキャン用）。
 // ネストした data-common / data-loop の内側は呼び出し側で除外範囲として渡す。
-function collectFieldsShallow(page, $, rootEl, errors, excludeSet) {
+function collectFieldsShallow(page, $, rootEl, errors, excludeSet, linkRegistry) {
   const fields = [];
   const walk = (el) => {
     if (!el || el.type !== 'tag') return;
     if (excludeSet && excludeSet.has(el)) return;
     const $el = $(el);
     if ($el.attr('data-acf') !== undefined || $el.attr('data-acf-url') !== undefined) {
-      const { fields: f } = analyzeField(page, $, el, {}, errors);
+      const { fields: f } = analyzeField(page, $, el, { linkRegistry }, errors);
       fields.push(...f);
     }
     for (const child of el.children || []) walk(child);
@@ -207,7 +207,7 @@ function buildModel(pages, errors) {
     for (const commonEl of findAll(canonical.mainEl, canonical.$, 'data-common')) {
       for (const n of descendantsSet(commonEl)) excluded.add(n);
     }
-    const canonicalFields = collectFieldsShallow(canonical, canonical.$, canonical.mainEl, errors, excluded);
+    const canonicalFields = collectFieldsShallow(canonical, canonical.$, canonical.mainEl, errors, excluded, model.linkRegistry);
     entry.fields = canonicalFields;
     entry.canonicalSingle = canonical;
 
@@ -216,7 +216,7 @@ function buildModel(pages, errors) {
       for (const commonEl of findAll(other.mainEl, other.$, 'data-common')) {
         for (const n of descendantsSet(commonEl)) otherExcluded.add(n);
       }
-      const otherFields = collectFieldsShallow(other, other.$, other.mainEl, errors, otherExcluded);
+      const otherFields = collectFieldsShallow(other, other.$, other.mainEl, errors, otherExcluded, model.linkRegistry);
       const a = canonicalFields.map((f) => `${f.name}:${f.type}`).sort();
       const b = otherFields.map((f) => `${f.name}:${f.type}`).sort();
       if (JSON.stringify(a) !== JSON.stringify(b)) {
@@ -247,10 +247,10 @@ function buildModel(pages, errors) {
       const items = (loopEl.children || []).filter((c) => c.type === 'tag' && 'data-loop-item' in (c.attribs || {}));
       if (items.length !== 1) continue;
       const known = new Set(entry.fields.map((f) => f.name));
-      const itemFields = collectFieldsShallow(page, $, items[0], errors, null);
+      const itemFields = collectFieldsShallow(page, $, items[0], errors, null, model.linkRegistry);
       const itemAttrs = items[0].attribs || {};
       if (itemAttrs['data-acf'] !== undefined || itemAttrs['data-acf-url'] !== undefined) {
-        const { fields } = analyzeField(page, $, items[0], {}, errors);
+        const { fields } = analyzeField(page, $, items[0], { linkRegistry: model.linkRegistry }, errors);
         itemFields.push(...fields);
       }
       for (const f of itemFields) {
@@ -267,7 +267,7 @@ function buildModel(pages, errors) {
   model.siteOptionFields = [];
   const seenSiteOptionNames = new Set();
   for (const [name, entry] of model.commonMap) {
-    const fields = collectFieldsShallow(entry.page, entry.page.$, entry.el, errors, null);
+    const fields = collectFieldsShallow(entry.page, entry.page.$, entry.el, errors, null, model.linkRegistry);
     for (const f of fields) {
       if (!seenSiteOptionNames.has(f.name)) {
         seenSiteOptionNames.add(f.name);

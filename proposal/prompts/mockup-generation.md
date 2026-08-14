@@ -132,8 +132,11 @@ CPT一覧        : spot / center / event / news など
 <p>詳しくは<a data-acf="link_label" data-acf-url="link_url">こちら</a>をご覧ください。</p>
 
 <!-- OK: 文ごと1フィールドにする -->
-<p data-acf="note" data-acf-type="wysiwyg">詳しくは<a href="…">こちら</a>をご覧ください。</p>
+<p data-acf="note" data-acf-type="wysiwyg">詳しくは<a href="../contact/">こちら</a>をご覧ください。</p>
 ```
+
+- **wysiwyg の中に `data-acf` / `data-acf-url` は書けません**【L23】。まとまり全体を1つのフィールドとして編集するためです
+- wysiwyg の中の固定リンクは、変換器がパーマリンクへ解決します。相対パスのままで構いません
 
 ### 装飾要素
 

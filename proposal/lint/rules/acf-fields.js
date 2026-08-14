@@ -4,6 +4,10 @@
 // L04: data-acf がページ内で重複していない
 // L05: 型が導出できないタグに data-acf-type がある(=必須)
 // L06: data-acf-type の値が有効な5型のいずれか
+// L23: data-acf-type="wysiwyg" の中に data-acf / data-acf-url を書かない
+//      (まとまり全体を1フィールドとして編集するため、内側だけ別フィールドにできない。
+//       変換器も同じ条件で停止する＝lint が先に気づかせる)
+//      ※22番はナビ形状の固定ルールだったが撤回・削除済み。欠番のまま再利用しない。
 const { mk } = require('../lib/issue');
 const { DERIVABLE_TAGS, VALID_ACF_TYPES, ACF_NAME_RE } = require('../lib/constants');
 
@@ -63,6 +67,24 @@ function run(page) {
           `<${tag} data-acf="${$el.attr('data-acf')}"> は型を導出できないタグのため data-acf-type が必須です`
         )
       );
+    }
+
+    // wysiwyg の内側に宣言が無いか（自分自身は対象外）
+    if (typeVal === 'wysiwyg') {
+      $el.find('[data-acf], [data-acf-url]').each((__, inner) => {
+        const $inner = $(inner);
+        const attr = $inner.attr('data-acf') !== undefined ? 'data-acf' : 'data-acf-url';
+        issues.push(
+          mk(
+            page,
+            'L23',
+            'error',
+            page.attrLineOf($inner, attr),
+            `data-acf="${$el.attr('data-acf')}" は wysiwyg なので、内側に ${attr} を書けません` +
+              '(まとまり全体を1つのフィールドとして編集します。リンクはエディタ上で張り替えてください)'
+          )
+        );
+      });
     }
 
     if (hasType && !VALID_ACF_TYPES.includes(typeVal)) {

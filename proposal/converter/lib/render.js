@@ -184,7 +184,7 @@ function renderFragment(page, model, el, includeSelf, errors) {
     let skipRecurse = false;
 
     if (hasAcf || hasAcfUrl) {
-      const { fields, edits } = analyzeField(page, page.$, node, {}, errors);
+      const { fields, edits } = analyzeField(page, page.$, node, { linkRegistry: model.linkRegistry }, errors);
       for (const e of edits) addAbs(e.start, e.end, e.replacement);
       const acfField = fields.find((f) => f.name === attrs['data-acf']);
       if (acfField && (acfField.type === 'wysiwyg' || acfField.type === 'image')) skipRecurse = true;

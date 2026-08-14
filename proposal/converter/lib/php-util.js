@@ -8,9 +8,36 @@ function phpSingleQuote(str) {
 
 // PHP 配列リテラル（連想配列含む）を acf_add_local_field_group() に渡せる形で出力する。
 // 値の型に応じて再帰的に整形する。インデントは2スペース刻み。
+// PHP 式をそのまま埋め込むための印。
+// 例: wysiwyg のデフォルト値に固定リンクが含まれる場合、モックの相対パス
+// （../contact/index.html）をそのまま文字列に残すと WordPress で解決できない。
+// ACF 定義は PHP ソースなので、文字列連結でパーマリンクを埋め込む。
+function phpRaw(expr) {
+  return { __php: expr };
+}
+
+// 部品列（{text} と {php} の並び）を PHP の文字列連結式にする。
+function phpConcat(parts) {
+  // 隣り合うテキストは1つにまとめる（'<a ' . 'href="' のような無駄な連結を作らない）
+  const merged = [];
+  for (const p of parts) {
+    const prev = merged[merged.length - 1];
+    if (p.php === undefined && prev && prev.php === undefined) prev.text += p.text;
+    else merged.push({ ...p });
+  }
+  const out = merged
+    .map((p) => (p.php !== undefined ? p.php : phpSingleQuote(p.text)))
+    .filter((s) => s !== "''");
+  return out.length === 0 ? "''" : out.join(' . ');
+}
+
 function phpArrayLiteral(value, indent = 0) {
   const pad = '    '.repeat(indent);
   const padIn = '    '.repeat(indent + 1);
+
+  if (value && typeof value === 'object' && typeof value.__php === 'string') {
+    return value.__php;
+  }
 
   if (Array.isArray(value)) {
     if (value.length === 0) return 'array()';
@@ -46,4 +73,4 @@ function navWalkerClass(location) {
   return `Nkk_Nav_${pascal}`;
 }
 
-module.exports = { phpSingleQuote, phpArrayLiteral, navWalkerClass };
+module.exports = { phpSingleQuote, phpArrayLiteral, navWalkerClass, phpRaw, phpConcat };
