@@ -58,6 +58,22 @@ function descendantsSet(el) {
   return set;
 }
 
+// フィールド集計から外す部分木を集める。
+//   data-common      : サイト共通フィールド側で登録済み
+//   data-loop-item   : そのループが指す CPT 側で登録される（4.5 で名前を合流させる）
+//   data-loop-sample : デザイン確認用ダミー。変換時に丸ごと捨てられる
+// data-loop-sample を外し忘れると、**テンプレートのどこにも出てこないフィールドが
+// ACF に登録される**（実測で発覚。L1 の管理画面に無意味な入力欄が並び、誰も気づかない）。
+function excludedForFields(page, $) {
+  const excluded = new Set();
+  for (const attr of ['data-common', 'data-loop-item', 'data-loop-sample']) {
+    for (const el of findAll(page.mainEl, $, attr)) {
+      for (const n of descendantsSet(el)) excluded.add(n);
+    }
+  }
+  return excluded;
+}
+
 function buildModel(pages, errors) {
   const model = {
     pages,
@@ -203,19 +219,13 @@ function buildModel(pages, errors) {
       continue;
     }
     const canonical = entry.singlePages[0];
-    const excluded = new Set();
-    for (const commonEl of findAll(canonical.mainEl, canonical.$, 'data-common')) {
-      for (const n of descendantsSet(commonEl)) excluded.add(n);
-    }
+    const excluded = excludedForFields(canonical, canonical.$);
     const canonicalFields = collectFieldsShallow(canonical, canonical.$, canonical.mainEl, errors, excluded, model.linkRegistry);
     entry.fields = canonicalFields;
     entry.canonicalSingle = canonical;
 
     for (const other of entry.singlePages.slice(1)) {
-      const otherExcluded = new Set();
-      for (const commonEl of findAll(other.mainEl, other.$, 'data-common')) {
-        for (const n of descendantsSet(commonEl)) otherExcluded.add(n);
-      }
+      const otherExcluded = excludedForFields(other, other.$);
       const otherFields = collectFieldsShallow(other, other.$, other.mainEl, errors, otherExcluded, model.linkRegistry);
       const a = canonicalFields.map((f) => `${f.name}:${f.type}`).sort();
       const b = otherFields.map((f) => `${f.name}:${f.type}`).sort();
@@ -279,15 +289,9 @@ function buildModel(pages, errors) {
 
   // --- 6. front / page の「自分自身のフィールド」（common・loop-item の中身を除く） ---
   function ownFieldsOf(page) {
-    const excluded = new Set();
-    for (const commonEl of findAll(page.mainEl, page.$, 'data-common')) {
-      for (const n of descendantsSet(commonEl)) excluded.add(n);
-    }
-    for (const loopItemEl of findAll(page.mainEl, page.$, 'data-loop-item')) {
-      for (const n of descendantsSet(loopItemEl)) excluded.add(n);
-    }
+    const excluded = excludedForFields(page, page.$);
     // loop-item の親要素自体(data-loop)も除外セットに含める必要はない(data-acfを持たないため)
-    return collectFieldsShallow(page, page.$, page.mainEl, errors, excluded);
+    return collectFieldsShallow(page, page.$, page.mainEl, errors, excluded, model.linkRegistry);
   }
 
   if (model.front) {

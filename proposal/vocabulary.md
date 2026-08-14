@@ -210,7 +210,7 @@ CPT を推定しており、インスタンスが1件しかない CPT（`nkk_pho
 | `data-loop-count` | | 整数。既定 `-1`（全件） |
 | `data-loop-item` | ○ | ちょうど1個 |
 | `data-loop-repeat` | | 整数。既定 `1`。同じ並びを N 周ぶん出す（下記） |
-| `data-loop-sample` | | 0個以上。デザイン確認用のダミー。変換器が捨てる |
+| `data-loop-sample` | | 0個以上。デザイン確認用のダミー。変換器が捨てる。**中に `data-acf` は書かない**（L07） |
 
 `data-loop-item` の中の `data-acf` は、そのCPTの**詳細ページのフィールド名と一致**させる。
 
@@ -481,7 +481,7 @@ images/
 | L04 | `data-acf` が**同一スコープ内**で重複していない。スコープはページ本体と `data-loop-item` ごとに分かれる（ループ項目のフィールドは対象 CPT の名前空間に属するため、トップに spot / center / event / news の4ループがあれば `hero_title` が4回出るのが正しい） | error |
 | L05 | 型が導出できないタグに `data-acf-type` がある | error |
 | L06 | `data-acf-type` の値が有効な5型のいずれか。`url` 型は `href` / `src` を持つ要素にのみ使える（2.2節） | error |
-| L07 | `data-loop` 直下の `data-loop-item` がちょうど1個 | error |
+| L07 | `data-loop` 直下の `data-loop-item` がちょうど1個。`data-loop-sample` の中に `data-acf` / `data-acf-url` を書かない（捨てられるため意味を持たない） | error |
 | L08 | 対応する `data-page="single"` のページが1枚も無い `data-loop` は error（一覧はあるが詳細テンプレートが無い構成ミス）。`data-loop-item` 内の `data-acf` が詳細ページに無い場合は **warn**（一覧カード専用フィールドは正当なため。3節末尾参照） | error / warn |
 | L09 | 同じ `data-common` / `data-nav` の内容が全ページで一致。比較の単位は**値 × ページ内での出現順**で、同一ページ内の別位置どうしは比較しない（同じメニューを複数の位置に違う見せ方で出すのは正しい書き方のため。5節） | error |
 | L10 | `data-cf7-submit` がフォーム内にちょうど1個 | error |
@@ -587,7 +587,11 @@ lint を先に確定し、既存が落ちるなら落ちたままでよい。既
    `data-page="archive"` のページがあれば `archive-<cpt>.php` を生成し、無ければ生成しない。
    推測の余地が無いので未決にしておく理由が無かった（実装は既にこの通りになっていた。
    実測: `network` は詳細のみ宣言されており `single-nkk_network.php` だけが生成される）。
-4. **`data-loop-sample` 内に `data-acf` を書いてよいか**が未定義（現状 lint は L20 の対象外としている）。
+4. ~~**`data-loop-sample` 内に `data-acf` を書いてよいか**が未定義。~~ → **解決済み。書かない（L07）。**
+   サンプルは変換時に丸ごと捨てられるので宣言に意味が無い。
+   **実測でバグが出た**: 除外し忘れていたため、サンプル内の `data-acf` が実際に ACF フィールドとして
+   登録されていた（テンプレートのどこにも出てこない入力欄が管理画面に並ぶ）。除外処理を
+   1箇所にまとめて修正し、lint でも書いた時点で止めるようにした。
 5. ~~**`<a>` 以外の URL 属性**（`<iframe src>` の地図等）への宣言方法が未定義。~~
    → **解決済み（2.2節）。** `data-acf-type="url"` が `href` / `src` の両方に使える。
    実装は既にこの通りだったが、記述が追いついていなかった。あわせて出力の

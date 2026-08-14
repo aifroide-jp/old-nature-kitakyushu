@@ -27,6 +27,27 @@ function run(page) {
     return `loop:${cpt}`;
   };
 
+  // data-loop-sample の中の宣言は意味を持たない（変換時に丸ごと捨てられる）。
+  // 黙って捨てると「書いたのに編集できない」ことに誰も気づかないため、書いた時点で止める。
+  $('[data-loop-sample]').each((_, sample) => {
+    $(sample)
+      .find('[data-acf], [data-acf-url]')
+      .each((__, inner) => {
+        const $inner = $(inner);
+        const attr = $inner.attr('data-acf') !== undefined ? 'data-acf' : 'data-acf-url';
+        issues.push(
+          mk(
+            page,
+            'L07',
+            'error',
+            page.attrLineOf($inner, attr),
+            `data-loop-sample の中に ${attr} を書いても意味がありません` +
+              '(見た目確認用のダミーなので変換時に丸ごと捨てられます。宣言は data-loop-item の中に書いてください)'
+          )
+        );
+      });
+  });
+
   $('[data-acf]').each((_, el) => {
     const $el = $(el);
     const name = $el.attr('data-acf');
