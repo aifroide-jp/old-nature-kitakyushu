@@ -21,11 +21,60 @@ function buildTag(kind, name, required, classAttr, idAttr, placeholder, extra) {
   return `[${parts.join(' ')}]`;
 }
 
+// 選択肢の文言。value があればそれ、無ければ対応する <label> のテキスト。
+//
+// value は必ず生の attribs から読む。cheerio の attr('value') は
+// **属性が書かれていなくてもチェックボックスに "on" を返す**（DOM の既定値を模倣する）。
+// これを信じると、同意チェックの文言が "on" になって出力される（実測で踏んだ）。
+function optionLabelOf($, input) {
+  const raw = (input.attribs || {}).value;
+  if (raw) return raw;
+  // <label><input> テキスト</label> の形
+  const $wrap = $(input).closest('label');
+  if ($wrap.length) {
+    const t = $wrap.text().trim();
+    if (t) return t;
+  }
+  // <input id="x"> ... <label for="x"> の形
+  const id = (input.attribs || {}).id;
+  if (id) {
+    const $for = $(`label[for="${id}"]`);
+    if ($for.length) {
+      const t = $for.text().trim();
+      if (t) return t;
+    }
+  }
+  return '';
+}
+
+// accept="image/jpeg,image/png" → filetypes:jpg|jpeg|png
+const MIME_TO_EXT = {
+  'image/jpeg': ['jpg', 'jpeg'],
+  'image/png': ['png'],
+  'image/webp': ['webp'],
+  'image/gif': ['gif'],
+  'application/pdf': ['pdf'],
+};
+
+function fileTypesFrom(accept) {
+  if (!accept) return null;
+  const exts = [];
+  for (const raw of accept.split(',')) {
+    const t = raw.trim().toLowerCase();
+    if (!t) continue;
+    if (t.startsWith('.')) exts.push(t.slice(1));
+    else if (MIME_TO_EXT[t]) exts.push(...MIME_TO_EXT[t]);
+    else return null; // 知らない指定は推測しない
+  }
+  return exts.length ? [...new Set(exts)].join('|') : null;
+}
+
 function fieldTagFor(page, $, el, errors) {
   const tag = (el.name || '').toLowerCase();
   const $el = $(el);
   const name = $el.attr('data-cf7-field');
   const required = $el.attr('data-cf7-required') !== undefined;
+  const isAcceptance = $el.attr('data-cf7-acceptance') !== undefined;
   const classAttr = $el.attr('class');
   const idAttr = $el.attr('id');
   const placeholder = $el.attr('placeholder');
@@ -46,21 +95,100 @@ function fieldTagFor(page, $, el, errors) {
 
   if (tag === 'input') {
     const type = ($el.attr('type') || 'text').toLowerCase();
+
     if (type === 'checkbox') {
-      // vocabulary.md 未決事項6: [acceptance] と [checkbox] の区別は未定義。
-      // data-cf7-required 付きの単一チェックボックスは「同意」の意味と判断し [acceptance] を採用する
-      // (本PoCでの変換器側判断。report item5で明記する)。
-      if (!required) {
-        errors.add(page.relPath, line, `data-cf7-field="${name}": data-cf7-required の無いチェックボックスは[checkbox]/[acceptance]のどちらか未定義のため未対応です`);
+      // 同意か選択肢かは、宣言だけで決める。
+      // 以前は「必須なら同意」と決め打っていたが、これは誤り。実測: 同じフォームに
+      // member_optin（会員登録の希望＝選択肢・任意）と privacy（同意・必須）が並んでおり、
+      // 必須かどうかでは区別できない。取り違えると
+      //   選択肢→[acceptance]: チェックしないと送信できなくなる
+      //   同意→[checkbox]    : 同意なしで送信できてしまう（静かに通るので気づけない）
+      if (isAcceptance) {
+        // CF7 の [acceptance] は既定で必須。任意なら optional を付ける。
+        return required ? `[acceptance ${name}]` : `[acceptance ${name} optional]`;
+      }
+      const label = optionLabelOf($, el);
+      if (!label) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": チェックボックスの文言が取れません(value か <label> のテキストが必要です)`);
         return null;
       }
-      return `[acceptance ${name}]`;
+      return buildTag('checkbox', name, required, classAttr, idAttr, null, [`"${label}"`]);
     }
+
+    if (type === 'radio') {
+      errors.add(
+        page.relPath,
+        line,
+        `data-cf7-field="${name}": ラジオボタン単体には宣言できません(選択肢の集まりなので、囲っている器に data-cf7-field を付けてください)`
+      );
+      return null;
+    }
+
+    if (type === 'file') {
+      if ($el.attr('multiple') !== undefined) {
+        errors.add(
+          page.relPath,
+          line,
+          `data-cf7-field="${name}": multiple は Contact Form 7 のコア機能では出力できません` +
+            '(複数ファイルアップロードの拡張プラグインが必要。PROJECT-NOTES.md「追加プラグイン依存」参照)'
+        );
+        return null;
+      }
+      // CF7 の既定上限は約1MB。モックの表記（例「各10MBまで」）と食い違うと
+      // 「アップロードできない」が静かに起きるため、上限は宣言を必須にする。
+      const limit = $el.attr('data-cf7-limit');
+      if (!limit) {
+        errors.add(
+          page.relPath,
+          line,
+          `data-cf7-field="${name}": ファイル欄には data-cf7-limit（バイト数）が必要です` +
+            '(CF7 の既定は約1MB。書かないとモックの表記と食い違ったまま通ってしまいます)'
+        );
+        return null;
+      }
+      const extra = [`limit:${limit}`];
+      const filetypes = fileTypesFrom($el.attr('accept'));
+      if (filetypes) extra.push(`filetypes:${filetypes}`);
+      return buildTag('file', name, required, classAttr, idAttr, null, extra);
+    }
+
+    if (type === 'hidden') {
+      const value = $el.attr('value') || '';
+      return `[hidden ${name} default:${value}]`;
+    }
+
     if (['text', 'email', 'tel', 'url', 'number', 'date'].includes(type)) {
       return buildTag(type, name, required, classAttr, idAttr, placeholder);
     }
     errors.add(page.relPath, line, `data-cf7-field="${name}": input[type="${type}"] のCF7タグ変換は未対応です`);
     return null;
+  }
+
+  // 器に付いた宣言 = チェックボックス／ラジオのグループ。
+  // CF7 はグループを1タグから自前のマークアップで出力するため、器ごと1タグに畳む
+  // （モックと1:1にならない唯一の例外。PROJECT-NOTES.md 3 に明記）。
+  const inputs = $el.find('input[type="checkbox"], input[type="radio"]').toArray();
+  if (inputs.length > 0) {
+    if (isAcceptance) {
+      errors.add(page.relPath, line, `data-cf7-field="${name}": data-cf7-acceptance は同意1件ごとに付けます(器には付けられません)`);
+      return null;
+    }
+    const kinds = new Set(inputs.map((i) => ($(i).attr('type') || '').toLowerCase()));
+    if (kinds.size > 1) {
+      errors.add(page.relPath, line, `data-cf7-field="${name}": 1つの器にチェックボックスとラジオが混在しています`);
+      return null;
+    }
+    const kind = [...kinds][0];
+    const options = [];
+    for (const input of inputs) {
+      const label = optionLabelOf($, input);
+      if (!label) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": 選択肢の文言が取れません(value か <label> のテキストが必要です)`);
+        return null;
+      }
+      options.push(`"${label}"`);
+    }
+    return buildTag(kind, name, required, classAttr, idAttr, null, options);
   }
 
   errors.add(page.relPath, line, `data-cf7-field="${name}": <${tag}> のCF7タグ変換は未対応です`);

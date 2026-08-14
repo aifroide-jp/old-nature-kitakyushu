@@ -407,7 +407,66 @@ AA だが、パンくずはそれを満たす手段の1つで、サイトマッ�
 | `data-cf7` | ○ | フォーム識別子（CF7投稿のタイトルになる） |
 | `data-cf7-field` | ○ | CF7 のフィールド名。`your-name` 等の CF7 慣行名を推奨 |
 | `data-cf7-required` | | 付いていれば必須（CF7 の `*` 付きタグ） |
+| `data-cf7-acceptance` | | 同意チェックであることの宣言（6.1節） |
+| `data-cf7-limit` | ファイル欄は○ | ファイルサイズの上限（バイト数） |
 | `data-cf7-submit` | ○ | 送信ボタン。ちょうど1個 |
+
+### 6.1 チェックボックス・ラジオ
+
+**選択肢のグループは、器に宣言を付ける**（`<select>` と同じ扱い）。CF7 はグループを
+1タグから自前のマークアップで出力するため、器ごと1タグに畳む。
+
+```html
+<div class="checkbox-group" data-cf7-field="interest" data-cf7-required>
+  <label><input type="checkbox" value="生態系保全"> 生態系保全</label>
+  <label><input type="checkbox" value="環境教育"> 環境教育</label>
+</div>
+```
+→ `[checkbox* interest class:checkbox-group "生態系保全" "環境教育"]`
+
+選択肢の文言は `value`、無ければ対応する `<label>` のテキストから取る。
+
+**これがモックと1:1にならない唯一の例外**（CF7 が `.wpcf7-list-item` 等の構造を出す）。
+CSS は `assets/css/cf7.css` に分離し、依存箇所を1ファイルに集める。
+
+### 同意チェックは宣言必須
+
+**単独のチェックボックスが「同意」か「選択肢」かは、マークアップから決まらない。**
+
+```html
+<!-- 同意 -->
+<input type="checkbox" data-cf7-field="privacy" data-cf7-acceptance data-cf7-required>
+<!-- 単独の選択肢（同意ではない） -->
+<input type="checkbox" data-cf7-field="member_optin">
+```
+
+実測: 同じフォームに `member_optin`（会員登録の希望・任意）と `privacy`（同意・必須）が
+並んでいる。**必須かどうかでは区別できない。**
+
+取り違えた場合:
+
+| 取り違え | 結果 |
+|---|---|
+| 選択肢を `[acceptance]` に | チェックしないと送信できなくなる（テストで気づく） |
+| 同意を `[checkbox]` に | **同意なしで送信できてしまう**（静かに通るので気づけない） |
+
+後者を防ぐため、宣言の無い単独チェックボックスは lint が warn で必ず一覧に出す（L24）。
+
+> v0.1 の変換器は「必須なら同意」と決め打っていた。語彙が定義していなかったので
+> 変換器が推測していた箇所であり、この案件のフォームで既に間違えていた。
+
+### ファイル欄
+
+```html
+<input type="file" data-cf7-field="photo" data-cf7-limit="10485760" accept="image/jpeg,image/png">
+```
+→ `[file* photo limit:10485760 filetypes:jpg|jpeg|png]`
+
+- **`data-cf7-limit` は必須**（L24）。CF7 の既定は約1MB で、モックの表記と食い違うと
+  「アップロードできない」が静かに起きる
+- `filetypes` は `accept` から作る。知らない指定があれば付けない（推測しない）
+- **`multiple` は出力できない。** CF7 のコア機能に無いため停止する
+  （複数ファイルアップロードの拡張が必要。案件側の判断事項）
 
 CF7 タグの生成は変換器がテンプレート化して行う。
 **CF7 6.x の属性順序（クォート付き値は全ての無引用オプションより後ろ）はモック側の関心事ではない** —
@@ -485,6 +544,7 @@ images/
 | L08 | 対応する `data-page="single"` のページが1枚も無い `data-loop` は error（一覧はあるが詳細テンプレートが無い構成ミス）。`data-loop-item` 内の `data-acf` が詳細ページに無い場合は **warn**（一覧カード専用フィールドは正当なため。3節末尾参照） | error / warn |
 | L09 | 同じ `data-common` / `data-nav` の内容が全ページで一致。比較の単位は**値 × ページ内での出現順**で、同一ページ内の別位置どうしは比較しない（同じメニューを複数の位置に違う見せ方で出すのは正しい書き方のため。5節） | error |
 | L10 | `data-cf7-submit` がフォーム内にちょうど1個 | error |
+| L24 | 単独チェックボックスに `data-cf7-acceptance` の有無が明示されている（warn）／ファイル欄に `data-cf7-limit` がある（error）。6.1節 | error / warn |
 | L11 | ページ内 `<style>` タグが無い | error |
 | L12 | `style="…"` 属性が無い | error |
 | L13 | class 名・`data-*` 値が全て ASCII | error |
@@ -596,6 +656,8 @@ lint を先に確定し、既存が落ちるなら落ちたままでよい。既
    → **解決済み（2.2節）。** `data-acf-type="url"` が `href` / `src` の両方に使える。
    実装は既にこの通りだったが、記述が追いついていなかった。あわせて出力の
    `esc_url()` 漏れを修正（image は通していたのに url 型だけ生のまま出していた）。
-6. **CF7 の `<select>` / チェックボックス**の宣言が未定義（`[acceptance]` と `[checkbox]` の区別）。
+6. ~~**CF7 の `<select>` / チェックボックス**の宣言が未定義。~~ → **解決済み（6.1節）。**
+   グループは器に宣言、同意は `data-cf7-acceptance` で明示、ファイル欄は `data-cf7-limit` 必須。
+   `radio` / `file` / `hidden` も対応した。`multiple` はコア機能に無いため停止する。
 7. **未使用画像の検査が無い**。L16 は「`images/` の全ファイルが meta.yaml に載っているか」の一方向のみで、
    どのページからも参照されない画像は検出できない（L21 候補）。

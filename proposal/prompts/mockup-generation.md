@@ -272,6 +272,34 @@ CSS で `translateX(-50%)` して繋ぐ形は、DOM に2周ぶんのカードが
 - `data-cf7-submit` はちょうど1個
 - **すべての入力に `<label for>` を紐付ける**（アクセシビリティ）
 
+### チェックボックス・ラジオ【L24】
+
+**選択肢のグループは器に宣言します**（`<select>` と同じ）。
+
+```html
+<div class="checkbox-group" data-cf7-field="interest" data-cf7-required>
+  <label><input type="checkbox" value="生態系保全"> 生態系保全</label>
+  <label><input type="checkbox" value="環境教育"> 環境教育</label>
+</div>
+```
+
+**同意チェックには `data-cf7-acceptance` を付けてください。**
+
+```html
+<input type="checkbox" data-cf7-field="privacy" data-cf7-acceptance data-cf7-required>
+```
+
+単独のチェックボックスが「同意」か「選択肢」かはマークアップから決まりません。付け忘れると**同意なしで送信できる**状態になり、送信は成功するので誰も気づきません。付いていない単独チェックボックスは lint が warn で出します。
+
+### ファイル欄【L24】
+
+```html
+<input type="file" data-cf7-field="photo" data-cf7-limit="10485760" accept="image/jpeg,image/png">
+```
+
+- **`data-cf7-limit`（バイト数）は必須**です。CF7 の既定は約1MB で、書かないと表記と食い違ったまま通ります
+- `multiple` は Contact Form 7 のコア機能では出力できません（拡張プラグインが必要）
+
 ## 8. CSS【L11 / L12】
 
 ```
