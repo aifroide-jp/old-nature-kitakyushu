@@ -30,9 +30,15 @@ const {
 } = require('./lib/gen/templates');
 
 function main() {
-  const [, , mockupDirArg, outDirArg] = process.argv;
+  const argv = process.argv.slice(2);
+  // --allow-unresolved-links: 未解決の内部リンクをエラーではなく警告にする。
+  // 設計原則3（エスケープハッチを作らない）に反するため、**既定では無効**。
+  // モックのページを揃える途中で WordPress 上の動作確認まで先に進めるための一時措置で、
+  // 全ページが揃ったら外す。渡した場合は生成後に必ず警告の要約を出す。
+  const allowUnresolvedLinks = argv.includes('--allow-unresolved-links');
+  const [mockupDirArg, outDirArg] = argv.filter((a) => !a.startsWith('--'));
   if (!mockupDirArg || !outDirArg) {
-    console.error('使い方: node convert.js <mockupDir> <outDir>');
+    console.error('使い方: node convert.js <mockupDir> <outDir> [--allow-unresolved-links]');
     process.exit(2);
   }
   const mockupDir = path.resolve(mockupDirArg);
@@ -51,6 +57,7 @@ function main() {
 
   const pages = files.map((f) => loadPage(f.abs, f.rel));
   const errors = new ErrorCollector();
+  errors.allowUnresolvedLinks = allowUnresolvedLinks;
 
   let model;
   const outputFiles = new Map(); // relPath -> content
@@ -128,6 +135,9 @@ function main() {
 
   console.log(`生成完了: ${outDir}`);
   console.log(`ファイル数: ${outputFiles.size + 1 /* style.css 等込み概算 */}`);
+  // 警告は生成が成功しても必ず出す（緩めたことが見逃されないようにする）
+  const wr = errors.warningReport();
+  if (wr) console.log(wr);
 }
 
 main();

@@ -101,11 +101,13 @@ function resolveHrefExpr(page, line, href, linkRegistry, errors) {
 
   const descriptor = linkRegistry.get(cls.sitePath);
   if (!descriptor) {
-    errors.add(
-      page.relPath,
-      line,
-      `href="${href}" はモック内のどのページにも解決できません(サイトパス "${cls.sitePath || '/'}" 相当のページが proposal/mockup 内に存在しません)`
-    );
+    const msg = `href="${href}" はモック内のどのページにも解決できません(サイトパス "${cls.sitePath || '/'}" 相当のページが存在しません)`;
+    if (errors.allowUnresolvedLinks) {
+      // 一時的なエスケープハッチ。null を返すと href をそのまま残す（外部URL等と同じ扱い）。
+      errors.warn(page.relPath, line, msg + ' → href をそのまま残しました');
+      return null;
+    }
+    errors.add(page.relPath, line, msg);
     return undefined;
   }
 
