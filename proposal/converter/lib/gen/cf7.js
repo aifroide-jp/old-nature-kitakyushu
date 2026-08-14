@@ -6,9 +6,14 @@
 
 const { EditList } = require('../edits');
 const { resolveHrefExpr } = require('../link-resolve');
+const { DECLARATION_ATTRS } = require('../constants');
 
+// 構造宣言の data-* だけを洗い出す。
+// サイト自身の JS が使う data-*（例: イベント一覧のフィルタが読む data-type /
+// data-category / data-target）は残す。以前は data- で始まる全部を消しており、
+// 生成後にフィルタが黙って動かなくなっていた。
 function dataAttrNames(el) {
-  return Object.keys(el.attribs || {}).filter((k) => k.startsWith('data-'));
+  return Object.keys(el.attribs || {}).filter((k) => DECLARATION_ATTRS.has(k));
 }
 
 function buildTag(kind, name, required, classAttr, idAttr, placeholder, extra) {
@@ -129,8 +134,12 @@ function fieldTagFor(page, $, el, errors) {
         errors.add(
           page.relPath,
           line,
-          `data-cf7-field="${name}": multiple は Contact Form 7 のコア機能では出力できません` +
-            '(複数ファイルアップロードの拡張プラグインが必要。PROJECT-NOTES.md「追加プラグイン依存」参照)'
+          `data-cf7-field="${name}": multiple は Contact Form 7 のコア機能では出力できません。\n` +
+            '      判断待ちの項目です。決まったら次を直してください:\n' +
+            '        1) PROJECT-NOTES.md 第2章「追加プラグイン依存」に選定したプラグインを記録\n' +
+            '        2) proposal/converter/lib/gen/cf7.js の fieldTagFor() に、そのプラグインのタグ書式を追加\n' +
+            '        3) proposal/vocabulary.md 6.1節「ファイル欄」の multiple の記述を更新\n' +
+            '      複数枚を諦める場合は、モックの multiple を外し「最大5枚」の表記も直すこと'
         );
         return null;
       }

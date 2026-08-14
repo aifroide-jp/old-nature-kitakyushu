@@ -30,3 +30,35 @@
 @media (max-width: 640px) {
   .article-title { font-size: 1.35rem; }
 }
+
+
+/* ===== 一覧（data-page="archive"）=====
+   元は news/index.html のページ内 <style> にあったもの。L11 に従い外出し。
+   CPT は一覧・詳細で1ファイルを共用する（vocabulary.md 7章）。 */
+
+.news-list { display: flex; flex-direction: column; gap: 0; }
+.news-item { display: flex; align-items: flex-start; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--border-light); text-decoration: none; color: var(--text); transition: all var(--transition); }
+.news-item:first-child { padding-top: 0; }
+.news-item:hover { background: rgba(44, 95, 45, 0.02); }
+.news-item__date { flex-shrink: 0; font-size: 0.85rem; color: var(--text-muted); min-width: 100px; padding-top: 2px; }
+.news-item__tag { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; flex-shrink: 0; min-width: 80px; text-align: center; }
+.news-item__tag--info { background: rgba(2, 128, 144, 0.1); color: var(--accent); }
+.news-item__tag--event { background: rgba(44, 95, 45, 0.1); color: var(--primary); }
+.news-item__tag--report { background: rgba(151, 188, 98, 0.2); color: var(--primary-dark); }
+.news-item__tag--press { background: rgba(255, 152, 0, 0.1); color: #e67e00; }
+.news-item__tag--member { background: rgba(156, 39, 176, 0.1); color: #7b1fa2; }
+.news-item__content { flex: 1; }
+.news-item__title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; line-height: 1.5; }
+.news-item__excerpt { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 48px; }
+.pagination__item { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.9rem; color: var(--text-light); text-decoration: none; transition: all var(--transition); }
+.pagination__item:hover, .pagination__item.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+.pagination__item--disabled { opacity: 0.4; pointer-events: none; }
+@media (max-width: 768px) {
+  .news-item { flex-direction: column; gap: 8px; }
+  .news-item__date { min-width: auto; }
+}
+  
+
+/* 一覧の本文幅。元は style="max-width: 900px;"（L12 に従いクラスへ） */
+.container--news-list { max-width: 900px; }

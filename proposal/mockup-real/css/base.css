@@ -898,6 +898,20 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
+/* ページヘッダーの背景画像。
+   元は style="background-image: url(...)" で1ページずつ指定されていたが、
+   ページごとに違う画像＝編集対象なので CSS には置けない（固定になる）。
+   <img> として置き、オーバーレイ（.page-header::before, z-index:1）の下に敷く。
+   拠点詳細・一覧など複数のページ種別で使うため base に置く。 */
+.page-header > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .page-header::before {
   content: '';
   position: absolute;

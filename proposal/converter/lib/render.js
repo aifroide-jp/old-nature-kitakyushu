@@ -4,10 +4,14 @@ const { EditList } = require('./edits');
 const { analyzeField } = require('./field-extract');
 const { resolveFixedHref } = require('./link-resolve');
 const { navWalkerClass } = require('./php-util');
+const { DECLARATION_ATTRS } = require('./constants');
 
-// data-* で始まる属性をすべて洗い出す(値は問わない。属性名だけで判定する)。
+// 構造宣言の data-* だけを洗い出す。
+// サイト自身の JS が使う data-*（例: イベント一覧のフィルタが読む data-type /
+// data-category / data-target）は残す。以前は data- で始まる全部を消しており、
+// 生成後にフィルタが黙って動かなくなっていた。
 function dataAttrNames(el) {
-  return Object.keys(el.attribs || {}).filter((k) => k.startsWith('data-'));
+  return Object.keys(el.attribs || {}).filter((k) => DECLARATION_ATTRS.has(k));
 }
 
 // 部分木(el 配下)を、data-* 宣言をすべて WordPress の呼び出しへ変換した文字列として描画する。
