@@ -204,10 +204,13 @@ function analyzeField(page, $, el, opts, errors) {
       const attrLoc = loc.attrs[targetAttr];
       const defaultValue = $el.attr(targetAttr);
       results.fields.push({ name, type: 'url', defaultValue });
+      // 属性値に入るので esc_url() を通す。the_field() は生のまま出力するため、
+      // 値に " が混ざると属性が壊れ、javascript: も素通りする。
+      // 同じファイル内で image は既にエスケープしており、url 型だけ漏れていた。
       results.edits.push({
         start: attrLoc.startOffset,
         end: attrLoc.endOffset,
-        replacement: `${targetAttr}="<?php the_field('${name}'); ?>"`,
+        replacement: `${targetAttr}="<?php echo esc_url( get_field('${name}') ); ?>"`,
       });
     } else {
       // text / textarea: 要素直下の「意味のある」テキストノードちょうど1個だけを対象にする。
@@ -263,7 +266,7 @@ function analyzeField(page, $, el, opts, errors) {
     results.edits.push({
       start: hrefLoc.startOffset,
       end: hrefLoc.endOffset,
-      replacement: `href="<?php the_field('${urlName}'); ?>"`,
+      replacement: `href="<?php echo esc_url( get_field('${urlName}') ); ?>"`,
     });
   }
 

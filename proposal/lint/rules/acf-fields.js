@@ -87,6 +87,20 @@ function run(page) {
       });
     }
 
+    // url 型は href / src を持つ要素にのみ使える（変換器も同じ条件で停止する）
+    if (typeVal === 'url' && $el.attr('href') === undefined && $el.attr('src') === undefined) {
+      issues.push(
+        mk(
+          page,
+          'L06',
+          'error',
+          page.attrLineOf($el, 'data-acf-type'),
+          `<${tag}> に data-acf-type="url" が付いていますが href も src もありません` +
+            '(url 型が対象にできるのはこの2属性です)'
+        )
+      );
+    }
+
     if (hasType && !VALID_ACF_TYPES.includes(typeVal)) {
       issues.push(
         mk(

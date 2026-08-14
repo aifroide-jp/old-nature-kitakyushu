@@ -108,6 +108,14 @@ CPT一覧        : spot / center / event / news など
 
 有効な型: `text` / `textarea` / `wysiwyg` / `url` / `image`
 
+`url` 型は `<a href>` だけでなく **`src` にも使えます**【L06】。地図の埋め込みなどはこれで宣言してください。
+
+```html
+<iframe data-acf="map_src" data-acf-type="url" src="https://maps.google.com/…"></iframe>
+```
+
+対象にできるのは `href` / `src` の2属性だけです。
+
 ```html
 <div data-acf="body" data-acf-type="wysiwyg"><p>…</p><p>…</p></div>
 <p data-acf="fee" data-acf-type="text">無料</p>
