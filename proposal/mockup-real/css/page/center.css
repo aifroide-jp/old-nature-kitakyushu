@@ -46,3 +46,51 @@
 .section--compact .container {
   text-align: center;
 }
+
+/* ===== 一覧（data-page="archive"）=====
+   元は center/index.html の style 属性18個に散っていたもの。L12 に従いクラスへ移した。
+   見た目は同一。 */
+
+/* 概要の本文幅 */
+.content--narrow-800 { max-width: 800px; margin: 0 auto; }
+
+/* 拠点マップ（JS が #center-map に描画する） */
+#center-map {
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+  margin-top: 24px;
+}
+
+/* 事務局セクション */
+.urban-center-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: center;
+}
+.urban-center-grid > img {
+  border-radius: 12px;
+  width: 100%;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+}
+.urban-center__lead {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+.urban-center__table {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  font-size: 0.9rem;
+}
+.urban-center__table dt {
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.urban-center__table a { color: var(--primary); }

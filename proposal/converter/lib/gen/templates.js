@@ -87,11 +87,59 @@ function generateFrontPageTemplate(model, errors) {
   return { filename: 'front-page.php', content: wrapPageBody(null, html) };
 }
 
+// data-common="header" を宣言していないページ（= 自前シェル）は get_header()/get_footer()
+// を呼べないので、1枚で完結したドキュメントを出す。
+// header.php と同じ scaffold をここでも組むが、<header>/<footer> の中身はページのもの。
+function wrapOwnShellPage(model, page, pageId, innerHtml, errors) {
+  // includeSelf = true。<header>/<footer> のタグ自体も出力に含める
+  // （header.php と同じ扱い。false にすると中身だけになりタグが消える）。
+  const headerHtml = renderFragment(page, model, page.ownHeaderEl, true, errors);
+  const footerHtml = renderFragment(page, model, page.ownFooterEl, true, errors);
+
+  const lines = [];
+  lines.push('<?php');
+  lines.push('/**');
+  lines.push(` * Template Name: ${pageId}`);
+  lines.push(' * サイト共通ヘッダー／フッターを使わないページ。');
+  lines.push(' * モックが data-common="header" を宣言していないため、シェルごとこのページのもの。');
+  lines.push(' */');
+  lines.push('?>');
+  lines.push('<!DOCTYPE html>');
+  lines.push('<html lang="ja">');
+  lines.push('<head>');
+  lines.push('<meta charset="UTF-8">');
+  lines.push('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+  lines.push('<?php wp_head(); ?>');
+  lines.push('</head>');
+  lines.push('<body <?php body_class(); ?>>');
+  lines.push('<?php wp_body_open(); ?>');
+  if (model.skipLinkHtml) lines.push(model.skipLinkHtml);
+  lines.push('');
+  lines.push(headerHtml);
+  lines.push('');
+  lines.push('<main id="main-content">');
+  lines.push('');
+  lines.push(innerHtml);
+  lines.push('');
+  lines.push('</main>');
+  lines.push('');
+  lines.push(footerHtml);
+  lines.push('');
+  lines.push('<?php wp_footer(); ?>');
+  lines.push('</body>');
+  lines.push('</html>');
+  return lines.join('\n');
+}
+
 function generatePageTemplates(model, errors) {
   const out = [];
   for (const [pageId, entry] of model.pageMap) {
-    const html = renderFragment(entry.page, model, entry.page.mainEl, false, errors);
-    out.push({ filename: `page-${pageId}.php`, content: wrapPageBody(pageId, html) });
+    const page = entry.page;
+    const html = renderFragment(page, model, page.mainEl, false, errors);
+    const content = page.ownsShell
+      ? wrapOwnShellPage(model, page, pageId, html, errors)
+      : wrapPageBody(pageId, html);
+    out.push({ filename: `page-${pageId}.php`, content });
   }
   return out;
 }

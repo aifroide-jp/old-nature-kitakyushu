@@ -77,6 +77,40 @@ function generateFunctionsPhp(model, errors) {
     );
     lines.push('    }');
   }
+  // --- アセット(js)のenqueue ---
+  // サイト自身の JS。ハンバーガー・ドロップダウン・一覧の絞り込み等がここで動く
+  // （絞り込みは data-type / data-category を読むので、宣言以外の data-* を
+  //  残す処理と対で意味を持つ）。
+  lines.push('');
+  lines.push("    wp_enqueue_script( 'nkk-main', $dir . '/assets/js/main.js', array(), null, true );");
+  // ページ固有 JS は css/page/*.css と同じ規約（js/page/<id>.js があれば読む）。
+  if (model.pageJs) {
+    if (model.pageJs.has('front')) {
+      lines.push('');
+      lines.push('    if ( is_front_page() ) {');
+      lines.push(
+        `        wp_enqueue_script( 'nkk-js-front', $dir . '/assets/js/page/front.js', array( 'nkk-main' ), null, true );`
+      );
+      lines.push('    }');
+    }
+    for (const pageId of model.pageMap.keys()) {
+      if (!model.pageJs.has(pageId)) continue;
+      lines.push(`    if ( is_page_template( 'page-${pageId}.php' ) ) {`);
+      lines.push(
+        `        wp_enqueue_script( 'nkk-js-${pageId}', $dir . '/assets/js/page/${pageId}.js', array( 'nkk-main' ), null, true );`
+      );
+      lines.push('    }');
+    }
+    for (const cpt of model.cptMap.keys()) {
+      if (!model.pageJs.has(cpt)) continue;
+      const postType = `${CPT_PREFIX}${cpt}`;
+      lines.push(`    if ( is_singular( '${postType}' ) || is_post_type_archive( '${postType}' ) ) {`);
+      lines.push(
+        `        wp_enqueue_script( 'nkk-js-${cpt}', $dir . '/assets/js/page/${cpt}.js', array( 'nkk-main' ), null, true );`
+      );
+      lines.push('    }');
+    }
+  }
   lines.push('}');
   lines.push("add_action( 'wp_enqueue_scripts', 'nkk_enqueue_assets' );");
   lines.push('');

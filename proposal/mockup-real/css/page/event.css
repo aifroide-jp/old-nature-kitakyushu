@@ -383,3 +383,35 @@
 .ev-related { margin-top: 64px; }
 .ev-related__title { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
 .ev-related__lead { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0; }
+
+
+/* ===== 一覧（data-page="archive"）=====
+   元は events/index.html のページ内 <style> にあったもの。L11 に従い外出し。
+
+   クラス名を ASCII に改名した（L13）:
+     .event-card__type-tag--募集中 → --open
+     .event-card__type-tag--告知   → --notice
+   CSS では動くが、PHP 変数・ACF キーへの変換で事故る。HTML 側8箇所も同時に改名済み。 */
+
+.filter-section { margin-bottom: 32px; }
+.filter-section__label { font-size: 0.85rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-btn { padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--bg-white); color: var(--text-light); transition: all var(--transition); }
+.filter-btn:hover, .filter-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+.event-card { background: var(--bg-white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 2px 12px var(--shadow); transition: all var(--transition); text-decoration: none; color: var(--text); display: flex; flex-direction: column; }
+.event-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px var(--shadow-md); }
+.event-card__image-wrap { position: relative; }
+.event-card__image { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.event-card__date-badge { position: absolute; top: 12px; left: 12px; background: var(--primary); color: #fff; border-radius: var(--radius); padding: 8px 12px; text-align: center; line-height: 1; }
+.event-card__date-month { font-size: 0.7rem; display: block; margin-bottom: 2px; }
+.event-card__date-day { font-size: 1.4rem; font-weight: 800; display: block; }
+.event-card__type-tag { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+.event-card__type-tag--open { background: #e8f5e9; color: #2e7d32; }
+.event-card__type-tag--notice { background: #e3f2fd; color: #1565c0; }
+.event-card__body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.event-card__tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.event-card__category { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; background: rgba(44, 95, 45, 0.1); color: var(--primary); }
+.event-card__target { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; background: rgba(2, 128, 144, 0.1); color: var(--accent); }
+.event-card__title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; line-height: 1.5; }
+.event-card__location { font-size: 0.8rem; color: var(--text-muted); margin-top: auto; }
+  

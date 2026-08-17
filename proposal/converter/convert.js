@@ -65,6 +65,16 @@ function main() {
   try {
     model = buildModel(pages, errors);
 
+    // ページ固有 JS は css/page/*.css と同じ規約（js/page/<id>.js があれば enqueue する）。
+    // 実在するファイルだけを対象にする（無いファイルを読み込ませない）。
+    model.pageJs = new Set();
+    const pageJsDir = path.join(mockupDir, 'js', 'page');
+    if (fs.existsSync(pageJsDir)) {
+      for (const name of fs.readdirSync(pageJsDir)) {
+        if (name.endsWith('.js')) model.pageJs.add(name.slice(0, -3));
+      }
+    }
+
     // --- functions.php / style.css ---
     outputFiles.set('functions.php', generateFunctionsPhp(model, errors));
     outputFiles.set('style.css', generateStyleCss());

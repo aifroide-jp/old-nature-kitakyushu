@@ -4,18 +4,17 @@
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>北九州市響灘ビオトープ | アーバンネイチャー北九州</title>
-  <meta name="description" content="北九州市響灘ビオトープ - 日本最大級41ヘクタールのビオトープ。希少な動植物が生息する自然再生エリア。">
-  <meta name="keywords" content="響灘ビオトープ,ビオトープ,北九州,若松区,自然再生,ネイチャーポジティブセンター">
+  <title>イベント | アーバンネイチャー北九州</title>
+  <meta name="description" content="自然体験や環境保全活動など、さまざまなイベントを開催しています。">
 
   <!-- ファビコン -->
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../favicon.svg">
 
   <!-- OGP -->
-  <meta property="og:title" content="北九州市響灘ビオトープ | アーバンネイチャー北九州">
-  <meta property="og:description" content="北九州市響灘ビオトープ - 日本最大級41ヘクタールのビオトープ。希少な動植物が生息する自然再生エリア。">
-  <meta property="og:type" content="article">
+  <meta property="og:title" content="イベント | アーバンネイチャー北九州">
+  <meta property="og:description" content="自然体験や環境保全活動など、さまざまなイベントを開催しています。">
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="アーバンネイチャー北九州">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
@@ -28,9 +27,9 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../css/base.css">
 
-  <link rel="stylesheet" href="../css/page/center.css">
+  <link rel="stylesheet" href="../css/page/event.css">
 </head>
-<body data-page="single" data-cpt="center">
+<body data-page="archive" data-cpt="event">
   <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
 
   <!-- ヘッダー -->
@@ -153,118 +152,165 @@
 
   <main id="main-content">
 
-    <!-- パンくず -->
-    <nav class="breadcrumb" data-breadcrumb aria-label="パンくず">
-      <div class="container">
-        <ol class="breadcrumb__list">
-          <li><a href="../">トップ</a></li>
-          <li><a href="../center/">活動拠点</a></li>
-          <li aria-current="page">北九州市響灘ビオトープ</li>
-        </ol>
-      </div>
-    </nav>
+  <!-- ページヘッダー -->
+  <div class="page-header" data-section="hero">
+    <img data-acf="archive_hero_image" src="../images/2026/04/events-hero.png" alt="イベントの様子" width="1200" height="320">
+    <div class="container">
+      <h1 class="page-header__title" data-acf="archive_title">イベント</h1>
+      <p class="page-header__desc" data-acf="archive_lead">自然体験や環境保全活動など、さまざまなイベントを開催しています</p>
+    </div>
+  </div>
 
-    <!-- ===== ページヘッダー ===== -->
-    <section class="page-header" data-section="hero">
-      <img data-acf="hero_image" src="../images/2025/03/biotope.jpg" alt="北九州市響灘ビオトープの湿地と草原" width="1200" height="480">
-      <div class="container">
-        <h1 class="page-header__title" data-acf="hero_title">北九州市響灘ビオトープ</h1>
-        <p class="page-header__desc" data-acf="hero_lead">ビオトープ（41ha）</p>
-      </div>
-    </section>
+  <!-- フィルタ＆イベント一覧 -->
+  <section class="section section--white" data-section="list">
+    <div class="container">
 
-    <!-- ===== 施設情報 ===== -->
-    <section class="section section--white" data-section="facility_info">
-      <div class="container">
-        <div class="facility-detail">
-          <div class="facility-detail__gallery">
-            <img data-acf="gallery_image" src="../images/2025/03/b-2-1-450x450.jpg" alt="北九州市響灘ビオトープ">
+      <!-- フィルタ -->
+      <div class="filter-section">
+        <div class="filter-row">
+          <p class="filter-section__label">タイプ：</p>
+          <button class="filter-btn active" aria-pressed="true" data-filter-type="all">すべて</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-type="募集">双方向募集型</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-type="告知">告知型</button>
+        </div>
+        <div class="filter-row">
+          <p class="filter-section__label">カテゴリ：</p>
+          <button class="filter-btn active" aria-pressed="true" data-filter-cat="all">すべて</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-cat="循環・資源">循環・資源</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-cat="生態系保全">生態系保全</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-cat="教育・啓発">教育・啓発</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-cat="体験・レジャー">体験・レジャー</button>
+        </div>
+        <div class="filter-row">
+          <p class="filter-section__label">対象：</p>
+          <button class="filter-btn active" aria-pressed="true" data-filter-target="all">すべて</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-target="子ども">子ども</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-target="個人">個人</button>
+          <button class="filter-btn" aria-pressed="false" data-filter-target="企業">企業</button>
+        </div>
+      </div>
+
+      <!-- イベントカード -->
+      <h2 class="sr-only">イベント一覧</h2>
+      <div class="card-grid" id="eventGrid" data-loop="event" data-loop-order="date_desc">
+
+        <a href="hiraodai-kansatsukai.html" class="event-card" data-type="募集" data-category="体験・レジャー" data-target="個人" data-loop-item>
+          <div class="event-card__image-wrap">
+            <img data-acf="hero_image" src="../images/2026/04/平尾台シャボン玉-1-450x450.jpg" alt="平尾台 春の自然観察会" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month" data-acf="event_month" data-acf-type="text">5月</span>
+              <span class="event-card__date-day" data-acf="event_day" data-acf-type="text">10</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--open" data-acf="event_status" data-acf-type="text">募集中</span>
           </div>
-          <div>
-            <h2 class="facility-detail__heading" data-acf="info_title">施設情報</h2>
-            <dl class="facility-detail__info-table">
-              <dt>住所</dt>
-              <dd data-acf="address" data-acf-type="text">〒808-0021 北九州市若松区響町1-126-1</dd>
-              <dt>電話</dt>
-              <dd data-acf="tel" data-acf-type="text">093-751-2023</dd>
-              <dt>URL</dt>
-              <dd><a href="https://www.hibikinadabiotope.com/" target="_blank" rel="noopener noreferrer" data-acf="official_label" data-acf-url="official_url">https://www.hibikinadabiotope.com/</a></dd>
-              <dt>開園時間</dt>
-              <dd data-acf="hours" data-acf-type="text">9:00〜17:00（入園は16:00まで）</dd>
-              <dt>休園日</dt>
-              <dd data-acf="closed" data-acf-type="text">火曜日（祝日の場合は翌日）</dd>
-              <dt>入園料</dt>
-              <dd data-acf="fee" data-acf-type="text">一般100円、小中学生50円</dd>
-              <dt>アクセス</dt>
-              <dd data-acf="access" data-acf-type="text">JR若松駅から車で約20分</dd>
-              <dt>駐車場</dt>
-              <dd data-acf="parking" data-acf-type="text">あり（無料）</dd>
-            </dl>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category" data-acf="event_category" data-acf-type="text">体験・レジャー</span>
+              <span class="event-card__target" data-acf="event_target" data-acf-type="text">個人</span>
+            </div>
+            <h3 class="event-card__title" data-acf="hero_title">平尾台 春の自然観察会 〜カルスト台地の野草を楽しむ〜</h3>
+            <p class="event-card__location" data-acf="event_meta">平尾台自然の郷 集合</p>
           </div>
-        </div>
-      </div>
-    </section>
+        </a>
 
-    <!-- ===== 施設紹介 ===== -->
-    <section class="section section--gray" data-section="facility_about">
-      <div class="container">
-        <div class="content content--narrow">
-          <h2 data-acf="about_title">施設について</h2>
-          <div data-acf="about_body" data-acf-type="wysiwyg">
-            <p>北九州市響灘ビオトープは、約41ヘクタールの日本最大級のビオトープです。かつての廃棄物処分場跡地に自然が再生し、湿地、草原、淡水池など多様な環境が形成されています。</p>
-            <p>園内では絶滅危惧種を含む多くの動植物が確認されており、特にトンボ類や野鳥の種類が豊富です。自然観察路を歩きながら、季節ごとに異なる生き物たちとの出会いを楽しむことができます。</p>
-            <p>環境再生のモデルケースとして国内外から注目されており、自然の復元力を実感できる貴重な場所です。ガイド付きの自然観察会も定期的に開催されています。</p>
+        <a href="sone-higata-cleanup.html" class="event-card" data-loop-sample data-type="募集" data-category="循環・資源" data-target="個人">
+          <div class="event-card__image-wrap">
+            <img src="../images/2026/04/Clap屋外マルシェの様子-450x450.jpg" alt="曽根干潟クリーンアップ" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month">5月</span>
+              <span class="event-card__date-day">17</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--open">募集中</span>
           </div>
-        </div>
-      </div>
-    </section>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category">循環・資源</span>
+              <span class="event-card__target">個人</span>
+            </div>
+            <h3 class="event-card__title">曽根干潟クリーンアップ大作戦 2026春</h3>
+            <p class="event-card__location">曽根干潟（小倉南区曽根新田）</p>
+          </div>
+        </a>
 
-    <!-- ===== アクセスマップ ===== -->
-    <section class="section section--white" data-section="map">
-      <div class="container">
-        <h2 class="section__title" data-acf="map_title">アクセスマップ</h2>
-        <div class="map-frame">
-          <iframe
-            data-acf="map_src" data-acf-type="url"
-            src="https://maps.google.com/maps?q=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E8%8B%A5%E6%9D%BE%E5%8C%BA%E9%9F%BF%E7%94%BA1-126-1&output=embed&hl=ja"
-            width="100%" height="420"
-            allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="施設の地図"></iframe>
-        </div>
-      </div>
-    </section>
+        <a href="yamada-kodomo-kyoshitsu.html" class="event-card" data-loop-sample data-type="告知" data-category="教育・啓発" data-target="子ども">
+          <div class="event-card__image-wrap">
+            <img src="../images/2026/04/平尾台フクロウ-450x450.jpg" alt="子ども自然教室" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month">5月</span>
+              <span class="event-card__date-day">24</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--notice">告知</span>
+          </div>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category">教育・啓発</span>
+              <span class="event-card__target">子ども</span>
+            </div>
+            <h3 class="event-card__title">子ども自然教室「森の生きもの探検隊」</h3>
+            <p class="event-card__location">山田緑地（小倉北区山田町）</p>
+          </div>
+        </a>
 
-    <!-- ===== この施設のイベント ===== -->
-    <section class="section section--white" data-section="events">
-      <div class="container">
-        <h2 class="section__title" data-acf="events_title">この施設のイベント</h2>
-        <p class="section__subtitle" data-acf="events_lead">響灘ビオトープで開催予定のイベント</p>
-        <div class="empty-state">
-          <p data-acf="events_empty">現在予定されているイベントはありません。</p>
-          <a href="../events/" class="btn btn--outline btn--sm" data-acf="events_link_label" data-acf-url="events_link_url">全てのイベントを見る</a>
-        </div>
-      </div>
-    </section>
+        <a href="biotope-kigyo.html" class="event-card" data-loop-sample data-type="募集" data-category="生態系保全" data-target="企業">
+          <div class="event-card__image-wrap">
+            <img src="../images/2026/04/カルストジャングル冒険ツアー-2-1024x768-1-450x450.jpg" alt="企業向け生態系保全プログラム" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month">6月</span>
+              <span class="event-card__date-day">7</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--open">募集中</span>
+          </div>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category">生態系保全</span>
+              <span class="event-card__target">企業</span>
+            </div>
+            <h3 class="event-card__title">企業向け生態系保全体験プログラム ― ビオトープづくり</h3>
+            <p class="event-card__location">響灘ビオトープ（若松区響町）</p>
+          </div>
+        </a>
 
-    <!-- ===== この施設のブログ ===== -->
-    <section class="section section--gray" data-section="blog">
-      <div class="container">
-        <h2 class="section__title" data-acf="blog_title">この施設のブログ</h2>
-        <p class="section__subtitle" data-acf="blog_lead">響灘ビオトープに関する記事</p>
-        <div class="empty-state">
-          <p data-acf="blog_empty">まだ記事がありません。</p>
-          <a href="../blog/" class="btn btn--outline btn--sm" data-acf="blog_link_label" data-acf-url="blog_link_url">全てのブログを見る</a>
-        </div>
-      </div>
-    </section>
+        <a href="hiraodai-tuk-tuk.html" class="event-card" data-loop-sample data-type="告知" data-category="体験・レジャー" data-target="個人">
+          <div class="event-card__image-wrap">
+            <img src="../images/2026/04/平尾台トゥクトゥク-450x450.jpg" alt="平尾台トゥクトゥクツアー" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month">6月</span>
+              <span class="event-card__date-day">14</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--notice">告知</span>
+          </div>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category">体験・レジャー</span>
+              <span class="event-card__target">個人</span>
+            </div>
+            <h3 class="event-card__title">平尾台トゥクトゥクで巡る自然ツアー</h3>
+            <p class="event-card__location">平尾台（小倉南区平尾台）</p>
+          </div>
+        </a>
 
-    <!-- ===== 一覧へ戻る ===== -->
-    <section class="section section--white section--compact" data-section="back">
-      <div class="container">
-        <a href="../center/" class="btn btn--outline" data-acf="back_label" data-acf-url="back_url">← センター一覧に戻る</a>
+        <a href="summer-camp.html" class="event-card" data-loop-sample data-type="募集" data-category="教育・啓発" data-target="子ども">
+          <div class="event-card__image-wrap">
+            <img src="../images/2026/04/平尾台そば倶楽部2-1024x768-1-450x450.jpg" alt="夏休み自然体験キャンプ" class="event-card__image">
+            <div class="event-card__date-badge">
+              <span class="event-card__date-month">7月</span>
+              <span class="event-card__date-day">26</span>
+            </div>
+            <span class="event-card__type-tag event-card__type-tag--open">募集中</span>
+          </div>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <span class="event-card__category">教育・啓発</span>
+              <span class="event-card__target">子ども</span>
+            </div>
+            <h3 class="event-card__title">夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然</h3>
+            <p class="event-card__location">畑貯水池周辺キャンプ場</p>
+          </div>
+        </a>
+
       </div>
-    </section>
+    </div>
+  </section>
 
   <section class="cta-band fp-u43" data-common="cta">
     <div class="container">

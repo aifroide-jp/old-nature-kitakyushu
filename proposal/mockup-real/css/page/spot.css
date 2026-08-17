@@ -64,3 +64,77 @@
   .spot-hero__title { font-size: 1.8rem; }
   .spot-overview { grid-template-columns: 1fr; gap: 24px; }
 }
+
+
+/* ===== 一覧（data-page="archive"）=====
+   元は about/spots.html のページ内 <style> にあったもの。L11 に従い外出し。
+   CPT は一覧・詳細で1ファイルを共用する（vocabulary.md 7章）。 */
+
+.resource-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 32px 0;
+}
+.resource-item {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 12px var(--shadow);
+  transition: all 0.3s ease;
+}
+.resource-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--shadow-md);
+}
+a.resource-item { display: block; text-decoration: none; color: inherit; }
+.resource-item img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.resource-item__body {
+  padding: 16px;
+  background: var(--bg-white);
+}
+.resource-item__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.resource-item__desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.info-box {
+  background: rgba(2,128,144,0.06);
+  border: 1px solid rgba(2,128,144,0.2);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+.info-box__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.info-box p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .resource-gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .resource-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+  

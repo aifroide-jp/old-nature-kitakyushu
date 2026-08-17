@@ -18,7 +18,12 @@ function dataAttrNames(el) {
 
 function buildTag(kind, name, required, classAttr, idAttr, placeholder, extra) {
   const parts = [`${kind}${required ? '*' : ''}`, name];
-  if (classAttr) parts.push(`class:${classAttr}`);
+  // CF7 の class: オプションは**1クラスにつき1つ**書く。
+  // class="a b" をそのまま class:a b と出すと、b が無引用の別オプションとして
+  // 解釈されてタグがパースされない（CLAUDE.md 記載の既知の事故と同種）。
+  if (classAttr) {
+    for (const c of classAttr.trim().split(/\s+/)) parts.push(`class:${c}`);
+  }
   if (idAttr) parts.push(`id:${idAttr}`);
   if (extra) parts.push(...extra);
   // CF7 6.x: クォート付きの値は無引用オプションより後ろに置く(placeholder は必ず最後)。
@@ -87,11 +92,24 @@ function fieldTagFor(page, $, el, errors) {
 
   if (tag === 'select') {
     const options = [];
-    $el.find('option').each((_, opt) => {
+    const extra = [];
+    const opts = $el.find('option').toArray();
+    opts.forEach((opt, i) => {
       const text = $(opt).text();
-      if (text) options.push(`"${text}"`);
+      if (!text) return;
+      // <option value="">選択してください</option> のような「値を持たない見出し行」。
+      // これをそのまま選択肢として出すと **CF7 では選べる実選択肢になり、必須の
+      // フォームが「選択してください」のままで通ってしまう**（静かに通るので気づけない）。
+      // CF7 の first_as_label は先頭項目を value 無しのラベルとして出すためこれを使う。
+      const isBlank = (opt.attribs || {}).value === '';
+      if (isBlank && i !== 0) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": value 空の <option> は先頭にしか置けません(CF7 の first_as_label は先頭1件のみ)`);
+        return;
+      }
+      if (isBlank) extra.push('first_as_label');
+      options.push(`"${text}"`);
     });
-    return buildTag('select', name, required, classAttr, idAttr, placeholder, options);
+    return buildTag('select', name, required, classAttr, idAttr, placeholder, extra.concat(options));
   }
 
   if (tag === 'textarea') {
@@ -117,7 +135,10 @@ function fieldTagFor(page, $, el, errors) {
         errors.add(page.relPath, line, `data-cf7-field="${name}": チェックボックスの文言が取れません(value か <label> のテキストが必要です)`);
         return null;
       }
-      return buildTag('checkbox', name, required, classAttr, idAttr, null, [`"${label}"`]);
+      // checked（初期チェック）は CF7 の default:<1始まりの番号> で表す。
+      // 落とすと「既定でチェックが入っている」という設計が黙って消える。
+      const pre = $el.attr('checked') !== undefined ? ['default:1'] : [];
+      return buildTag('checkbox', name, required, classAttr, idAttr, null, pre.concat([`"${label}"`]));
     }
 
     if (type === 'radio') {
@@ -163,11 +184,29 @@ function fieldTagFor(page, $, el, errors) {
 
     if (type === 'hidden') {
       const value = $el.attr('value') || '';
-      return `[hidden ${name} default:${value}]`;
+      // 値は **クォート付きの値** で渡す（hidden.php: `reset( $tag->values )`）。
+      // default:… は使えない。無引用オプションなので空白で切れる上に、
+      // get_default_option() が sanitize_key() を通すため **日本語の値は空になる**。
+      if (value.includes('"')) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": hidden の値に " を含められません`);
+        return null;
+      }
+      return `[hidden ${name} "${value}"]`;
     }
 
     if (['text', 'email', 'tel', 'url', 'number', 'date'].includes(type)) {
-      return buildTag(type, name, required, classAttr, idAttr, placeholder);
+      // number / date の min・max は CF7 の min: / max: オプションに移す。
+      // 落とすと入力範囲の制限が黙って消える(例: 年齢 8〜12 が何でも通るようになる)。
+      const range = [];
+      for (const k of ['min', 'max']) {
+        const v = $el.attr(k);
+        if (v !== undefined && v !== '') range.push(`${k}:${v}`);
+      }
+      if (range.length && !['number', 'date'].includes(type)) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": input[type="${type}"] の min/max は CF7 に移せません(number か date のみ対応)`);
+        return null;
+      }
+      return buildTag(type, name, required, classAttr, idAttr, placeholder, range);
     }
     errors.add(page.relPath, line, `data-cf7-field="${name}": input[type="${type}"] のCF7タグ変換は未対応です`);
     return null;
@@ -189,6 +228,7 @@ function fieldTagFor(page, $, el, errors) {
     }
     const kind = [...kinds][0];
     const options = [];
+    const pre = [];
     for (const input of inputs) {
       const label = optionLabelOf($, input);
       if (!label) {
@@ -196,8 +236,22 @@ function fieldTagFor(page, $, el, errors) {
         return null;
       }
       options.push(`"${label}"`);
+      // checked（初期選択）は CF7 の default:<1始まりの番号>。落とすと初期選択が消える。
+      if ((input.attribs || {}).checked !== undefined) pre.push(String(options.length));
     }
-    return buildTag(kind, name, required, classAttr, idAttr, null, options);
+    const extra = pre.length ? [`default:${pre.join('_')}`] : [];
+    if (kind === 'radio') {
+      // CF7 のラジオは **常に必須**（modules/checkbox.php:204
+      // `if ( $tag->is_required() or 'radio' === $tag->type )`）。任意のラジオは表現できない。
+      if (!required) {
+        errors.add(page.relPath, line, `data-cf7-field="${name}": 任意のラジオボタンは Contact Form 7 で表現できません(CF7 のラジオは常に必須になります)。必須にするか、チェックボックスかセレクトに変えてください`);
+        return null;
+      }
+      // `radio*` は CF7 に登録されていない（checkbox / checkbox* / radio のみ）。
+      // `[radio* …]` と書くとタグがパースされず素テキストで出力される。
+      return buildTag('radio', name, false, classAttr, idAttr, null, extra.concat(options));
+    }
+    return buildTag(kind, name, required, classAttr, idAttr, null, extra.concat(options));
   }
 
   errors.add(page.relPath, line, `data-cf7-field="${name}": <${tag}> のCF7タグ変換は未対応です`);

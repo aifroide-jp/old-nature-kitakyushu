@@ -16,27 +16,25 @@
 // 取りこぼしゼロの定義（coverage.json で検証する等式）:
 //   全テキストノード
 //     = ACF化(data-acf)
-//     + 別機構で編集(data-nav = WPメニュー / data-cf7 = CF7)
+//     + 別機構で編集(data-nav = WPメニュー / data-cf7 = CF7 / data-breadcrumb)
 //     + 変換時に破棄(data-loop-sample)
-//     + 装飾(data-deco / aria-hidden)
+//     + 装飾(data-deco / aria-hidden / svg)
 //     + 未宣言（＝暗黙の固定文言。お客様と「更新対象外」の合意が要る分）
 //   右辺の合計が左辺と一致すること。分類できないテキストが1件もないこと。
+//
+// 分類そのものは proposal/shared/text-classify.js が唯一の実装で、lint L20 と共有する。
 
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('../lint/node_modules/cheerio');
 const yaml = require('../lint/node_modules/js-yaml');
 
-// --- 型導出（vocabulary.md 2.1） ---------------------------------------
-const TAG_TO_TYPE = {
-  h1: 'text', h2: 'text', h3: 'text', h4: 'text', h5: 'text', h6: 'text',
-  p: 'textarea', li: 'textarea', dd: 'textarea', td: 'textarea', span: 'textarea',
-  img: 'image',
-  a: 'text',
-};
-const VALID_TYPES = new Set(['text', 'textarea', 'wysiwyg', 'url', 'image']);
+// 型導出表・有効な型は proposal/shared/constants.js が唯一の定義場所（vocabulary.md 2.1）。
+// テキストの分類は proposal/shared/text-classify.js が唯一の実装で、lint L20 と共有する。
+const { TAG_TO_TYPE, VALID_ACF_TYPES } = require('../shared/constants');
+const { BUCKETS, classifyPage } = require('../shared/text-classify');
 
-const SKIP_TAGS = new Set(['script', 'style', 'template', 'noscript']);
+const VALID_TYPES = new Set(VALID_ACF_TYPES);
 
 class ScanError extends Error {}
 
@@ -114,56 +112,10 @@ function extractFields($, $scope, file) {
   return fields;
 }
 
-// --- テキストノードの分類（取りこぼしゼロの証明） ------------------------
-const BUCKETS = ['acf', 'nav', 'cf7', 'loop_sample', 'deco', 'unclaimed'];
-
+// テキストの分類は proposal/shared/text-classify.js に一本化してある。
+// lint L20 と同じ関数を使うので、両者の集合は定義上一致する。
 function classifyTexts($, file) {
-  const counts = Object.fromEntries(BUCKETS.map((b) => [b, 0]));
-  const unclaimed = [];
-
-  function walk(node, anc) {
-    if (!node) return;
-    if (node.type === 'tag') {
-      const tag = (node.name || '').toLowerCase();
-      if (SKIP_TAGS.has(tag)) return;
-      const chain = [node, ...anc];
-      for (const c of node.children || []) walk(c, chain);
-      return;
-    }
-    if (node.type !== 'text') return;
-    const text = (node.data || '').trim();
-    if (!text) return;
-
-    const has = (attr) => anc.some((e) => e.attribs && Object.prototype.hasOwnProperty.call(e.attribs, attr));
-    const isDeco = anc.some(
-      (e) =>
-        e.attribs &&
-        (e.attribs['aria-hidden'] === 'true' ||
-          Object.prototype.hasOwnProperty.call(e.attribs, 'data-deco') ||
-          (e.name || '').toLowerCase() === 'svg')
-    );
-
-    // 優先順位: 装飾 > 破棄 > 別機構 > ACF > 未宣言
-    let bucket;
-    if (isDeco) bucket = 'deco';
-    else if (has('data-loop-sample')) bucket = 'loop_sample';
-    else if (has('data-nav')) bucket = 'nav';
-    else if (has('data-cf7')) bucket = 'cf7';
-    else if (has('data-acf')) bucket = 'acf';
-    else bucket = 'unclaimed';
-
-    counts[bucket]++;
-    if (bucket === 'unclaimed') {
-      unclaimed.push({
-        line: node.sourceCodeLocation ? node.sourceCodeLocation.startLine : null,
-        text: text.replace(/\s+/g, ' ').slice(0, 120),
-      });
-    }
-  }
-
-  const body = $('body').get(0);
-  if (body) walk(body, []);
-  const total = BUCKETS.reduce((s, b) => s + counts[b], 0);
+  const { total, counts, unclaimed } = classifyPage($("body").get(0));
   return { file, total, counts, unclaimed };
 }
 
@@ -280,24 +232,30 @@ function main() {
 
   const pages = [];
   const coverages = [];
-  let commonMap = null;
+  // data-common は「サイトの共通領域」を指す宣言であって、
+  // **全ページが同じ構成を持つことは要求しない**（vocabulary.md 4章）。
+  //
+  // 申し込みフォームのように、離脱を防ぐためナビも CTA も落とした簡易レイアウトの
+  // ページが実在する（実測: events/summer-camp-apply.html はヘッダーにナビが無く、
+  // フッターは footer--minimal、CTA バンドも無い）。
+  // 変換器はこれを「自前のシェルを持つページ」として扱い、get_header() を呼ばずに
+  // 完結した1枚を出す（converter/lib/model.js の ownsShell）。宣言の追加は要らない。
+  //
+  // したがって scan も、宣言されている id を**和集合**で集めるだけにする。
+  // 同じ id なのに中身が違う場合は lint L09 が全ページ横断で検出するので、ここでは見ない。
+  const commonBlocks = new Map(); // id -> { id, fields }
 
   for (const f of files) {
     const { page, commons, coverage } = scanPage(f, rootDir);
     pages.push(page);
     coverages.push(coverage);
-
-    // common は全ページで同一であることが前提（vocabulary.md 4章 / lint L09）。
-    // 最初のページのものを採用し、以降は id 集合の一致だけ確認する。
-    const ids = commons.map((c) => c.id).sort().join(',');
-    if (commonMap === null) commonMap = { ids, blocks: commons };
-    else if (commonMap.ids !== ids) fail(page.file, `data-common の構成が他ページと異なる (${ids} vs ${commonMap.ids})`);
+    for (const c of commons) if (!commonBlocks.has(c.id)) commonBlocks.set(c.id, c);
   }
 
   const acfMap = {
     project: path.basename(path.resolve(rootDir, '..', '..')),
     generated_by: 'proposal/scan/scan.js (制約語彙版・推測なし)',
-    common: commonMap ? commonMap.blocks : [],
+    common: [...commonBlocks.values()],
     pages,
   };
 

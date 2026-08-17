@@ -22,7 +22,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../css/base.css">
@@ -497,82 +497,5 @@
 
   <!-- JavaScript -->
   <script src="../js/main.js"></script>
-  <script>
-    // ヒーロースライドショー
-    (function () {
-      const slides = document.querySelectorAll('.hero-slide');
-      const dots = document.querySelectorAll('.hero-dot');
-      let current = 0;
-      let timer;
-
-      function activateSlide(slide) {
-        // scale(1.12) からスタートして scale(1.0) へゆっくり引く
-        slide.style.transition = 'opacity 1.2s ease';
-        slide.style.transform = 'scale(1.12)';
-        slide.offsetHeight; // reflow
-        slide.style.transition = 'opacity 1.2s ease, transform 7s ease-out';
-        slide.style.transform = 'scale(1.0)';
-      }
-
-      function deactivateSlide(slide) {
-        // フェードアウト中はtransformを固定、完了後にリセット
-        const currentScale = getComputedStyle(slide).transform;
-        slide.style.transition = 'opacity 1.2s ease';
-        slide.style.transform = currentScale;
-        setTimeout(() => {
-          slide.style.transition = '';
-          slide.style.transform = 'scale(1.12)';
-        }, 1200);
-      }
-
-      function goTo(index) {
-        const prev = slides[current];
-        prev.classList.remove('is-active');
-        dots[current].classList.remove('is-active');
-        dots[current].setAttribute('aria-selected', 'false');
-        deactivateSlide(prev);
-        current = index;
-        slides[current].classList.add('is-active');
-        dots[current].classList.add('is-active');
-        dots[current].setAttribute('aria-selected', 'true');
-        activateSlide(slides[current]);
-      }
-
-      function next() {
-        goTo((current + 1) % slides.length);
-      }
-
-      function startTimer() {
-        timer = setInterval(next, 5000);
-      }
-
-      // ドットクリックで手動切り替え
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          clearInterval(timer);
-          goTo(i);
-          startTimer();
-        });
-      });
-
-      // 最初のスライドもズームアウト開始
-      activateSlide(slides[0]);
-      startTimer();
-    })();
-
-    // モバイルナビ サブメニューアコーディオン
-    document.querySelectorAll('#js-mobile-nav .mobile-nav__toggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const children = btn.closest('.mobile-nav__parent').nextElementSibling;
-        const isOpen = children.classList.contains('is-open');
-        document.querySelectorAll('#js-mobile-nav .mobile-nav__children').forEach(el => el.classList.remove('is-open'));
-        document.querySelectorAll('#js-mobile-nav .mobile-nav__toggle').forEach(el => el.setAttribute('aria-expanded', 'false'));
-        if (!isOpen) {
-          children.classList.add('is-open');
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-  </script>
 </body>
 </html>

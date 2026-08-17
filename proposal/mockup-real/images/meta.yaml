@@ -94,3 +94,33 @@
 - file: cta-bg.png
   subject: 自然を背景にした CTA 用の帯画像
   usage: 共通CTAバンドの背景（暗いオーバーレイを重ねて使用）
+- file: 2025/03/biotope2.jpg
+  subject: 響灘ビオトープの湿地
+  usage: 活動拠点 一覧のページヘッダー
+- file: 2025/03/genkai.jpg
+  subject: 玄海国定公園の海岸線
+  usage: 自然スポット 一覧のページヘッダー／資源カード
+- file: 2025/03/kanmon.jpg
+  subject: 関門海峡
+  usage: 自然スポット 一覧の資源カード
+- file: 2025/03/n-1-450x450.jpg
+  subject: 山田緑地
+  usage: 自然スポット 一覧の資源カード
+- file: 2026/04/kitakyushu-urban-center.png
+  subject: IGES 北九州アーバンセンタービル
+  usage: 活動拠点 一覧の事務局セクション
+- file: 2026/04/events-hero.png
+  subject: イベントの様子
+  usage: イベント 一覧のページヘッダー
+- file: 2026/04/soraland-hero.png
+  subject: 平尾台カルスト台地の羊群原
+  usage: スポット詳細のヒーロー
+- file: 2026/04/Clap屋外マルシェの様子-450x450.jpg
+  subject: 屋外マルシェの様子
+  usage: イベント 一覧のカード
+- file: 2026/04/平尾台フクロウ-450x450.jpg
+  subject: 平尾台のフクロウ
+  usage: イベント 一覧のカード
+- file: 2026/04/平尾台トゥクトゥク-450x450.jpg
+  subject: 平尾台のトゥクトゥク
+  usage: イベント 一覧のカード

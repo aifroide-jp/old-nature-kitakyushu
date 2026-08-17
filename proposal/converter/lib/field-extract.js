@@ -3,6 +3,7 @@
 const { DERIVABLE_TAGS, TAG_TO_TYPE, VALID_ACF_TYPES } = require('./constants');
 const { phpRaw, phpConcat } = require('./php-util');
 const { resolveHrefExpr } = require('./link-resolve');
+const { normalizeAttrValue } = require('../../shared/site-path');
 
 // data-acf / data-acf-url を持つ要素1個を解析し、
 //   - ACFフィールド定義（name/type/defaultValue）
@@ -151,7 +152,12 @@ function analyzeField(page, $, el, opts, errors) {
       results.fields.push({ name, type: 'image', defaultValue: null });
       const varUrl = `$${name}_url`;
       const varAlt = `$${name}_alt`;
-      const fallbackUrl = `get_template_directory_uri() . '/assets/${src.replace(/^\/?(images\/)?/, 'images/')}'`;
+      // src はページ階層に応じた相対パス（../ や ../../ を含む）。
+      // assets/ 配下の位置に直すには、モックルートからのサイトパスに正規化してから繋ぐ。
+      // 以前は先頭の "images/" を付け直すだけで ../ を無視しており、
+      //   深さ1: assets/images/../images/x.jpg  → URL正規化で偶然通っていた
+      //   深さ2: assets/images/../../images/x.jpg → **サイトルート /images/x.jpg** に落ちて壊れていた
+      const fallbackUrl = `get_template_directory_uri() . '/assets/${normalizeAttrValue(src, page.relPath)}'`;
       const fallbackAlt = JSON.stringify(alt || '').replace(/"/g, "'");
       const phpBlock =
         `<?php $${name} = get_field('${name}'); ` +

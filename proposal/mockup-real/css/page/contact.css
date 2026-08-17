@@ -1,0 +1,20 @@
+/* お問合せ（data-page="page" data-page-id="contact"）。
+   元は contact/index.html のページ内 <style> にあったもの。L11 に従い外出し。 */
+
+.contact-layout { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: start; }
+.contact-sidebar { background: var(--bg-white); border-radius: var(--radius-lg); padding: 32px; box-shadow: 0 2px 12px var(--shadow); position: sticky; top: calc(var(--header-height) + 24px); }
+.contact-sidebar__title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--secondary); }
+.contact-sidebar__item { margin-bottom: 20px; }
+.contact-sidebar__label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.contact-sidebar__value { font-size: 0.9rem; line-height: 1.7; }
+.contact-form-wrap { background: var(--bg-white); border-radius: var(--radius-lg); padding: 40px; box-shadow: 0 2px 12px var(--shadow); }
+.contact-form-wrap__title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 24px; }
+@media (max-width: 768px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .contact-sidebar { position: static; order: -1; }
+  .contact-form-wrap { padding: 24px; }
+}
+  
+
+/* お問合せ内容の入力欄。元は style="min-height: 180px;"（L12 に従いクラスへ） */
+.form-textarea--tall { min-height: 180px; }

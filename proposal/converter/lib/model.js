@@ -120,6 +120,39 @@ function buildModel(pages, errors) {
     }
     page.mainEl = main;
 
+    // --- シェル（doctype〜<head>〜header / footer）を共通に任せるか、自前で持つか ---
+    //
+    // data-common="header" は「**サイトの**ヘッダー」を指す宣言で、共通化の条件は
+    // 「全ページの半数以上で完全一致」（ichiki.md）。イベント申込ページの簡易ヘッダーは
+    // 51枚中4枚しか使わないので、どうやっても common にはならない。
+    // = 共通領域ではなく、そのページのもの。
+    //
+    // 宣言していないページは get_header()/get_footer() を呼ばず、自前の <header>/<footer>
+    // ごと1枚の完結したドキュメントを出す。新しい属性は要らない（markup が既にそう言っている）。
+    page.ownsShell = !$('[data-common="header"]').get(0);
+    if (page.ownsShell) {
+      // <head> と wp_head() は header.php にあるため、ヘッダーを自前で持つなら
+      // フッターも自前でなければドキュメントが閉じられない。片方だけは成立しない。
+      if ($('[data-common="footer"]').get(0)) {
+        errors.add(
+          page.relPath,
+          page.lineOf($('[data-common="footer"]')),
+          'data-common="header" が無いのに data-common="footer" があります(自前のヘッダーを持つページは <head> ごと自前になるため、フッターも自前にしてください)'
+        );
+        continue;
+      }
+      page.ownHeaderEl = $('body > header').get(0) || null;
+      page.ownFooterEl = $('body > footer').get(0) || null;
+      if (!page.ownHeaderEl || !page.ownFooterEl) {
+        errors.add(
+          page.relPath,
+          1,
+          'data-common="header" がありません。自前のシェルを持つページには <body> 直下の <header> と <footer> の両方が必要です'
+        );
+        continue;
+      }
+    }
+
     if (dataPage === 'front') {
       if (model.front) errors.add(page.relPath, 1, `data-page="front" のページが複数あります(先: ${model.front.relPath})`);
       model.front = page;
@@ -291,7 +324,18 @@ function buildModel(pages, errors) {
   function ownFieldsOf(page) {
     const excluded = excludedForFields(page, page.$);
     // loop-item の親要素自体(data-loop)も除外セットに含める必要はない(data-acfを持たないため)
-    return collectFieldsShallow(page, page.$, page.mainEl, errors, excluded, model.linkRegistry);
+    const fields = collectFieldsShallow(page, page.$, page.mainEl, errors, excluded, model.linkRegistry);
+    // 自前シェルのページは <header>/<footer> も main の外にあるので、そこの data-acf も
+    // このページのフィールドとして集める。集め漏らすと**テンプレには出るのに
+    // ACF に登録されないフィールド**が生まれる（同種の取りこぼしを既に踏んでいる）。
+    if (page.ownsShell) {
+      for (const el of [page.ownHeaderEl, page.ownFooterEl]) {
+        for (const f of collectFieldsShallow(page, page.$, el, errors, excluded, model.linkRegistry)) {
+          if (!fields.some((x) => x.name === f.name)) fields.push(f);
+        }
+      }
+    }
+    return fields;
   }
 
   if (model.front) {
