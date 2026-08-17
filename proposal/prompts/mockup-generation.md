@@ -72,9 +72,13 @@ CPT一覧        : spot / center / event / news など
 > **重要**: CPT の詳細ページが**1枚しかなくても** `data-cpt` を書いてください。
 > 宣言が無いと「複数ページの構成が一致するか」で推測するしかなく、1件の CPT は原理的に検出できません。
 
-## 2. セクション宣言【L19】
+## 2. セクション宣言【L19 / L26】
 
-`<section>` には必ず `data-section` を付けます。値は意味のある名前（`front_hero` / `spot_detail` 等）。
+`<section>` には必ず `data-section` を付けます【L26】。値は意味のある名前（`front_hero` / `spot_detail` 等）。
+
+付け忘れても**変換は成功してしまいます**（acf-map.yaml のセクション分けが失われるだけ）。
+モックを見ても生成物を見ても気づけないので、lint が error で止めます。
+`data-common` 配下と、`data-loop-item` / `data-loop-sample` 配下の `<section>` には不要です。
 
 ```html
 <section data-section="spot_detail" class="section section--white">…</section>
@@ -169,7 +173,7 @@ CPT の一覧を出す箇所に付けます。
 - `data-loop` を書いた CPT は、**詳細ページ（`data-page="single"`）を必ず1枚は用意**すること
 - **`data-loop-sample` の中に `data-acf` を書かないでください**【L07】。変換時に丸ごと捨てられるので意味がありません
 
-**無限スクロールのカルーセルを作る場合は `data-loop-repeat` を付けてください。**
+**無限スクロールのカルーセルを作る場合は `data-loop-repeat` を付けてください**【L27】。
 
 ```html
 <div class="track" data-loop="center" data-loop-count="10" data-loop-repeat="2">

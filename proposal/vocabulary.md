@@ -608,6 +608,8 @@ images/
 | L23 | `data-acf-type="wysiwyg"` の中に `data-acf` / `data-acf-url` を書かない（2.6節） | error |
 | L21 | 内部参照（`<link href>` / `<img src>` / `<a href>`）がルート絶対パスでない（外部URL・`mailto:`・`tel:`・`#`アンカーは対象外） | error |
 | L25 | ページ内に処理を書いた `<script>` が無い（`js/` 配下のファイルに分ける。ページ固有なら `js/page/<ページID>.js`。7.1節） | error |
+| L26 | `<section>` に `data-section` がある（`data-common` 配下と `data-loop-item` / `data-loop-sample` 配下は除く）。2.5節 | error |
+| L27 | 同じ中身の子を複数持つ `data-loop` に `data-loop-repeat` がある。宣言がある場合は「子の総数＝異なる中身の数 × 周回数」が成り立つ。3.1節 | error |
 
 ### 9.0 欠番（削除したルール）
 
