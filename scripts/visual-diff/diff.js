@@ -22,7 +22,9 @@ const PAGES        = require('./pages');
 
 // ── 設定 ────────────────────────────────────────────────────────────
 const MOCKUP_ROOT = path.resolve(__dirname, '../..');   // リポジトリルート
-const WP_BASE     = 'http://nature-kitakyushu.local';
+// 比較先。環境変数 NKK_WP_BASE で差し替えられる
+// （検証用に別の Local サイトへ向けるため。既定は従来どおり）
+const WP_BASE     = process.env.NKK_WP_BASE || 'http://nature-kitakyushu.local';
 const MOCKUP_PORT = 18080;
 const MOCKUP_BASE = `http://localhost:${MOCKUP_PORT}`;
 const REPORT_DIR  = path.join(__dirname, 'report');

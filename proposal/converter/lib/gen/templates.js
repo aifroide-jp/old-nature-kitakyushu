@@ -18,6 +18,8 @@ function generateHeaderPhp(model, errors) {
   lines.push('<head>');
   lines.push('<meta charset="UTF-8">');
   lines.push('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+  // モックの <head> にある外部リソース（Web フォント・favicon）。model.js 参照。
+  for (const l of model.headLinks || []) lines.push(l);
   lines.push('<?php wp_head(); ?>');
   lines.push('</head>');
   lines.push('<body <?php body_class(); ?>>');
@@ -144,6 +146,8 @@ function wrapOwnShellPage(model, page, pageId, innerHtml, errors) {
   lines.push('<head>');
   lines.push('<meta charset="UTF-8">');
   lines.push('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+  // モックの <head> にある外部リソース（Web フォント・favicon）。model.js 参照。
+  for (const l of model.headLinks || []) lines.push(l);
   lines.push('<?php wp_head(); ?>');
   lines.push('</head>');
   lines.push('<body <?php body_class(); ?>>');

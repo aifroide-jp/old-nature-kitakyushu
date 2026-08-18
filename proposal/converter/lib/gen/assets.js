@@ -39,6 +39,16 @@ function copyAssets(mockupDir, outDir, errors) {
     copyDirRecursive(jsSrc, path.join(outDir, 'assets', 'js'));
   }
 
+  // ルート直下の単体アセット（favicon 等）。<head> の <link> が参照するので、
+  // 拾わないと WordPress 側で 404 になる（実測: favicon.svg が丸ごと落ちていた）。
+  for (const name of fs.readdirSync(mockupDir)) {
+    if (!/^favicon\./i.test(name)) continue;
+    const src = path.join(mockupDir, name);
+    if (!fs.statSync(src).isFile()) continue;
+    fs.mkdirSync(path.join(outDir, 'assets'), { recursive: true });
+    fs.copyFileSync(src, path.join(outDir, 'assets', name));
+  }
+
   if (!fs.existsSync(imagesSrc)) {
     errors.add('(assets)', null, 'images/ ディレクトリが見つかりません');
   } else {

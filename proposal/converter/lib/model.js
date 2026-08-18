@@ -423,6 +423,39 @@ function buildModel(pages, errors) {
       );
     }
   }
+  // <head> の外部リソース（Web フォント・favicon）。
+  //
+  // header.php は固定の雛形で <head> を組んでいるため、モックが書いている <link> を
+  // 引き継がないと**丸ごと落ちる**。実測: Noto Sans JP が読み込まれず、
+  // サイト全体が OS の代替書体で描画されていた。favicon も消えていた。
+  // CSS だけ enqueue していたので、生成物を見ても気づきにくい。
+  //
+  // 共通領域と同じ扱いで、全ページ共通のものだけを拾う（ページ固有の CSS は enqueue 側の責務）。
+  {
+    const ref = model.front || pages.find((p) => p.dataPage);
+    model.headLinks = [];
+    if (ref) {
+      ref.$('head link').each((_, el) => {
+        const $el = ref.$(el);
+        const rel = ($el.attr('rel') || '').toLowerCase();
+        const href = $el.attr('href') || '';
+        // ページ別 CSS は enqueue が担当するので除く。外部 CSS と favicon 系だけ持つ。
+        if (rel === 'stylesheet' && !/^(https?:)?\/\//i.test(href)) return;
+        let html = ref.$.html($el).trim();
+        // モック内のファイル（favicon 等）への相対パスは、そのままだと WordPress で 404。
+        // assets/ に置かれるのでテーマ URI に直す。
+        if (href && !/^(https?:)?\/\//i.test(href)) {
+          const file = href.replace(/^\.?\//, '');
+          html = html.replace(
+            `href="${href}"`,
+            `href="<?php echo esc_url( get_template_directory_uri() . '/assets/${file}' ); ?>"`
+          );
+        }
+        model.headLinks.push(html);
+      });
+    }
+  }
+
   model.skipLinkHtml = skipLinkRawHtml || null;
 
   errors.throwIfAny();
