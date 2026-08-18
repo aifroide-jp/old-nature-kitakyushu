@@ -62,14 +62,45 @@ function buildLinkRegistry(pages) {
     if (p.dataPage === 'front') descriptor = { kind: 'front' };
     else if (p.dataPage === 'page') descriptor = { kind: 'page', pageId: p.pageId };
     else if (p.dataPage === 'archive') descriptor = { kind: 'archive', cpt: p.cpt };
+    // data-page-variant のページは「同じ投稿の別テンプレート」であり、
+    // 独立した投稿ではない。URL は /<投稿のパーマリンク>/<variant>/（functions.php の
+    // add_rewrite_endpoint）なので、single とは別の descriptor にする。
+    else if (p.dataPage === 'single' && p.variant) descriptor = { kind: 'variant', cpt: p.cpt, variant: p.variant };
     else if (p.dataPage === 'single') descriptor = { kind: 'single', cpt: p.cpt };
     registry.set(sitePath, descriptor);
   }
   return registry;
 }
 
-function phpForDescriptor(descriptor) {
+// モックのサイトパスを WordPress の URL の形に直す。
+//   events/sample.html      → /events/sample/
+//   about/spots/auma.html   → /about/spots/auma/
+//   network/cases/          → /network/cases/
+// 拡張子を落として前後にスラッシュを付けるだけ。推測は入らない。
+function sitePathToWpPath(sitePath) {
+  let p = (sitePath || '').replace(/\.html$/, '').replace(/^\/+|\/+$/g, '');
+  return p === '' ? '/' : `/${p}/`;
+}
+
+// loopCpt: ループ項目の中を描画しているとき、そのループが指す CPT。
+//
+// ループの中では「どの投稿か」が周回ごとに変わる。モックには具体的な1件への
+// リンクが書いてあるが（カード全体が <a> でその投稿を指す形）、それを
+// 特定の投稿の URL に固定すると **全カードが同じ行き先になる**。
+// 実測: /events/ /center/ /about/spots/ の一覧が全滅していた（8枚・10枚・9枚すべて同一URL）。
+//
+// リンク解決は「モックのパス → 特定ページの URL」として作られており、
+// ループ機能とは別々に実装されて交差する箇所が設計されていなかった。
+function phpForDescriptor(descriptor, loopCpt) {
+  // そのループが出している CPT の詳細ページを指すリンクは、その周回の投稿へ。
+  if (loopCpt && descriptor.kind === 'single' && descriptor.cpt === loopCpt) {
+    return 'esc_url( get_permalink() )';
+  }
   switch (descriptor.kind) {
+    case 'variant':
+      // 文脈の投稿が決まらない場所（固定ページ等）からの variant リンク。
+      // 詳細ページと同じ「代表1件」の解決に揃える。
+      return `esc_url( trailingslashit( nkk_get_single_permalink( 'nkk_${descriptor.cpt}' ) ) . '${descriptor.variant}/' )`;
     case 'front':
       return "esc_url( home_url( '/' ) )";
     case 'page':
@@ -87,7 +118,7 @@ function phpForDescriptor(descriptor) {
 // パススルー対象(#/mailto:/tel:/外部URL)は null を返す。解決できない場合は errors に積んで
 // undefined を返す(フォールバックしない。呼び出し側は undefined を「編集しない」で扱ってよいが、
 // これはエラーが既に記録された結果であり、最終的に非ゼロ終了する)。
-function resolveHrefExpr(page, line, href, linkRegistry, errors) {
+function resolveHrefExpr(page, line, href, linkRegistry, errors, loopCpt) {
   const cls = classifyHref(href, page.relPath);
 
   if (cls.kind === 'anchor' || cls.kind === 'scheme' || cls.kind === 'external') {
@@ -99,26 +130,66 @@ function resolveHrefExpr(page, line, href, linkRegistry, errors) {
     return undefined;
   }
 
+  // レジストリは引くが、ループ内の一般リンクでは行き先を採用しない（下記参照）。
+  // variant 判定にだけ必要なので先に引く。
   const descriptor = linkRegistry.get(cls.sitePath);
+
+  // variant ページ（data-page-variant）へのリンクは「同じ投稿の別テンプレート」への遷移。
+  //
+  // モックには具体的な1件（例 events/summer-camp-apply.html）が書いてあるが、これは
+  // モックを開いて申込ページへ回遊できるようにするためのもので、行き先の投稿を
+  // 決めているわけではない。イベント詳細に置かれた「申し込む」は、常に
+  // **そのイベント自身の申込ページ**を指す。
+  //
+  // 実測: ここが無かったとき href="http://hiraodai-kansatsukai-apply.html" が出ていた
+  // （モックの相対パスが ACF の初期値として本番に出て、esc_url がドメイン扱いした）。
+  const contextCpt = loopCpt || (page.dataPage === 'single' ? page.cpt : null);
+  if (descriptor && descriptor.kind === 'variant' && descriptor.cpt === contextCpt) {
+    return `esc_url( trailingslashit( get_permalink() ) . '${descriptor.variant}/' )`;
+  }
+
+  // ループ項目の中の内部リンクは、その周回の投稿へ。
+  //
+  // モックには具体的な1件へのリンクが書いてある（カード全体が <a> でその投稿を指す形）が、
+  // ループの中では「どの投稿か」は周回が決めるので、**書いてある行き先を調べる意味がない**。
+  // レジストリの中身に関わらず確定させる。書いていないページを指していても解決できる。
+  //
+  // 実測: この分岐が無かったとき /events/ /center/ /about/spots/ の一覧が全滅していた
+  // （8枚・10枚・9枚のカードが全部同じ URL）。しかも未解決リンクだったため
+  // 「行き先が無い」という別の警告に紛れて、一覧が壊れていることに気づけなかった。
+  if (loopCpt) {
+    return 'esc_url( get_permalink() )';
+  }
+
   if (!descriptor) {
     const msg = `href="${href}" はモック内のどのページにも解決できません(サイトパス "${cls.sitePath || '/'}" 相当のページが存在しません)`;
     if (errors.allowUnresolvedLinks) {
-      // 一時的なエスケープハッチ。null を返すと href をそのまま残す（外部URL等と同じ扱い）。
-      errors.warn(page.relPath, line, msg + ' → href をそのまま残しました');
-      return null;
+      // 一時的なエスケープハッチ。
+      //
+      // ただし **モックの生パスをそのまま残してはいけない。**
+      // "network/cases/mine.html" のような .html 付きの URL は、
+      // パーマリンク設定が何であれ WordPress では必ず 404 になる。
+      // 行き先が無いことと、URL の形が不正であることは別の問題であり、
+      // 後者まで持ち込むと「ページを作れば直る」状態ですらなくなる。
+      //
+      // 解決できなくても **WordPress 形の URL は決まる**（モックのパスから機械的に導ける）。
+      // その形で出しておけば、対応するページを作った時点でそのまま繋がる。
+      const wpPath = sitePathToWpPath(cls.sitePath);
+      errors.warn(page.relPath, line, msg + ` → WordPress 形の URL(${wpPath}) にしました。行き先はまだありません`);
+      return `esc_url( home_url( '${wpPath}' ) )`;
     }
     errors.add(page.relPath, line, msg);
     return undefined;
   }
 
-  return phpForDescriptor(descriptor);
+  return phpForDescriptor(descriptor, loopCpt);
 }
 
 // 固定リンク <a>（data-acf-url の無いもの）の href を解決し、EditList 用の編集を返す。
 // テンプレート本体(直接PHPが実行される文脈)専用。CF7フォーム本文(文字列として保存される
 // 文脈)では使えない -> lib/gen/cf7.js は resolveHrefExpr を直接使う。
-function resolveFixedHref(page, hrefLoc, href, linkRegistry, errors) {
-  const phpExpr = resolveHrefExpr(page, hrefLoc.startLine, href, linkRegistry, errors);
+function resolveFixedHref(page, hrefLoc, href, linkRegistry, errors, loopCpt) {
+  const phpExpr = resolveHrefExpr(page, hrefLoc.startLine, href, linkRegistry, errors, loopCpt);
   if (!phpExpr) return null;
   return { start: hrefLoc.startOffset, end: hrefLoc.endOffset, replacement: `href="<?php echo ${phpExpr}; ?>"` };
 }

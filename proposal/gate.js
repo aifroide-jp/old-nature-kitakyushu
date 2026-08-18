@@ -31,19 +31,36 @@ const mockupDir = argv.find((a) => !a.startsWith('--')) || path.join(ROOT, 'mock
 
 const themeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'nkk-gate-theme-'));
 
+// 検査には2種類ある。
+//
+//   連鎖（blocking）: 前段が壊れると後段の結果が無意味になるもの。
+//                     lint → scan → 変換 → 生成物の検証。ここは落ちたら止める。
+//   独立（blocking:false）: 他の検査の前提にならないもの。a11y とピクセル比較。
+//                     コントラスト比が悪くても変換は正しく動く。
+//
+// 以前は全部を同列に止めていたため、a11y が落ちるとテーマが生成されなかった。
+// 依存していないものを止めるのは、ゲートの設計としてただの誤りだった。
+// 独立した検査の失敗は記録して続行するが、**最終的な終了コードは非ゼロ**にする。
 const steps = [];
 function step(name, cmd, args, opts = {}) {
-  steps.push({ name, cmd, args, ...opts });
+  steps.push({ name, cmd, args, blocking: true, ...opts });
 }
 
 // 1. ルール自体が健全か（語彙・lint・プロンプトの3者が揃っているか）
 step('ルール同期', 'node', [path.join(ROOT, 'check-rule-sync.js')]);
 
 // 2. モックが規約に適合しているか
-step('lint', 'node', [path.join(ROOT, 'lint', 'lint.js'), mockupDir]);
+step('lint', 'node', [
+  path.join(ROOT, 'lint', 'lint.js'),
+  mockupDir,
+  // L30 の「行き先がモックにありません」は変換器の未解決リンクと同じ事実なので、
+  // 片方だけ止めると「lint は通らないが変換は通る」というちぐはぐな状態になる。
+  ...(allowUnresolved ? ['--allow-unresolved-links'] : []),
+]);
 
 // 3. アクセシビリティ（モック段階で通す）
-step('a11y', 'node', [path.join(ROOT, 'a11y', 'check.js'), mockupDir]);
+// 変換は色に依存しないので、落ちても後段は続行する。
+step('a11y', 'node', [path.join(ROOT, 'a11y', 'check.js'), mockupDir], { blocking: false });
 
 // 4. テキストの取りこぼしがゼロか／acf-map.yaml が出るか
 step('scan', 'node', [
@@ -61,6 +78,10 @@ step(
     mockupDir,
     themeDir,
     ...(allowUnresolved ? ['--allow-unresolved-links'] : []),
+    // scan が出した acf-map.yaml と突き合わせる。
+    // scan と convert は同じモックを読む独立した2実装なので、読みが割れたら
+    // どちらかにバグがある。ここで止めないと、その事実が消える。
+    '--acf-map', path.join(ROOT, 'scan', 'out-gate', 'acf-map.yaml'),
   ]
 );
 
@@ -72,7 +93,9 @@ step('構造忠実性', 'node', [path.join(ROOT, 'converter', 'verify-structure.
 step('php -l', null, null, { php: true });
 
 // 8. 見た目（既定では走らせない。--visual で有効化）
-if (withVisual) step('ピクセル比較', 'node', [path.join(ROOT, 'visual-check', 'compare.js')]);
+if (withVisual) {
+  step('ピクセル比較', 'node', [path.join(ROOT, 'visual-check', 'compare.js')], { blocking: false });
+}
 
 function runPhpLint() {
   const probe = spawnSync('php', ['-v'], { encoding: 'utf8' });
@@ -105,6 +128,9 @@ function main() {
   }
   console.log('');
 
+  const failures = [];
+  let stoppedAt = null;
+
   for (const s of steps) {
     const r = s.php
       ? runPhpLint()
@@ -114,21 +140,40 @@ function main() {
         })();
 
     if (r.status !== 0) {
-      console.log(`✗ ${s.name}`);
-      console.log('');
-      console.log(r.output.trimEnd());
-      console.log('');
-      console.log(`ここで停止しました。${s.name} を通してから再実行してください。`);
-      process.exit(1);
+      failures.push({ name: s.name, output: r.output, blocking: s.blocking });
+      if (s.blocking) {
+        console.log(`✗ ${s.name}  ← ここで停止（後段はこの結果に依存するため）`);
+        stoppedAt = s.name;
+        break;
+      }
+      console.log(`✗ ${s.name}  （変換はこれに依存しないので続行）`);
+      continue;
     }
     const tail = r.skipped ? `（${r.skipped}）` : r.note ? `（${r.note}）` : '';
     console.log(`✓ ${s.name}${tail}`);
   }
 
   console.log('');
-  console.log(`全ゲート通過。生成テーマ: ${themeDir}`);
-  if (!withVisual) console.log('※ ピクセル比較は未実行です（--visual で実行）。');
-  process.exit(0);
+
+  if (failures.length === 0) {
+    console.log(`全ゲート通過。生成テーマ: ${themeDir}`);
+    if (!withVisual) console.log('※ ピクセル比較は未実行です（--visual で実行）。');
+    process.exit(0);
+  }
+
+  for (const f of failures) {
+    console.log(`===== ${f.name} の出力 =====`);
+    console.log(f.output.trimEnd());
+    console.log('');
+  }
+
+  if (stoppedAt) {
+    console.log(`${stoppedAt} で停止しました。テーマは生成していません。`);
+  } else {
+    console.log(`テーマは生成しました: ${themeDir}`);
+    console.log(`ただし ${failures.map((f) => f.name).join(' / ')} が失敗しています。`);
+  }
+  process.exit(1);
 }
 
 main();

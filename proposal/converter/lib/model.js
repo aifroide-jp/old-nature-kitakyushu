@@ -79,7 +79,8 @@ function buildModel(pages, errors) {
     pages,
     front: null,
     pageMap: new Map(), // pageId -> { page, fields }
-    cptMap: new Map(), // cpt -> { archivePage, singlePages: [], fields, canonicalSingle }
+    cptMap: new Map(),
+    navShapes: new Map(), // cpt -> { archivePage, singlePages: [], fields, canonicalSingle }
     commonMap: new Map(), // name -> { el, page, html, fields }
     navMap: new Map(), // name -> { el, page, html }（テンプレート抽出に使う最初の出現）
     navCompare: new Map(), // "name#出現順" -> { page, html, line }（ページ間の食い違い検出用）
@@ -108,6 +109,14 @@ function buildModel(pages, errors) {
       errors.add(page.relPath, page.lineOf($(body)), 'data-page="page" ですが data-page-id がありません');
       continue;
     }
+    // data-page-variant: 同じ CPT の「もう1つのテンプレート」（vocabulary.md 1.1）。
+    // 申込ページのように、投稿1件につき別 URL・別テンプレートが要る場合に使う。
+    // CPT も管理画面のメニューも増えない。投稿を作れば自動で両方できる。
+    page.variant = $(body).attr('data-page-variant') || null;
+    if (page.variant && dataPage !== 'single') {
+      errors.add(page.relPath, 1, 'data-page-variant は data-page="single" にのみ書けます');
+    }
+
     if ((dataPage === 'archive' || dataPage === 'single') && !page.cpt) {
       errors.add(page.relPath, page.lineOf($(body)), `data-page="${dataPage}" ですが data-cpt がありません`);
       continue;
@@ -168,7 +177,15 @@ function buildModel(pages, errors) {
       model.cptMap.set(page.cpt, entry);
     } else if (dataPage === 'single') {
       const entry = model.cptMap.get(page.cpt) || { archivePage: null, singlePages: [], fields: null };
-      entry.singlePages.push(page);
+      if (!entry.variantPages) entry.variantPages = new Map();
+      if (page.variant) {
+        if (entry.variantPages.has(page.variant)) {
+          errors.add(page.relPath, 1, `data-cpt="${page.cpt}" の data-page-variant="${page.variant}" が重複しています`);
+        }
+        entry.variantPages.set(page.variant, page);
+      } else {
+        entry.singlePages.push(page);
+      }
       model.cptMap.set(page.cpt, entry);
     }
   }
@@ -199,7 +216,8 @@ function buildModel(pages, errors) {
     // 同じメニューを複数の位置に出すのは正しい書き方(vocabulary.md 5章)で、位置ごとに
     // 見せ方が違えば内容も違う。lint L09 と同じ規則にしてある(片方だけ直すとズレる)。
     let navIndex = 0;
-    const pageFirstNav = new Map(); // このページで最初に出た同名 nav
+    // data-nav の値 → その値で使われている形の一覧（同じ内容の形は1つにまとめる）
+  const pageNavShapes = model.navShapes; // このページで最初に出た同名 nav
     for (const el of findAll($('body').get(0), $, 'data-nav')) {
       const name = $(el).attr('data-nav');
       const html = normalizeOuterForCompare(outerHtml(page, el), page.relPath);
@@ -220,22 +238,17 @@ function buildModel(pages, errors) {
         );
       }
 
-      // 同じ値を「同じページの複数の位置」に置き、内容が違う場合の扱いは未定義。
-      // 「1つのツリーをどこから決めるか」が決まっていないため(vocabulary.md 5.2)、
-      // 片方の形を勝手に採用せず停止する。
-      // ページ間の食い違いは上の navCompare で見るので、ここでは同一ページ内だけを見る。
-      const firstInPage = pageFirstNav.get(name);
-      if (!firstInPage) {
-        pageFirstNav.set(name, { el, html });
-      } else if (firstInPage.html !== html) {
-        errors.add(
-          page.relPath,
-          page.lineOf($(el)),
-          `data-nav="${name}" が複数の位置にあり、内容が異なります。` +
-            `同じメニューを違う見せ方で複数箇所に出す仕組みは未定義です(vocabulary.md 5.2)。` +
-            `値を分けるか、どちらの形を採るかを決めてください`
-        );
-      }
+      // 同じ値を同じページの複数の位置に置くのは**正しい書き方**。
+      //
+      // レスポンシブでは、同じメニューを PC 用とモバイル用で別のマークアップで
+      // 出すのが普通である（実測: header__nav 25項目 と mobile-nav 26項目が同じ中身）。
+      // これを別々のメニュー位置にすると、お客様が同じ項目を2箇所で管理することになり、
+      // 片方だけ直せば黙って食い違う。**見せ方が2つあるだけで、メニューは1つ。**
+      //
+      // 形（マークアップ）はモックから機械生成できるので、同じ位置に複数の形を持たせる。
+      const shapes = pageNavShapes.get(name) || [];
+      if (!shapes.some((sh) => sh.html === html)) shapes.push({ el, html, page });
+      pageNavShapes.set(name, shapes);
     }
     for (const el of findAll($('body').get(0), $, 'data-cf7')) {
       const name = $(el).attr('data-cf7');
@@ -256,6 +269,16 @@ function buildModel(pages, errors) {
     const canonicalFields = collectFieldsShallow(canonical, canonical.$, canonical.mainEl, errors, excluded, model.linkRegistry);
     entry.fields = canonicalFields;
     entry.canonicalSingle = canonical;
+
+    // variant は「同じ投稿の別テンプレート」なので、詳細ページと同じフィールドを持たない。
+    // 構造一致は求めず、フィールドを CPT の集合へ合流させる
+    // （合流させないと ACF に登録されず、variant テンプレートが常に空を出す）。
+    for (const [vname, vpage] of entry.variantPages || []) {
+      const vExcluded = excludedForFields(vpage, vpage.$);
+      const vFields = collectFieldsShallow(vpage, vpage.$, vpage.mainEl, errors, vExcluded, model.linkRegistry);
+      const known = new Set(entry.fields.map((f) => f.name));
+      for (const f of vFields) if (!known.has(f.name)) entry.fields.push(f);
+    }
 
     for (const other of entry.singlePages.slice(1)) {
       const otherExcluded = excludedForFields(other, other.$);
@@ -357,6 +380,17 @@ function buildModel(pages, errors) {
   for (const [name, entry] of model.navMap) {
     const info = analyzeNavStructure(entry.page, entry.page.$, entry.el, errors);
     if (info) model.navInfo.set(name, info);
+  }
+  // 同じメニュー位置の「別の見せ方」。形ごとにウォーカーを作る。
+  model.navVariants = new Map();
+  for (const [name, shapes] of model.navShapes) {
+    if (shapes.length < 2) continue;
+    const list = [];
+    shapes.forEach((sh, i) => {
+      const info = analyzeNavStructure(sh.page, sh.page.$, sh.el, errors);
+      if (info) list.push({ index: i, el: sh.el, info });
+    });
+    model.navVariants.set(name, list);
   }
 
   errors.throwIfAny();

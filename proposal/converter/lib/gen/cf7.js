@@ -7,6 +7,17 @@
 const { EditList } = require('../edits');
 const { resolveHrefExpr } = require('../link-resolve');
 const { DECLARATION_ATTRS } = require('../constants');
+const { TAG_TO_TYPE } = require('../../../shared/constants');
+
+// フォーム本文の中に置かれた data-acf の値の出どころ（field_<scope>_<name> の <scope>）。
+// acf.js のグループslug規則と同じ。
+function scopeSlugForPage(page) {
+  if (page.dataPage === 'front') return 'front';
+  if (page.dataPage === 'page') return page.pageId;
+  if (page.dataPage === 'single') return page.cpt;
+  if (page.dataPage === 'archive') return `${page.cpt}_archive`;
+  return null;
+}
 
 // 構造宣言の data-* だけを洗い出す。
 // サイト自身の JS が使う data-*（例: イベント一覧のフィルタが読む data-type /
@@ -272,6 +283,9 @@ function buildCf7FormBody(page, model, formEl, errors) {
   const raw = page.html.slice(base, loc.endTag.startOffset);
   const editList = new EditList(raw);
   const varDecls = [];
+  const groups = new Map();        // グループ名 -> { field, value }
+  const dynamicValues = new Map(); // CF7フィールド名 -> post_slug|post_title|post_id
+  const acfSlots = new Map();      // ACFフィールドキー -> 型（フォーム本文内の data-acf）
   let varSeq = 0;
 
   function addAbs(start, end, replacement) {
@@ -296,10 +310,55 @@ function buildCf7FormBody(page, model, formEl, errors) {
     const attrs = node.attribs || {};
     const nloc = node.sourceCodeLocation;
 
+    // data-cf7-group: 条件に合う投稿のときだけ出すブロック（vocabulary.md 6.2）。
+    // CF7 のフォーム本文は静的な文字列なので、ここでは HTML コメントの目印だけを埋め込み、
+    // 実際の出し分けは inc/cf7-dynamic.php のフィルタが表示時に行う。
+    // コメントは CF7 のレンダリング結果にそのまま残るので、フィルタ側で範囲を特定できる。
+    if ('data-cf7-group' in attrs) {
+      const g = attrs['data-cf7-group'];
+      const cond = attrs['data-cf7-group-if'] || '';
+      const eq = cond.indexOf('=');
+      groups.set(g, { field: cond.slice(0, eq), value: cond.slice(eq + 1) });
+      addAbs(nloc.startOffset, nloc.startOffset, `<!--nkk-group:${g}-->`);
+      if (nloc.endTag) addAbs(nloc.endTag.endOffset, nloc.endTag.endOffset, `<!--/nkk-group:${g}-->`);
+    }
+
     if ('data-cf7-field' in attrs) {
+      // data-cf7-value: hidden の値を投稿から入れる。フォーム本文には既定値を書かず、
+      // フィルタが描画時に差し込む（フォームを1つに保つための仕組み）。
+      if ('data-cf7-value' in attrs) {
+        dynamicValues.set(attrs['data-cf7-field'], attrs['data-cf7-value']);
+      }
       const tagText = fieldTagFor(page, $, node, errors);
       if (tagText !== null) addAbs(nloc.startOffset, nloc.endOffset, tagText);
       return;
+    }
+
+    // data-acf: フォーム本文の中の編集対象テキスト。
+    //
+    // CF7 のフォーム本文は**文字列として保存される**ので PHP を埋め込めない。
+    // 目印だけ入れて、表示時に inc/cf7-dynamic.php のフィルタが値を差し込む
+    // （data-cf7-group と同じ仕掛け）。
+    //
+    // これが無かったとき、フォーム内の data-acf はモックの文言がベタ書きで焼き込まれ、
+    // ACF には登録されるのに編集しても何も変わらない**死んだフィールド**になっていた
+    // （実測: optin_title / optin_note / submit_note の3件）。
+    const acfName = attrs['data-acf'];
+    if (acfName && nloc.startTag && nloc.endTag) {
+      const scope = scopeSlugForPage(page);
+      if (!scope) {
+        errors.add(page.relPath, nloc.startLine, `data-acf="${acfName}" のフィールドキーを決められません（ページ種別が不明）`);
+      } else {
+        const type = attrs['data-acf-type'] || TAG_TO_TYPE[(node.name || '').toLowerCase()] || 'text';
+        if (type === 'image') {
+          errors.add(page.relPath, nloc.startLine, `data-acf="${acfName}": フォーム本文の中では image 型を扱えません`);
+        } else {
+          acfSlots.set(`field_${scope}_${acfName}`, type);
+          stripAllDataAttrs(node);
+          addAbs(nloc.startTag.endOffset, nloc.endTag.startOffset, `<!--nkk-acf:field_${scope}_${acfName}:${type}-->`);
+          return; // 中身は差し込みで置き換わる
+        }
+      }
     }
 
     stripAllDataAttrs(node);
@@ -323,7 +382,7 @@ function buildCf7FormBody(page, model, formEl, errors) {
 
   for (const c of formEl.children || []) visit(c);
 
-  return { body: editList.apply().trim(), varDecls };
+  return { body: editList.apply().trim(), varDecls, groups, dynamicValues, acfSlots };
 }
 
 // inc/seed-cf7.php: WPCF7_ContactForm::get_template()+set_properties() でフォームを作成する。
@@ -332,6 +391,15 @@ function generateSeedCf7Php(model, errors) {
   for (const [name, entry] of model.forms) {
     const body = buildCf7FormBody(entry.page, model, entry.el, errors);
     forms.push({ name, body });
+    // フィルタ生成側が使えるように、フォームごとの動的情報を model に残す。
+    if (!model.cf7Dynamic) model.cf7Dynamic = new Map();
+    if (body.groups.size || body.dynamicValues.size || body.acfSlots.size) {
+      model.cf7Dynamic.set(name, {
+        groups: body.groups,
+        dynamicValues: body.dynamicValues,
+        acfSlots: body.acfSlots,
+      });
+    }
   }
 
   const lines = [];

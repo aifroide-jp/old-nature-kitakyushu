@@ -63,6 +63,15 @@ function mockClassesForPage(html) {
   // vocabulary.md 3章: data-loop-sample は変換器が丸ごと破棄するダミー。
   // 実際の変換結果に忠実に比較するため、集計前に DOM から取り除く。
   $('[data-loop-sample]').remove();
+  // data-cf7-field を宣言した要素は、CF7 のフォームタグ1つに丸ごと置き換わる(6章)。
+  // 宣言した要素自身の class / id はタグオプション(class:xxx)として引き継がれるが、
+  // **中のマークアップは CF7 が自前で組む**ため残らない。
+  // 実測: <div class="radio-group" data-cf7-field="transport"> の中の
+  // <label class="radio-label"> が該当。CLAUDE.md が「モックと1:1にならない唯一の例外」
+  // として記録しているのがこれ。
+  // ここも data-loop-sample と同じく、除外リストを持つのではなく変換器の挙動を模倣する
+  // （同じ class がフォームの外でも使われていれば、除外されず欠落として報告される）。
+  $('[data-cf7-field]').each((_, el) => $(el).children().remove());
   const set = new Set();
   $('[class]').each((_, el) => {
     const val = $(el).attr('class');
@@ -90,6 +99,11 @@ function templateFilesFor(attrs, templatePartFiles, incFiles) {
     return [...common, `page-${attrs['data-page-id']}.php`];
   }
   if (dataPage === 'single' && attrs['data-cpt']) {
+    // data-page-variant は同じ投稿の別テンプレート。出力先は single-<cpt>-<variant>.php で、
+    // 詳細ページ本体とは中身が違う（見ないと、変換されているのに「欠落」と誤検出する）。
+    if (attrs['data-page-variant']) {
+      return [...common, `single-${CPT_PREFIX}${attrs['data-cpt']}-${attrs['data-page-variant']}.php`];
+    }
     return [...common, `single-${CPT_PREFIX}${attrs['data-cpt']}.php`];
   }
   if (dataPage === 'archive' && attrs['data-cpt']) {

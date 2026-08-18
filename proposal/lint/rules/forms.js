@@ -64,6 +64,47 @@ function run(page) {
     }
   });
 
+  // L29: 1フォームを複数投稿で使い回すための宣言（vocabulary.md 6.2節）
+  //
+  // 投稿ごとにフォームを作ると CF7 のフォームが投稿数に比例して増え、
+  // 送信先・自動返信・メール本文を1件ずつ管理することになって運用が破綻する
+  // （実測: イベント4件で申込フォームが4件生成されていた）。
+  const VALID_CF7_VALUE = ['post_slug', 'post_title', 'post_id'];
+
+  $('[data-cf7-group]').each((_, el) => {
+    const $el = $(el);
+    const line = page.attrLineOf($el, 'data-cf7-group');
+    const name = $el.attr('data-cf7-group');
+
+    if ($el.closest('[data-cf7]').length === 0) {
+      issues.push(mk(page, 'L29', 'error', line, `data-cf7-group="${name}" が data-cf7 フォームの外にあります`));
+    }
+    const cond = $el.attr('data-cf7-group-if');
+    if (cond === undefined) {
+      issues.push(
+        mk(page, 'L29', 'error', line, `data-cf7-group="${name}" に data-cf7-group-if がありません(どの投稿で出すかが決まりません)`)
+      );
+    } else if (!/^[a-z][a-z0-9_]*=.+$/.test(cond)) {
+      issues.push(
+        mk(page, 'L29', 'error', line, `data-cf7-group-if="${cond}" は <ACFフィールド名>=<値> の形で書いてください`)
+      );
+    }
+  });
+
+  $('[data-cf7-value]').each((_, el) => {
+    const $el = $(el);
+    const line = page.attrLineOf($el, 'data-cf7-value');
+    const v = $el.attr('data-cf7-value');
+    if ($el.closest('[data-cf7]').length === 0) {
+      issues.push(mk(page, 'L29', 'error', line, `data-cf7-value="${v}" が data-cf7 フォームの外にあります`));
+    }
+    if (!VALID_CF7_VALUE.includes(v)) {
+      issues.push(
+        mk(page, 'L29', 'error', line, `data-cf7-value="${v}" は無効です(有効値: ${VALID_CF7_VALUE.join(' / ')})`)
+      );
+    }
+  });
+
   return issues;
 }
 

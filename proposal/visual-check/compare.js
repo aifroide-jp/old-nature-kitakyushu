@@ -21,7 +21,16 @@ const PORT = 18099;
 const OUT = path.join(__dirname, 'out');
 
 // 比較対象: [ラベル, 既存モック, 制約版]
-const PAIRS = [['index', 'index.html', 'proposal/mockup-real/index.html']];
+// index だけを見ていたため、他ページのタグを変えても検出できなかった。
+// L31（wysiwyg を <p> に宣言しない）の対応で <p> を <div> に変えたページは、
+// 既定マージンが変わりうるので比較対象に含める。
+const PAIRS = [
+  ['index', 'index.html', 'proposal/mockup-real/index.html'],
+  ['contact', 'contact/index.html', 'proposal/mockup-real/contact/index.html'],
+  ['events-index', 'events/index.html', 'proposal/mockup-real/events/index.html'],
+  ['events-sample', 'events/sample.html', 'proposal/mockup-real/events/sample.html'],
+  ['events-apply', 'events/summer-camp-apply.html', 'proposal/mockup-real/events/summer-camp-apply.html'],
+];
 
 // アニメーション・スライドショーで無関係な差分が出るのを止める。
 // 見た目の等価性を見たいのであって、タイミングを見たいのではない。

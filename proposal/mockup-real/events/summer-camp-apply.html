@@ -29,7 +29,7 @@
 
   <link rel="stylesheet" href="../css/page/events_summer_camp_apply.css">
 </head>
-<body data-page="page" data-page-id="events_summer_camp_apply">
+<body data-page="single" data-cpt="event" data-page-variant="apply">
   <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
 
   <!-- ヘッダー（シンプル版） -->
@@ -61,10 +61,10 @@
       <div class="container container--narrow-860">
 
         <h1 class="apply-page__title" data-acf="apply_title">参加申し込みフォーム</h1>
-        <p class="apply-page__note" data-acf="apply_note" data-acf-type="wysiwyg">
+        <div class="apply-page__note" data-acf="apply_note" data-acf-type="wysiwyg">
           <span class="apply-page__required-mark">*必須</span> の項目はすべてご入力ください。<br>
           送信後、ご登録のメールアドレスに受付確認メールをお送りします（数分以内）。
-        </p>
+        </div>
 
         <!-- ① 応募イベント確認カード -->
         <div class="apply-event-card">
@@ -72,7 +72,7 @@
           <div>
             <span class="apply-event-card__label" data-acf="event_status" data-acf-type="text">● 募集中</span>
             <div class="apply-event-card__title" data-acf="event_title" data-acf-type="wysiwyg">夏休み自然体験キャンプ<br>― 2泊3日で学ぶ北九州の自然</div>
-            <div class="apply-event-card__date" data-acf="event_meta" data-acf-type="wysiwyg">
+            <div class="apply-event-card__date" data-acf="event_meta" data-acf-type="textarea">
               📅 2026年7月26日(土)〜28日(月)　2泊3日　／　定員20名　／　参加費：5,000円<br>
               📍 畑貯水池周辺キャンプ場（北九州市八幡西区）
             </div>
@@ -80,10 +80,10 @@
         </div>
 
         <!-- フォーム本体 -->
-        <form class="apply-wrap" id="applyForm" data-cf7="summer-camp-apply">
+        <form class="apply-wrap" id="applyForm" data-cf7="event-apply">
 
-          <input type="hidden" name="event_id" value="summer-camp-20260726" data-cf7-field="event-id">
-          <input type="hidden" name="event_name" value="夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然" data-cf7-field="event-name">
+          <input type="hidden" name="event_id" value="summer-camp-20260726" data-cf7-field="event-id" data-cf7-value="post_slug">
+          <input type="hidden" name="event_name" value="夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然" data-cf7-field="event-name" data-cf7-value="post_title">
 
           <!-- STEP 1: 参加者情報 -->
           <div class="apply-section">
@@ -117,7 +117,7 @@
           </div>
 
           <!-- STEP 2: 参加内容 -->
-          <div class="apply-section">
+          <div class="apply-section" data-cf7-group="child" data-cf7-group-if="event_target=子ども">
             <div class="apply-section__title">
               <span class="apply-section__step">STEP 2</span>参加者情報
             </div>
@@ -224,10 +224,10 @@
                 <input type="checkbox" name="member_optin" value="アーバンネイチャー北九州のメンバーとして登録する（無料）" checked data-cf7-field="member-optin">
                 <span>アーバンネイチャー北九州のメンバーとして登録する（無料）</span>
               </label>
-              <p class="optin-box__note" data-acf="optin_note" data-acf-type="wysiwyg">
+              <div class="optin-box__note" data-acf="optin_note" data-acf-type="wysiwyg">
                 登録すると、イベント情報・自然スポット最新情報などをメールでお知らせします。<br>
                 いつでも退会・メール停止が可能です。
-              </p>
+              </div>
             </div>
           </div>
 
@@ -246,7 +246,7 @@
             <button type="submit" class="btn btn--primary" data-cf7-submit>
               申し込みを送信する →
             </button>
-            <p class="apply-submit__note" data-acf="submit_note" data-acf-type="wysiwyg">送信後、確認メールをお送りします。<br>メールが届かない場合はお問合せください。</p>
+            <div class="apply-submit__note" data-acf="submit_note" data-acf-type="wysiwyg">送信後、確認メールをお送りします。<br>メールが届かない場合はお問合せください。</div>
           </div>
 
         </form>

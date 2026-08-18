@@ -122,6 +122,30 @@ node proposal/converter/convert.js proposal/mockup-real <出力先>
 `--allow-unresolved-links` は未解決の内部リンクを警告に落とす**一時オプション**。
 モックのページを揃える途中で先に進むためのもので、**全ページが揃ったら必ず外す**。
 
+`--acf-map <acf-map.yaml>` を渡すと、**scan の読みと convert の読みを突き合わせる**。
+
+```bash
+node proposal/converter/convert.js proposal/mockup-real <出力先> \
+  --acf-map proposal/scan/out-gate/acf-map.yaml
+```
+
+scan と convert は同じモックを読む**独立した2実装**なので、読みが割れたら
+どちらかにバグがある。ページ種別・CPT・variant・フィールドの型を照合し、
+1件でも食い違えば停止する。**突き合わせは出力を変えない**（渡しても渡さなくても
+生成物は同一）。
+
+なぜ acf-map.yaml を残すのか:
+
+- **人が読める解釈記録になる。** 直変換だけだと、変換器がモックをどう読んだかが
+  どこにも残らず、生成物を読むまで読み違いに気づけない
+- **検収成果物の入力になる。** `scripts/test-spec/generate.js` が
+  C1 テスト仕様書 / C3 検収シートをここから組み立てる
+
+ただし **yaml だけではテーマを作れない**。マークアップの骨格は yaml に無く
+モックの HTML にしかない（yaml が持つ HTML は wysiwyg の default 値だけ）。
+入力元は常にモックで、yaml はそれを読んだ結果の記録。
+直したいときはモックを直して scan を回し直す。
+
 ### 7. 生成物の検証
 
 ```bash

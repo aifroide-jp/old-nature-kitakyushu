@@ -38,6 +38,7 @@ function run(pages) {
         const key = `${attrName}=${value}#${occurrence}`;
         const loc = el.sourceCodeLocation;
         const rawOuter = loc ? page.html.slice(loc.startOffset, loc.endOffset) : $.html($el);
+        // data-nav-current の除外は normalizeOuterForCompare が行う（shared/site-path.js）
         const outer = normalizeOuterForCompare(rawOuter, page.relPath);
         const line = page.lineOf($el);
         if (!groups.has(key)) groups.set(key, []);

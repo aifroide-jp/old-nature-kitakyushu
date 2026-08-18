@@ -70,6 +70,22 @@ function generateNavWalkers(navInfo) {
     lines.push('        $kids = isset( $tree[ (int) $item->ID ] ) ? $tree[ (int) $item->ID ] : array();');
     lines.push("        $find = array( '{{URL}}', '{{TEXT}}' );");
     lines.push('        $repl = array( esc_url( $item->url ), esc_html( $item->title ) );');
+    if (info.currentClass) {
+      // data-nav-current: 現在ページのリンクに付ける class（vocabulary.md 5.1）。
+      // WordPress が current-menu-item / -parent / -ancestor を $item->classes に
+      // 入れてくれるので、こちらで URL を突き合わせる必要はない。
+      // メニュー項目を参照型（page_id / post_type_archive 等）で登録しているから成立する。
+      const c = info.currentClass;
+      lines.push('        $nkk_cur = (array) $item->classes;');
+      lines.push("        $nkk_on = (bool) array_intersect( $nkk_cur, array( 'current-menu-item', 'current-menu-parent', 'current-menu-ancestor' ) );");
+      // WordPress は post_type_archive の項目を「その CPT の詳細を見ているとき」には
+      // 現在地として扱わない。だが一覧項目はその投稿タイプそのものを指しているので、
+      // 詳細ページでもハイライトするのが自然（実測: 元モックの events/sample.html は
+      // 「イベントを探す」に class="active" を付けていた）。
+      lines.push("        if ( ! $nkk_on && 'post_type_archive' === $item->type && is_singular( $item->object ) ) { $nkk_on = true; }");
+      lines.push(`        $find[] = '{{CURRENT_ATTR}}'; $repl[] = $nkk_on ? ' class="${c}"' : '';`);
+      lines.push(`        $find[] = '{{CURRENT}}'; $repl[] = $nkk_on ? ' ${c}' : '';`);
+    }
     lines.push("        if ( empty( $kids ) || '' === $lv['parent'] ) {");
     lines.push("            if ( '' !== $lv['leaf'] ) {");
     lines.push("                return str_replace( $find, $repl, $lv['leaf'] );");

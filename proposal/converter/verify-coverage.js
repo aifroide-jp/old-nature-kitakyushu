@@ -27,13 +27,48 @@ function declaredFieldsPerPage(mockupDir) {
   return perPage;
 }
 
-function outputFieldNames(themeDir) {
+// テーマが持ちうる ACF フィールドキーの接頭辞（field_<scope>_<name> の <scope>）を
+// **モックのHTMLだけから**求める。acf.js のグループslug規則と同じ:
+//   固定ページ → data-page-id / トップ → front / CPT → data-cpt /
+//   CPT一覧の独自フィールド → <cpt>_archive / 共通設定 → site_options
+//
+// 変換器のモデルを読まないのはこのチェックの前提（独立検証）を保つため。
+// scope の集合を持つ理由は、キーから名前を切り出すときの曖昧さを消すこと。
+// 集合が無いと field_event_hero_title を「scope=event_hero, name=title」とも読めてしまい、
+// 宣言 title が別フィールドと一致して通ってしまう。
+function scopeSlugsFromMockup(mockupDir) {
+  const scopes = new Set(['site_options']);
+  for (const f of findHtmlFiles(mockupDir)) {
+    const html = fs.readFileSync(f.abs, 'utf8');
+    const body = /<body[^>]*>/i.exec(html);
+    if (!body) continue;
+    const attr = (n) => {
+      const m = new RegExp(`${n}="([^"]+)"`).exec(body[0]);
+      return m ? m[1] : null;
+    };
+    const dataPage = attr('data-page');
+    const cpt = attr('data-cpt');
+    if (dataPage === 'front') scopes.add('front');
+    else if (dataPage === 'page' && attr('data-page-id')) scopes.add(attr('data-page-id'));
+    else if (dataPage === 'single' && cpt) scopes.add(cpt);
+    else if (dataPage === 'archive' && cpt) {
+      scopes.add(cpt);
+      scopes.add(`${cpt}_archive`);
+    }
+  }
+  return scopes;
+}
+
+function outputFieldNames(themeDir, scopes) {
   const names = new Set();
   // the_field()/get_field() の呼び出しだけを「出力された」とみなす。
   // ACFへの登録('name' => '...')は意図的に対象外にする — CLAUDE.mdが指摘する
   // 「ACFに登録したがテンプレートに出力し忘れる」事故を発見するのがこのチェックの目的であり、
   // 登録済みかどうかは無関係(登録だけされて未出力のフィールドを見逃してはいけない)。
-  const reList = [/the_field\(\s*'([^']+)'/g, /get_field\(\s*'([^']+)'/g];
+  // CF7 のフォーム本文は文字列として保存されるため PHP を書けない。
+  // 代わりに <!--nkk-acf:キー:型--> の目印が埋め込まれ、inc/cf7-dynamic.php の
+  // フィルタが表示時に get_field() で差し替える。これも「出力された」に数える。
+  const reList = [/the_field\(\s*'([^']+)'/g, /get_field\(\s*'([^']+)'/g, /<!--nkk-acf:([A-Za-z0-9_]+):/g];
   (function walk(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const abs = path.join(dir, entry.name);
@@ -44,7 +79,17 @@ function outputFieldNames(themeDir) {
         const text = fs.readFileSync(abs, 'utf8');
         for (const re of reList) {
           let m;
-          while ((m = re.exec(text))) names.add(m[1]);
+          while ((m = re.exec(text))) {
+            const id = m[1];
+            names.add(id);
+            // 出力は field_<scope>_<name> のキー指定（同名フィールドが複数CPTにあると
+            // 名前引きが別グループに解決するため）。宣言側は名前なので、
+            // 既知の scope のときだけ名前部分に戻して突き合わせる。
+            for (const s of scopes) {
+              const prefix = `field_${s}_`;
+              if (id.startsWith(prefix)) names.add(id.slice(prefix.length));
+            }
+          }
         }
       }
     }
@@ -62,7 +107,7 @@ function main() {
   const themeDir = path.resolve(themeDirArg);
 
   const perPage = declaredFieldsPerPage(mockupDir);
-  const outputNames = outputFieldNames(themeDir);
+  const outputNames = outputFieldNames(themeDir, scopeSlugsFromMockup(mockupDir));
 
   let totalDeclared = 0;
   let totalMatched = 0;

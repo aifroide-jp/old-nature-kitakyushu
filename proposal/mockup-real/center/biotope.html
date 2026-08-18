@@ -39,7 +39,7 @@
       <a href="../" class="header__logo">
         <img data-acf="site_logo" src="../images/2026/02/logo.png" alt="アーバンネイチャー北九州" width="160" height="40"><span class="header__logo-sub" aria-hidden="true">北九州市生物多様性戦略 2025–2030</span>
       </a>
-      <nav class="header__nav" data-nav="global" aria-label="メインナビゲーション">
+      <nav class="header__nav" data-nav="global" data-nav-current="active" aria-label="メインナビゲーション">
         <div class="nav-item">
           <a href="../about/">アーバンネイチャー北九州とは？</a>
           <ul class="dropdown">
@@ -50,11 +50,11 @@
           </ul>
         </div>
         <div class="nav-item">
-          <a href="../center/">活動拠点</a>
+          <a href="../center/" class="active">活動拠点</a>
           <ul class="dropdown">
-            <li><a href="../center/">拠点一覧</a>
+            <li><a href="../center/" class="active">拠点一覧</a>
               <ul>
-                <li><a href="../center/biotope.html">響灘ビオトープ</a></li>
+                <li><a href="../center/biotope.html" class="active">響灘ビオトープ</a></li>
                 <li><a href="../center/greenpark.html">グリーンパーク</a></li>
                 <li><a href="../center/hotarukan.html">北九州市ほたる館</a></li>
                 <li><a href="../center/inochi.html">いのちのたび博物館</a></li>
@@ -91,7 +91,7 @@
   </header>
 
   <!-- モバイルナビ -->
-  <nav class="mobile-nav" id="js-mobile-nav" data-nav="mobile" aria-label="モバイルナビゲーション">
+  <nav class="mobile-nav" id="js-mobile-nav" data-nav="global" data-nav-current="active" aria-label="モバイルナビゲーション">
     <div class="mobile-nav__group">
       <div class="mobile-nav__parent">
         <a href="../about/">アーバンネイチャー北九州とは？</a>
@@ -108,16 +108,16 @@
     </div>
     <div class="mobile-nav__group">
       <div class="mobile-nav__parent">
-        <a href="../center/">活動拠点</a>
+        <a href="../center/" class="active">活動拠点</a>
         <button class="mobile-nav__toggle" aria-expanded="false" aria-label="サブメニューを開く">
           <span class="mobile-nav__toggle-icon"></span>
         </button>
       </div>
       <div class="mobile-nav__children">
         <div class="mobile-nav__subgroup">
-          <a href="../center/">拠点一覧</a>
+          <a href="../center/" class="active">拠点一覧</a>
           <div class="mobile-nav__sub">
-            <a href="../center/biotope.html">響灘ビオトープ</a>
+            <a href="../center/biotope.html" class="active">響灘ビオトープ</a>
             <a href="../center/greenpark.html">グリーンパーク</a>
             <a href="../center/hotarukan.html">北九州市ほたる館</a>
             <a href="../center/inochi.html">いのちのたび博物館</a>
@@ -266,7 +266,7 @@
       </div>
     </section>
 
-  <section class="cta-band fp-u43" data-common="cta">
+  <section class="cta-band cta-band--photo" data-common="cta">
     <div class="container">
       <h2 class="cta-band__title" data-acf="cta_title">お気軽にお問合せください</h2>
       <div class="cta-band__buttons">
@@ -285,7 +285,7 @@
           <span class="footer__brand-name" data-acf="footer_brand_name" data-acf-type="text">アーバンネイチャー北九州</span>
           <p class="footer__desc" data-acf="footer_desc">都市と自然が近接する北九州の強みを活かし、市民・企業・行政が一体となってネイチャーポジティブの実現を目指すプラットフォームです。</p>
         </div>
-        <nav data-nav="footer" aria-label="フッターナビゲーション">
+        <nav data-nav="footer" data-nav-current="active" aria-label="フッターナビゲーション">
         <div>
           <div class="footer__group" data-nav-item>
           <h3 class="footer__heading">アーバンネイチャー北九州とは？</h3>
@@ -311,9 +311,9 @@
           <h3 class="footer__heading">活動拠点</h3>
           <div class="footer__links">
             <div class="footer__subgroup">
-              <a href="../center/">拠点一覧</a>
+              <a href="../center/" class="active">拠点一覧</a>
               <div class="footer__sub">
-                <a href="../center/biotope.html">響灘ビオトープ</a>
+                <a href="../center/biotope.html" class="active">響灘ビオトープ</a>
                 <a href="../center/greenpark.html">グリーンパーク</a>
                 <a href="../center/hotarukan.html">北九州市ほたる館</a>
                 <a href="../center/inochi.html">いのちのたび博物館</a>

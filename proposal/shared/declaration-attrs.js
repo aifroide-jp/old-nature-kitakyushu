@@ -20,6 +20,7 @@
 const DECLARATION_ATTRS = new Set([
   'data-page',
   'data-page-id',
+  'data-page-variant',
   'data-cpt',
   'data-section',
   'data-acf',
@@ -34,6 +35,7 @@ const DECLARATION_ATTRS = new Set([
   'data-common',
   'data-nav',
   'data-nav-item',
+  'data-nav-current',
   'data-breadcrumb',
   'data-deco',
   'data-cf7',
@@ -42,6 +44,9 @@ const DECLARATION_ATTRS = new Set([
   'data-cf7-acceptance',
   'data-cf7-limit',
   'data-cf7-submit',
+  'data-cf7-group',
+  'data-cf7-group-if',
+  'data-cf7-value',
 ]);
 
 module.exports = { DECLARATION_ATTRS };

@@ -142,7 +142,10 @@
   margin: 36px 0 16px;
 }
 .ev-content h2:first-child { margin-top: 0; }
-.ev-content p { line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+/* wysiwyg のフィールドは <div> になるため（L31）、p 要素セレクタだけでは当たらない。
+   .ev-venue__intro は wysiwyg なので明示的に含める。 */
+.ev-content p,
+.ev-content .ev-venue__intro { line-height: 1.85; color: var(--text); margin-bottom: 16px; }
 .ev-schedule {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);

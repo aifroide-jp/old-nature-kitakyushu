@@ -91,15 +91,48 @@ function sliceTemplate(page, el, ranges) {
   return out;
 }
 
-// <a href="…">文言</a> → <a href="{{URL}}">{{TEXT}}</a>
+// <a href="…">文言</a> → <a href="{{URL}}"{{CURRENT}}>{{TEXT}}</a>
 // href を持たない要素(フッターの見出し等)は {{TEXT}} だけになる。
-function withLinkPlaceholders(page, el) {
+//
+// currentClass: data-nav-current の値（vocabulary.md 5.1）。
+//   モックは現在ページのリンクにこの class を付けている（付いていないとモックを
+//   開いたとき現在地が分からない）。テンプレートを1ページ分から起こす都合上、
+//   **その1枚に付いていた分をそのまま焼き込むと全ページで同じ項目が現在地になる**。
+//   そこで class からは取り除き、代わりに {{CURRENT}} を置いて実行時に決めさせる。
+//   WordPress は current-menu-item を $item->classes に入れてくれるので推測は要らない。
+function withLinkPlaceholders(page, el, currentClass) {
   const loc = el.sourceCodeLocation;
   if (!loc || !loc.startTag || !loc.endTag) return null;
   const ranges = [];
   if (loc.attrs && loc.attrs.href) {
     ranges.push({ start: loc.attrs.href.startOffset, end: loc.attrs.href.endOffset, text: 'href="{{URL}}"' });
   }
+
+  if (currentClass) {
+    const classLoc = loc.attrs && loc.attrs.class;
+    const kept = (page.$(el).attr('class') || '')
+      .split(/\s+/)
+      .filter((c) => c && c !== currentClass)
+      .join(' ');
+
+    // **形を1つに揃える。** 現在ページのリンクだけ class 属性が増えると、
+    // ウォーカーのテンプレート化が「同じ階層なのに項目ごとに形が違う」と判断して止まる
+    // （実測: 型1 <a href>… / 型2 <a href class="…">… の2形になった）。
+    // 他の class が残らないなら属性ごと落とし、どのリンクも同じ形にする。
+    if (classLoc && kept) {
+      ranges.push({ start: classLoc.startOffset, end: classLoc.endOffset, text: `class="${kept}{{CURRENT}}"` });
+    } else {
+      if (classLoc) {
+        // class="active" だけだった → 属性ごと削る（前の空白も一緒に）
+        let from = classLoc.startOffset;
+        if (page.html[from - 1] === ' ') from -= 1;
+        ranges.push({ start: from, end: classLoc.endOffset, text: '' });
+      }
+      const insertAt = loc.startTag.endOffset - 1; // ">" の直前
+      ranges.push({ start: insertAt, end: insertAt, text: '{{CURRENT_ATTR}}' });
+    }
+  }
+
   ranges.push({ start: loc.startTag.endOffset, end: loc.endTag.startOffset, text: '{{TEXT}}' });
   return sliceTemplate(page, el, ranges);
 }
@@ -123,12 +156,12 @@ function titleElementOf(item, childContainer) {
 }
 
 // 子を持たない項目の型。項目そのものが <a> ならそれ、そうでなければ内側の <a> を置換する。
-function leafTemplateOf(page, el) {
-  if (el.name === 'a') return withLinkPlaceholders(page, el);
+function leafTemplateOf(page, el, currentClass) {
+  if (el.name === 'a') return withLinkPlaceholders(page, el, currentClass);
   const link = descendants(el).find((n) => n.name === 'a');
   if (!link) return null;
   const lloc = link.sourceCodeLocation;
-  const inner = withLinkPlaceholders(page, link);
+  const inner = withLinkPlaceholders(page, link, currentClass);
   if (!inner) return null;
   return sliceTemplate(page, el, [{ start: lloc.startOffset, end: lloc.endOffset, text: inner }]);
 }
@@ -146,6 +179,8 @@ function mismatch(page, line, errors, depth, what, samples) {
 }
 
 function analyzeNavStructure(page, $, navEl, errors) {
+  // data-nav-current: 現在ページを示す class（vocabulary.md 5.1）
+  const currentClass = $(navEl).attr('data-nav-current') || null;
   const line = page.lineOf($(navEl));
 
   // --- 1. 項目要素を決める ---
@@ -187,6 +222,35 @@ function analyzeNavStructure(page, $, navEl, errors) {
   const skeleton = spliceRange(page, innerStart, innerEnd, [...slotRanges, ...staticRanges]);
   const slots = runs.map((r) => r.count);
 
+  // --- 2.5. メニュー項目そのものを集める ---
+  //
+  // モックには実際の項目（ラベルと行き先）が書いてある。これを拾っておけば
+  // WordPress のメニューを**自動で作れる**。お客様に「外観 → メニュー」で
+  // 作らせる必要が無くなる（CF7 のフォームを seed するのと同じ考え方）。
+  const menuItems = [];
+  (function collect(list, parentIndex) {
+    for (const it of list) {
+      const $it = page.$(it);
+      const cc = childContainerOf(it);
+      const $cc = cc ? page.$(cc) : null;
+
+      // ラベルは「子リストの外にある見出し」から取る。
+      // フッターのグループは <div><h3>見出し</h3><div>リンク群</div></div> の形で、
+      // 見出しが <a> ではない。<a> だけを探すと見つからず、
+      // グループ全体のテキストをラベルにしてしまい、階層も潰れていた
+      // （実測: 子リンクが親として並び、リンク群が空になっていた）。
+      const $self = $it.clone();
+      if ($cc) $self.children().last().remove(); // 子リストを外して見出しだけ残す
+      const $a = $it.is('a') ? $it : $self.find('a').first();
+      const label = ($a.length ? $a.text() : $self.text()).replace(/\s+/g, ' ').trim();
+      if (!label) continue;
+
+      const idx = menuItems.length;
+      menuItems.push({ label, href: ($a.length ? $a.attr('href') : '') || '', parent: parentIndex });
+      if (cc) collect(page.$(cc).children().toArray(), idx);
+    }
+  })(topItems, -1);
+
   // --- 3. 深さごとに「子あり」「子なし」の型を1つずつ記録する ---
   const levels = [];
   let items = topItems;
@@ -226,7 +290,7 @@ function analyzeNavStructure(page, $, navEl, errors) {
             { start: cloc.startOffset, end: cloc.endOffset, text: '{{CHILDREN}}' },
           ])
         );
-        titles.add(withLinkPlaceholders(page, title));
+        titles.add(withLinkPlaceholders(page, title, currentClass));
         if (!level.childrenOpen) {
           level.childrenOpen = page.html.slice(cloc.startTag.startOffset, cloc.startTag.endOffset);
           level.childrenClose = page.html.slice(cloc.endTag.startOffset, cloc.endTag.endOffset);
@@ -247,7 +311,7 @@ function analyzeNavStructure(page, $, navEl, errors) {
     if (leaves.length > 0) {
       const shapes = new Set();
       for (const lf of leaves) {
-        const t = leafTemplateOf(page, lf);
+        const t = leafTemplateOf(page, lf, currentClass);
         if (!t) {
           errors.add(page.relPath, page.lineOf($(lf)), 'data-nav の項目にリンク(<a>)がありません');
           return null;
@@ -269,7 +333,7 @@ function analyzeNavStructure(page, $, navEl, errors) {
     depth += 1;
   }
 
-  return { kind: 'template', skeleton, slots, levels };
+  return { kind: 'template', skeleton, slots, levels, menuItems, currentClass };
 }
 
 module.exports = { analyzeNavStructure };

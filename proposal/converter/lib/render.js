@@ -17,12 +17,33 @@ function dataAttrNames(el) {
 // 部分木(el 配下)を、data-* 宣言をすべて WordPress の呼び出しへ変換した文字列として描画する。
 // includeSelf=true なら el 自身のタグも出力に含める(header/footer/共通セクション用)。
 // includeSelf=false なら el の「中身」だけを出力する(<main> の中身をページ本体として使う場合)。
-function renderFragment(page, model, el, includeSelf, errors) {
+// scopeSlug: ACF フィールドキーの接頭辞（field_<scope>_<name>）。
+// ACF は同名フィールドが複数グループにあると、**名前で引いたとき別グループのものに解決する**。
+// 実測: hero_title は spot / center / event / news の4CPTに存在し、
+// get_field('hero_title') が field_spot_hero_title を掴んで、event の投稿では NULL になっていた。
+// 値が未保存のフィールドは全滅する（デフォルト値も出ない）。
+// そのため出力は必ず**キー指定**にする。キーは CPT / ページごとに一意。
+function renderFragment(page, model, el, includeSelf, errors, scopeSlug) {
   const loc = el.sourceCodeLocation;
   const base = includeSelf ? loc.startOffset : loc.startTag.endOffset;
   const sliceEnd = includeSelf ? loc.endOffset : loc.endTag.startOffset;
   const raw = page.html.slice(base, sliceEnd);
   const editList = new EditList(raw);
+
+  // 呼び出し側が渡さない場合はページ種別から導く（acf.js の groupSlug と同じ規則）。
+  let currentScope =
+    scopeSlug ||
+    (page.dataPage === 'front'
+      ? 'front'
+      : page.dataPage === 'page'
+        ? page.pageId
+        : page.dataPage === 'single'
+          ? page.cpt
+          : page.dataPage === 'archive'
+            ? `${page.cpt}_archive`
+            : null);
+  // ループ項目の中を描画しているとき、そのループが指す CPT を持つ。
+  let currentLoopCpt = null;
 
   function addAbs(start, end, replacement) {
     editList.replace(start - base, end - base, replacement);
@@ -43,10 +64,23 @@ function renderFragment(page, model, el, includeSelf, errors) {
 
   // nav の中身は theme_location 専用の Walker が丸ごと組み立てる。
   // 骨組み(器・静的ブロック)も Walker 側が持っているので items_wrap は素通しにする。
-  function buildNavCall(name) {
+  // 同じメニュー位置でも、置かれている場所ごとに見せ方（マークアップ）が違う。
+  // PC 用とモバイル用が典型。**メニューは1つ、形が複数**なので、
+  // theme_location は同じまま walker だけ切り替える。
+  // 形ごとのウォーカーはモックから機械生成される（nav-walker.js）。
+  function buildNavCall(name, el) {
+    const variants = model.navVariants && model.navVariants.get(name);
+    let cls = navWalkerClass(name);
+    if (variants && variants.length > 1) {
+      const html = page.html.slice(el.sourceCodeLocation.startOffset, el.sourceCodeLocation.endOffset);
+      const hit = variants.find(
+        (v) => page.html.slice(v.el.sourceCodeLocation.startOffset, v.el.sourceCodeLocation.endOffset) === html
+      );
+      if (hit && hit.index > 0) cls = `${navWalkerClass(name)}_${hit.index + 1}`;
+    }
     return (
       `<?php wp_nav_menu( array( 'theme_location' => '${name}', 'container' => false, ` +
-      `'items_wrap' => '%3$s', 'walker' => new ${navWalkerClass(name)}(), 'fallback_cb' => false ) ); ?>`
+      `'items_wrap' => '%3$s', 'walker' => new ${cls}(), 'fallback_cb' => false ) ); ?>`
     );
   }
 
@@ -65,7 +99,14 @@ function renderFragment(page, model, el, includeSelf, errors) {
     // data-cf7: フォーム全体を CF7 ショートコードに置換する(vocabulary.md 6章)。
     if ('data-cf7' in attrs) {
       const name = attrs['data-cf7'];
-      addAbs(nloc.startOffset, nloc.endOffset, `<?php echo do_shortcode( '[contact-form-7 title="${name}"]' ); ?>`);
+      // <form> そのものは CF7 が出すので、モックが <form> に付けていた class / id は
+      // 引き継がないと消える（実測: apply-wrap が生成物に存在せず、申込フォームの
+      // レイアウト指定が丸ごと効かなくなっていた）。
+      // CF7 のショートコードは html_class / html_id を受け取るのでそれで渡す。
+      const sc = [`contact-form-7 title="${name}"`];
+      if (attrs.class) sc.push(`html_class="${attrs.class}"`);
+      if (attrs.id) sc.push(`html_id="${attrs.id}"`);
+      addAbs(nloc.startOffset, nloc.endOffset, `<?php echo do_shortcode( '[${sc.join(' ')}]' ); ?>`);
       return;
     }
 
@@ -109,7 +150,7 @@ function renderFragment(page, model, el, includeSelf, errors) {
         errors.add(page.relPath, line, `data-nav="${name}" の内部構造を解析できなかったため出力できません`);
         return;
       }
-      addAbs(nloc.startTag.endOffset, nloc.endTag.startOffset, buildNavCall(name));
+      addAbs(nloc.startTag.endOffset, nloc.endTag.startOffset, buildNavCall(name, node));
       return;
     }
 
@@ -179,7 +220,15 @@ function renderFragment(page, model, el, includeSelf, errors) {
 
       addAbs(item.sourceCodeLocation.startOffset, item.sourceCodeLocation.startOffset, openPhp);
       addAbs(item.sourceCodeLocation.endOffset, item.sourceCodeLocation.endOffset, closePhp);
+      // ループ項目の中のフィールドは、そのループが指す CPT のグループに属する。
+      // 一覧ページ自身のスコープ（<cpt>_archive 等）とは別なので切り替える。
+      const outerScope = currentScope;
+      const outerLoopCpt = currentLoopCpt;
+      currentScope = attrs['data-loop'];
+      currentLoopCpt = attrs['data-loop'];
       for (const c of node.children || []) visit(c);
+      currentScope = outerScope;
+      currentLoopCpt = outerLoopCpt;
       return;
     }
 
@@ -188,15 +237,24 @@ function renderFragment(page, model, el, includeSelf, errors) {
     let skipRecurse = false;
 
     if (hasAcf || hasAcfUrl) {
-      const { fields, edits } = analyzeField(page, page.$, node, { linkRegistry: model.linkRegistry }, errors);
+      const { fields, edits } = analyzeField(page, page.$, node, { linkRegistry: model.linkRegistry, scopeSlug: currentScope }, errors);
       for (const e of edits) addAbs(e.start, e.end, e.replacement);
       const acfField = fields.find((f) => f.name === attrs['data-acf']);
       if (acfField && (acfField.type === 'wysiwyg' || acfField.type === 'image')) skipRecurse = true;
-    } else if ((node.name || '').toLowerCase() === 'a') {
+    }
+
+    // <a> の href は固定リンクとして解決する。
+    //
+    // data-acf-url があるときだけ analyzeField が href を書き換える。無いときは
+    // ここで解決する。**data-acf（ラベル）を持つ <a> も対象**であることに注意:
+    // 以前はこれが else if で分岐しており、「ラベルだけ ACF 化したリンク」の href が
+    // モックの相対パスのまま出力されていた（実測: href="summer-camp-apply.html" が
+    // そのまま残り、ブラウザが http://summer-camp-apply.html と解釈していた）。
+    if ((node.name || '').toLowerCase() === 'a' && !hasAcfUrl) {
       const hrefLoc = nloc.attrs && nloc.attrs.href;
       if (hrefLoc) {
         const href = page.$(node).attr('href');
-        const edit = resolveFixedHref(page, { ...hrefLoc, startLine: line }, href, model.linkRegistry, errors);
+        const edit = resolveFixedHref(page, { ...hrefLoc, startLine: line }, href, model.linkRegistry, errors, currentLoopCpt);
         if (edit) addAbs(edit.start, edit.end, edit.replacement);
       }
     }
@@ -207,9 +265,28 @@ function renderFragment(page, model, el, includeSelf, errors) {
   }
 
   if (includeSelf) {
-    stripAllDataAttrs(el);
+    // ルート要素は「その要素ごと出す」ための入口であって、置換の対象ではない。
+    // ここで visit(el) を呼ぶと data-common のルートが共通領域として再帰処理され、
+    // header/footer が get_template_part() に置き換わって中身が消える（実測）。
+    //
+    // ただしルートが <nav data-nav> の場合だけは置換が必要。
+    // これを漏らすと、モバイルナビがモックのマークアップのまま固定出力され、
+    // 管理画面で編集しても変わらない状態になる（属性だけ消えるので気づきにくい）。
+    const rootAttrs = el.attribs || {};
+    if ('data-nav' in rootAttrs && el.sourceCodeLocation && el.sourceCodeLocation.endTag) {
+      stripAllDataAttrs(el);
+      addAbs(
+        el.sourceCodeLocation.startTag.endOffset,
+        el.sourceCodeLocation.endTag.startOffset,
+        buildNavCall(rootAttrs['data-nav'], el)
+      );
+    } else {
+      stripAllDataAttrs(el);
+      for (const c of el.children || []) visit(c);
+    }
+  } else {
+    for (const c of el.children || []) visit(c);
   }
-  for (const c of el.children || []) visit(c);
 
   return editList.apply();
 }

@@ -9,3 +9,10 @@ scripts/test-spec/pa11y-report.json
 **/.DS_Store
 report
 .claude/settings.local.json
+
+# proposal/ の生成物（コマンドで再生成できるもの）
+proposal/*/node_modules
+proposal/scan/out-gate
+proposal/scan/out-real
+proposal/visual-check/out
+proposal/a11y/out

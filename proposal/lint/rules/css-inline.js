@@ -47,6 +47,9 @@ function run(page) {
       // PHP 変数にも ACF キーにもならないので対象外。以前は data- で始まる全部を
       // 見ており、正当な日本語の値を27件も誤検出していた。
       if (attrName !== 'class' && !DECLARATION_ATTRS.has(attrName)) continue;
+      // data-cf7-group-if は「event_target=子ども」のように**比較する内容そのもの**を書く。
+      // 識別子ではないので PHP 変数名にも ACF キーにもならず、日本語で正しい（6.2節）。
+      if (attrName === 'data-cf7-group-if') continue;
       if (NON_ASCII_RE.test(value)) {
         issues.push(
           mk(page, 'L13', 'error', page.attrLineOf($el, attrName), `${attrName}="${value}" に ASCII 以外の文字が含まれています`)

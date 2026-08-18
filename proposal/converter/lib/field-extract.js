@@ -111,10 +111,22 @@ function deriveType(tag, dataAcfType) {
   return { error: `<${tag}> は型を導出できないタグのため data-acf-type が必須です` };
 }
 
-function phpFieldOutput(name, kind) {
-  // kind: 'echo-attr'（属性値に埋め込む）は呼び出し側で組み立てるためここでは
-  // インラインテキスト用の the_field() 呼び出し文字列だけを返す。
-  return `<?php the_field(${JSON.stringify(name).replace(/"/g, "'")}); ?>`;
+// ACF フィールドキー。acf.js の fieldToAcf() と同じ規則にする（field_<scope>_<name>）。
+// **名前ではなくキーで引く。** 同名フィールドが複数グループにあると、名前で引いた場合に
+// 別グループのものへ解決され、その投稿には存在しないので NULL になる。
+// 実測: hero_title は spot/center/event/news の4CPTにあり、event の投稿で
+// get_field('hero_title') が field_spot_hero_title を掴んで全滅していた。
+// scopeSlug が無い呼び出しもある。model.js のフィールド収集は
+// 「どんなフィールドがあるか」を数えるだけで、生成された PHP 断片は使わない。
+// そこで例外にすると、フィールド定義を作る段階で落ちてしまう。
+// 出力に使われないプレースホルダを返し、**実際にテンプレートへ書き込む経路**
+// （render.js 経由）でのみ scope を必須にする。
+function acfKey(scopeSlug, name) {
+  return `field_${scopeSlug || '__NO_SCOPE__'}_${name}`;
+}
+
+function phpFieldOutput(name, scopeSlug) {
+  return `<?php the_field('${acfKey(scopeSlug, name)}'); ?>`;
 }
 
 // 要素1個から ACF フィールドと編集内容を抽出する。
@@ -160,7 +172,7 @@ function analyzeField(page, $, el, opts, errors) {
       const fallbackUrl = `get_template_directory_uri() . '/assets/${normalizeAttrValue(src, page.relPath)}'`;
       const fallbackAlt = JSON.stringify(alt || '').replace(/"/g, "'");
       const phpBlock =
-        `<?php $${name} = get_field('${name}'); ` +
+        `<?php $${name} = get_field('${acfKey(opts && opts.scopeSlug, name)}'); ` +
         `${varUrl} = $${name} ? $${name}['url'] : ${fallbackUrl}; ` +
         `${varAlt} = $${name} ? $${name}['alt'] : ${fallbackAlt}; ?>\n`;
       results.edits.push({ start: loc.startOffset, end: loc.startOffset, replacement: phpBlock });
@@ -199,7 +211,7 @@ function analyzeField(page, $, el, opts, errors) {
       const innerEnd = loc.endTag.startOffset;
       const defaultValue = wysiwygDefault(page, el, innerStart, innerEnd, opts, errors);
       results.fields.push({ name, type: 'wysiwyg', defaultValue });
-      results.edits.push({ start: innerStart, end: innerEnd, replacement: phpFieldOutput(name) });
+      results.edits.push({ start: innerStart, end: innerEnd, replacement: phpFieldOutput(name, opts && opts.scopeSlug) });
     } else if (type === 'url') {
       // <a data-acf="X" data-acf-type="url"> のような明示ケース。href/srcを対象にする。
       const targetAttr = loc.attrs && loc.attrs.href ? 'href' : loc.attrs && loc.attrs.src ? 'src' : null;
@@ -234,7 +246,7 @@ function analyzeField(page, $, el, opts, errors) {
           const end = loc.endTag.startOffset;
           const defaultValue = page.html.slice(start, end).trim();
           results.fields.push({ name, type, defaultValue });
-          results.edits.push({ start, end, replacement: phpFieldOutput(name) });
+          results.edits.push({ start, end, replacement: phpFieldOutput(name, opts && opts.scopeSlug) });
           return results;
         }
         errors.add(
@@ -250,7 +262,7 @@ function analyzeField(page, $, el, opts, errors) {
       results.edits.push({
         start: node.sourceCodeLocation.startOffset,
         end: node.sourceCodeLocation.endOffset,
-        replacement: phpFieldOutput(name),
+        replacement: phpFieldOutput(name, opts && opts.scopeSlug),
       });
     }
   }
@@ -269,10 +281,27 @@ function analyzeField(page, $, el, opts, errors) {
     }
     const defaultValue = $el.attr('href');
     results.fields.push({ name: urlName, type: 'url', defaultValue });
+
+    // 値が空のときのフォールバックを必ず持たせる。
+    //
+    // href="" はブラウザが**現在ページ**として解釈するため、リンクが自分自身に戻る。
+    // 実測: 42URL 中 34件でこれが起きていて、「応募するボタンを押しても同じページ」
+    // という壊れ方をしていた。空文字に落ちる書き方は image 型で既に禁じており
+    // （CLAUDE.md の front-page 仕様）、url 型だけ抜けていた。
+    //
+    // フォールバックはモックに書いてある href をパーマリンクへ解決したもの。
+    // 解決できない場合はサイトトップにする（自分自身に戻るよりは害が小さい）。
+    const fbExpr = resolveHrefExpr(page, line, defaultValue, opts && opts.linkRegistry, errors) || "home_url( '/' )";
+    const varName = `$${urlName}`;
+    results.edits.push({
+      start: loc.startOffset,
+      end: loc.startOffset,
+      replacement: `<?php ${varName} = get_field('${acfKey(opts && opts.scopeSlug, urlName)}'); ?>`,
+    });
     results.edits.push({
       start: hrefLoc.startOffset,
       end: hrefLoc.endOffset,
-      replacement: `href="<?php echo esc_url( get_field('${urlName}') ); ?>"`,
+      replacement: `href="<?php echo ${varName} ? esc_url( ${varName} ) : ${fbExpr}; ?>"`,
     });
   }
 

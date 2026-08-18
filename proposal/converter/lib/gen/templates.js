@@ -9,7 +9,8 @@ function generateHeaderPhp(model, errors) {
     errors.add('(model)', null, 'data-common="header" が見つかりません(header.phpを生成できません)');
     return null;
   }
-  const headerHtml = renderFragment(headerEntry.page, model, headerEntry.el, true, errors);
+  // data-common のフィールドは site-options グループに登録される（acf.js）。
+  const headerHtml = renderFragment(headerEntry.page, model, headerEntry.el, true, errors, 'site_options');
 
   const lines = [];
   lines.push('<!DOCTYPE html>');
@@ -25,9 +26,41 @@ function generateHeaderPhp(model, errors) {
   lines.push('');
   lines.push(headerHtml);
   lines.push('');
+  // header と <main> の間にある要素も出す。
+  // 実測: モバイルナビ（<nav data-nav="mobile">）が <header> の外・<main> の前に
+  // 置かれており、data-common と <main> しか拾っていなかったため**丸ごと消えていた**。
+  // 生成物にも実サイトにも存在せず、検査も「要素が無い」で素通りしていた。
+  const between = renderBetween(headerEntry.page, model, headerEntry.el, errors);
+  if (between.trim()) {
+    lines.push(between);
+    lines.push('');
+  }
   lines.push('<main id="main-content">');
   lines.push('');
   return lines.join('\n');
+}
+
+// data-common="header" の直後から <main id="main-content"> の直前までを描画する。
+// ここに置かれた要素（モバイルナビ等）は共通領域でも本文でもないが、
+// 全ページに出る必要があるので header.php に含める。
+function renderBetween(page, model, headerEl, errors) {
+  const $ = page.$;
+  const main = $('#main-content').get(0);
+  if (!main || !headerEl.sourceCodeLocation || !main.sourceCodeLocation) return '';
+  const start = headerEl.sourceCodeLocation.endTag
+    ? headerEl.sourceCodeLocation.endTag.endOffset
+    : headerEl.sourceCodeLocation.endOffset;
+  const end = main.sourceCodeLocation.startOffset;
+  if (end <= start) return '';
+  // 間にある要素を1つずつ描画する（data-* の除去・nav の置換を通すため）
+  const out = [];
+  for (const node of $('body').get(0).children || []) {
+    if (node.type !== 'tag' || !node.sourceCodeLocation) continue;
+    if (node.sourceCodeLocation.startOffset < start) continue;
+    if (node.sourceCodeLocation.endOffset > end) continue;
+    out.push(renderFragment(page, model, node, true, errors, 'site_options'));
+  }
+  return out.join('\n');
 }
 
 function generateFooterPhp(model, errors) {
@@ -36,7 +69,7 @@ function generateFooterPhp(model, errors) {
     errors.add('(model)', null, 'data-common="footer" が見つかりません(footer.phpを生成できません)');
     return null;
   }
-  const footerHtml = renderFragment(footerEntry.page, model, footerEntry.el, true, errors);
+  const footerHtml = renderFragment(footerEntry.page, model, footerEntry.el, true, errors, 'site_options');
 
   const lines = [];
   lines.push('</main>');
@@ -54,7 +87,7 @@ function generateCommonTemplateParts(model, errors) {
   const parts = [];
   for (const [name, entry] of model.commonMap) {
     if (name === 'header' || name === 'footer') continue;
-    const html = renderFragment(entry.page, model, entry.el, true, errors);
+    const html = renderFragment(entry.page, model, entry.el, true, errors, 'site_options');
     const content = ['<?php', `/** template-parts/common-${name}.php (data-common="${name}" から生成) */`, '?>', html, ''].join(
       '\n'
     );
@@ -99,7 +132,9 @@ function wrapOwnShellPage(model, page, pageId, innerHtml, errors) {
   const lines = [];
   lines.push('<?php');
   lines.push('/**');
-  lines.push(` * Template Name: ${pageId}`);
+  // Template Name: は固定ページの割り当て用。CPT のテンプレート（single-*.php 等）は
+  // ファイル名で選ばれるので付けない（付けると固定ページの選択肢に紛れ込む）。
+  if (pageId) lines.push(` * Template Name: ${pageId}`);
   lines.push(' * サイト共通ヘッダー／フッターを使わないページ。');
   lines.push(' * モックが data-common="header" を宣言していないため、シェルごとこのページのもの。');
   lines.push(' */');
@@ -117,6 +152,14 @@ function wrapOwnShellPage(model, page, pageId, innerHtml, errors) {
   lines.push('');
   lines.push(headerHtml);
   lines.push('');
+  // header.php と同じく、<header> と <main> の間の要素も出す。
+  // 実測: 申込ページのパンくず（<nav class="breadcrumb">）がここに置かれており、
+  // header.php 側にしか renderBetween が無かったため丸ごと消えていた。
+  const between = renderBetween(page, model, page.ownHeaderEl, errors);
+  if (between.trim()) {
+    lines.push(between);
+    lines.push('');
+  }
   lines.push('<main id="main-content">');
   lines.push('');
   lines.push(innerHtml);
@@ -165,9 +208,19 @@ function generateCptTemplates(model, errors) {
   for (const [cpt, entry] of model.cptMap) {
     const postType = `${CPT_PREFIX}${cpt}`;
 
+    // 自前シェル（data-common="header" を書かないページ / vocabulary.md 4.1）は
+    // CPT のテンプレートでも同じ扱いにする。
+    //
+    // ここが固定ページ側にしか無かったため、申込ページ（data-page-variant="apply"）が
+    // 共通ヘッダー・共通フッターで出ていた。モックは離脱防止のためナビも CTA も落とした
+    // 簡易シェルなのに、生成物はナビ付きの通常ページになっていた（実測: header__back-link /
+    // footer--minimal / apply-wrap など8つの class が出力に存在しなかった）。
+    const wrap = (p, html) =>
+      p.ownsShell ? wrapOwnShellPage(model, p, null, html, errors) : wrapPageBody(null, html);
+
     if (entry.archivePage) {
       const html = renderFragment(entry.archivePage, model, entry.archivePage.mainEl, false, errors);
-      out.push({ filename: `archive-${postType}.php`, content: wrapPageBody(null, html) });
+      out.push({ filename: `archive-${postType}.php`, content: wrap(entry.archivePage, html) });
     }
     // vocabulary.md 未決事項3: 単一インスタンスCPTのarchiveテンプレート要否は未定義。
     // 対応する data-page="archive" のモックが無いCPT(例: network)は archive-*.php を生成しない
@@ -175,12 +228,52 @@ function generateCptTemplates(model, errors) {
 
     if (entry.canonicalSingle) {
       const html = renderFragment(entry.canonicalSingle, model, entry.canonicalSingle.mainEl, false, errors);
-      out.push({ filename: `single-${postType}.php`, content: wrapPageBody(null, html) });
+      out.push({ filename: `single-${postType}.php`, content: wrap(entry.canonicalSingle, html) });
+      // data-page-variant: 同じ投稿の別テンプレート（例 single-nkk_event-apply.php）。
+      // URL は add_rewrite_endpoint で /<投稿のパーマリンク>/<variant>/ になる（functions.php）。
+      for (const [vname, vpage] of entry.variantPages || []) {
+        const vhtml = renderFragment(vpage, model, vpage.mainEl, false, errors);
+        out.push({ filename: `single-${postType}-${vname}.php`, content: wrap(vpage, vhtml) });
+      }
     } else {
       errors.add('(model)', null, `data-cpt="${cpt}" に対応する data-page="single" のページがありません(single-${postType}.phpを生成できません)`);
     }
   }
   return out;
+}
+
+// index.php: テンプレート階層の最終フォールバック。**WordPress のテーマに必須**で、
+// 無いと「Template is missing」として壊れたテーマ扱いになり、一覧にも出ない。
+// モックにはこれに当たるページが存在しない（どのページも data-page で行き先が決まっている）ため、
+// 変換器が最小限のものを作る。実際に表示されるのは、想定外の URL を踏んだときだけ。
+function generateIndexPhp() {
+  return [
+    '<?php',
+    '/**',
+    ' * index.php',
+    ' * テンプレート階層の最終フォールバック（WordPress のテーマに必須）。',
+    ' * モックに対応するページは無い。想定外の URL を踏んだときだけ表示される。',
+    ' */',
+    '',
+    'get_header();',
+    '?>',
+    '<main id="main-content">',
+    '  <section class="section section--white">',
+    '    <div class="container">',
+    '      <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>',
+    '        <article>',
+    '          <h1><?php the_title(); ?></h1>',
+    '          <div><?php the_content(); ?></div>',
+    '        </article>',
+    '      <?php endwhile; else : ?>',
+    '        <p>コンテンツが見つかりませんでした。</p>',
+    '      <?php endif; ?>',
+    '    </div>',
+    '  </section>',
+    '</main>',
+    '<?php get_footer(); ?>',
+    '',
+  ].join('\n');
 }
 
 function generateStyleCss() {
@@ -204,4 +297,5 @@ module.exports = {
   generateSiteOptionsPageTemplate,
   generateCptTemplates,
   generateStyleCss,
+  generateIndexPhp,
 };

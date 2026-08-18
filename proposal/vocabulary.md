@@ -168,8 +168,8 @@ CPT を推定しており、インスタンスが1件しかない CPT（`nkk_pho
 <!-- NG: 「詳しくは」「をご覧ください。」が編集対象から漏れる -->
 <p>詳しくは<a data-acf="link_label" data-acf-url="link_url">こちら</a>をご覧ください。</p>
 
-<!-- OK: 文ごと1フィールドにする -->
-<p data-acf="note" data-acf-type="wysiwyg">詳しくは<a href="../contact/">こちら</a>をご覧ください。</p>
+<!-- OK: 文ごと1フィールドにする（wysiwyg なので <div>。2.7節） -->
+<div data-acf="note" data-acf-type="wysiwyg">詳しくは<a href="../contact/">こちら</a>をご覧ください。</div>
 ```
 
 - **wysiwyg の中に `data-acf` / `data-acf-url` は書けない**（L23）。まとまり全体を1つの
@@ -185,6 +185,34 @@ CPT を推定しており、インスタンスが1件しかない CPT（`nkk_pho
 > 実測: これを実装するまで、モックの相対パス（`../contact/index.html`）が
 > そのまま ACF のデフォルト値に入っていた。WordPress では解決できないパスであり、
 > モック側を見ても気づけない。
+
+## 2.7 wysiwyg は `<div>` に書く（L31）
+
+**`data-acf-type="wysiwyg"` を `<p>` に宣言できない。**
+
+ACF の wysiwyg は値を `<p>` で包んで出力する。`<p>` の中に置くと
+`<p class="x"><p>本文</p></p>` という不正な入れ子になり、HTML パーサは内側の `<p>` を
+見た時点で外側を閉じる。結果、**class を持つ要素が空になり CSS が本文に当たらない。**
+
+```html
+<!-- NG -->
+<p class="note" data-acf="apply_note" data-acf-type="wysiwyg">…</p>
+
+<!-- OK -->
+<div class="note" data-acf="apply_note" data-acf-type="wysiwyg">…</div>
+```
+
+- **同じフィールド名を別の型で宣言しない。** ACF のフィールドは1つなので型も1つに決まり、
+  食い違えば片方の宣言箇所が壊れる。スコープ（CPT / ページ / ループの対象 CPT）が
+  違えば別フィールドなので対象外
+- **wysiwyg のフィールドを `p` 要素セレクタで整形しない。** `<div>` になるので当たらない
+
+> 中身が `<br>` `<strong>` などの文字装飾だけなら wysiwyg は要らない（textarea で通る）。
+> wysiwyg が要るのは 2.6 節のように内側にタグ構造を持つとき。
+>
+> 実測: 生成サイトで `apply_note` / `venue_intro` / `optin_note` / `submit_note` /
+> `event_meta` の5件がこの形だった。文字は画面に出るため目視では気づけず、
+> 「class の付いた要素が空」という形でしか現れない。
 
 ---
 
@@ -419,6 +447,34 @@ AA だが、パンくずはそれを満たす手段の1つで、サイトマッ�
 
 ---
 
+### 5.1 現在ページの表示（`data-nav-current`）
+
+```html
+<nav data-nav="global" data-nav-current="active">
+  <a href="../events/" class="active">イベントを探す</a>
+</nav>
+```
+
+`data-nav-current` の値が「現在ページを示す class」。モックは各ページで現在地の
+リンクにこの class を付ける（付けないと、モックを開いて回遊したとき現在地が分からない）。
+
+**この class だけは L09 の比較対象から外れる。** 共通領域は「全ページ同一」が条件だが、
+現在ページ表示はページごとに違うのが正しいため、素直に書くと必ず違反になる。
+
+変換器は WordPress の `current-menu-item` / `-parent` / `-ancestor` を見て、
+表示時にこの class を付ける。**ナビはメニューのままなので管理画面から編集できる。**
+
+- 一覧を持つ CPT は、**詳細ページでも一覧の項目を現在地にする**（`is_singular()` で判定）。
+  WordPress は既定でそこまでやらないが、一覧項目はその投稿タイプ自体を指しているため
+- 判定に URL 比較は使わない。メニュー項目を参照型（`page_id` / `post_type_archive` 等）で
+  登録しているので、WordPress が現在地を教えてくれる
+
+> 実測: この宣言を作るまで `mockup-real` から `active` が丸ごと落ちていた。
+> リバース時の抜けではなく、L09 と衝突して書けなかったのが理由だった。
+> 生成サイトでも現在地がどこにも出ていなかった。
+
+---
+
 ## 6. フォーム（CF7）
 
 ```html
@@ -500,6 +556,66 @@ CF7 タグの生成は変換器がテンプレート化して行う。
 **CF7 6.x の属性順序（クォート付き値は全ての無引用オプションより後ろ）はモック側の関心事ではない** —
 `placeholder "…"` を末尾に置くのは変換器の責務。ここを人が書かないことで、
 CLAUDE.md に記録されている既知の事故（タグがパースされず素テキスト出力）が構造的に起きなくなる。
+
+### 6.2 1つのフォームを複数の投稿で使い回す（`data-cf7-group` / `data-cf7-value`）
+
+同じ用途のフォームを投稿ごとに作ると、**投稿が増えるたびに CF7 のフォームが増える**。
+CF7 のフォームは送信先・自動返信・メール本文を1件ずつ管理画面で設定するものなので、
+運用コストが件数に比例して破綻する（実測: イベント4件で申込フォームが4件になっていた）。
+
+**フォームは1つにし、投稿ごとに違う部分だけを宣言する。**
+
+```html
+<form data-cf7="event-apply">
+  <!-- 投稿から値が入る hidden -->
+  <input type="hidden" data-cf7-field="event-id"   data-cf7-value="post_slug">
+  <input type="hidden" data-cf7-field="event-name" data-cf7-value="post_title">
+
+  …全イベント共通の欄…
+
+  <!-- 条件に合う投稿のときだけ出す欄 -->
+  <div data-cf7-group="child" data-cf7-group-if="event_target=子ども">
+    <label>お子様の氏名<input data-cf7-field="child-name" data-cf7-required></label>
+  </div>
+</form>
+```
+
+| 属性 | 内容 |
+|---|---|
+| `data-cf7-group` | グループ名（ASCII）。同名を複数箇所に書いてよい |
+| `data-cf7-group-if` | `<ACFフィールド名>=<値>`。**この属性だけは値に日本語を書いてよい**（L13 の例外）。識別子ではなく比較する内容そのものだから |
+| `data-cf7-value` | hidden の値の出どころ。`post_slug` / `post_title` / `post_id` |
+
+**出し分けはサーバ側で行う。** 変換器が `wpcf7_form_elements` フィルタを生成し、
+表示中の投稿の ACF 値を見て、条件に合わないグループを**HTML から削除**する。
+
+- **JS を使わない。** 切られても隠し欄が出ない
+- **必須欄が隠れて送信できなくなる問題が起きない。** 欄ごと消えるため
+- **CF7 の条件分岐プラグインが要らない。** テーマの関数だけで完結する
+
+> 判定材料は**お客様が既に入力しているフィールド**を使うこと。専用の設定項目を作ると、
+> 投稿を書くたびに「このフォームでどのグループを出すか」を理解させることになり、運用が増える。
+> 実例では `event_target`（個人 / 子ども / 企業）が一覧の絞り込み用に既に入力されていた。
+
+### 6.3 フォームの中の編集対象テキスト（`data-acf`）
+
+フォームの中にも、入力欄ではない**お客様が編集したい文章**がある（「送信後、確認メールを
+お送りします」など）。ここにも普通に `data-acf` を書いてよい。
+
+```html
+<p class="apply-submit__note" data-acf="submit_note" data-acf-type="wysiwyg">
+  送信後、確認メールをお送りします。<br>メールが届かない場合はお問合せください。
+</p>
+```
+
+CF7 のフォーム本文は**文字列として保存される**ため PHP を埋め込めない。変換器は目印
+（`<!--nkk-acf:キー:型-->`）だけを本文に置き、6.2 と同じ `wpcf7_form_elements` フィルタが
+表示時に値へ差し替える。書く側は他の場所と同じ `data-acf` を書けばよい。
+
+> これが無かったとき、フォーム内の `data-acf` はモックの文言がそのまま焼き込まれ、
+> ACF には登録されるのに**編集しても何も変わらない死んだフィールド**になっていた
+> （実測: `optin_title` / `optin_note` / `submit_note` の3件）。
+> 画像（`image` 型）はフォーム本文では扱えないためエラーにする。
 
 ---
 
@@ -593,12 +709,12 @@ images/
 | L06 | `data-acf-type` の値が有効な5型のいずれか。`url` 型は `href` / `src` を持つ要素にのみ使える（2.2節） | error |
 | L07 | `data-loop` 直下の `data-loop-item` がちょうど1個。`data-loop-sample` の中に `data-acf` / `data-acf-url` を書かない（捨てられるため意味を持たない） | error |
 | L08 | 対応する `data-page="single"` のページが1枚も無い `data-loop` は error（一覧はあるが詳細テンプレートが無い構成ミス）。`data-loop-item` 内の `data-acf` が詳細ページに無い場合は **warn**（一覧カード専用フィールドは正当なため。3節末尾参照） | error / warn |
-| L09 | 同じ `data-common` / `data-nav` の内容が全ページで一致。比較の単位は**値 × ページ内での出現順**で、同一ページ内の別位置どうしは比較しない（同じメニューを複数の位置に違う見せ方で出すのは正しい書き方のため。5節） | error |
+| L09 | 同じ `data-common` / `data-nav` の内容が全ページで一致（例外: `data-nav-current` で宣言した class は比較対象外。5.1節）。比較の単位は**値 × ページ内での出現順**で、同一ページ内の別位置どうしは比較しない（同じメニューを複数の位置に違う見せ方で出すのは正しい書き方のため。5節） | error |
 | L10 | `data-cf7-submit` がフォーム内にちょうど1個 | error |
 | L24 | 単独チェックボックスに `data-cf7-acceptance` の有無が明示されている（warn）／ファイル欄に `data-cf7-limit` がある（error）。6.1節 | error / warn |
 | L11 | ページ内 `<style>` タグが無い | error |
 | L12 | `style="…"` 属性が無い | error |
-| L13 | class 名・`data-*` 値が全て ASCII | error |
+| L13 | class 名・`data-*` 値が全て ASCII（例外: `data-cf7-group-if` は比較する内容そのものを書くため日本語可。6.2節） | error |
 | L14 | 画像参照が `images/` 配下のみ（検査対象は `<img src>`。CSS の `background-image` と favicon は v0.1 では対象外） | error |
 | L15 | 全 `<img>` に `alt`（空 alt は `data-deco` **または `aria-hidden="true"`** が自身か祖先に付いている場合のみ。カルーセルの無限ループ用に複製されたカード等が該当） | error |
 | L16 | `images/` の全ファイルが `meta.yaml` に載っている | error |
@@ -610,6 +726,9 @@ images/
 | L25 | ページ内に処理を書いた `<script>` が無い（`js/` 配下のファイルに分ける。ページ固有なら `js/page/<ページID>.js`。7.1節） | error |
 | L26 | `<section>` に `data-section` がある（`data-common` 配下と `data-loop-item` / `data-loop-sample` 配下は除く）。2.5節 | error |
 | L27 | 同じ中身の子を複数持つ `data-loop` に `data-loop-repeat` がある。宣言がある場合は「子の総数＝異なる中身の数 × 周回数」が成り立つ。3.1節 | error |
+| L30 | モック内リンクの行き先がモックに実在する（`data-nav` の中も対象）。裏返しに、**どこからもリンクされていないページ**は warn で報告する。同じ行き先の重複は1件にまとめる | error / warn |
+| L31 | 同じフィールドの型が宣言箇所で食い違わない。型が `wysiwyg` なら `<p>` に宣言しない（wysiwyg の値は `<p>` に包まれて出るため入れ子が壊れ、class を持つ要素が空になる）。2.7節 | error |
+| L29 | `data-cf7-group` に `data-cf7-group-if` がある／`data-cf7-group` と `data-cf7-value` は `data-cf7` の内側にだけ書く／`data-cf7-value` の値が `post_slug` / `post_title` / `post_id` のいずれか。6.2節 | error |
 
 ### 9.0 欠番（削除したルール）
 

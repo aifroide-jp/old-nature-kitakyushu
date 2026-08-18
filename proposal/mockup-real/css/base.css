@@ -1294,3 +1294,6 @@ tr:nth-child(even) {
   }
 }
 
+/* CTA バンドの背景写真。data-common="cta" は全ページに出るのでここに置く
+   （ページ別 CSS に置くと、そのページ以外で背景が消える）。 */
+.cta-band--photo { background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('../images/cta-bg.png'); background-size: cover; background-position: center; }

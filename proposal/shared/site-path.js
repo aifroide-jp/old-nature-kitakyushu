@@ -28,10 +28,35 @@ function normalizeAttrValue(value, pageRelPath) {
 
 // outerHTML文字列中の href/src 属性値をすべて normalizeAttrValue() で正規化する。
 // data-common / data-nav 要素のページ横断バイト比較に使う(比較専用。出力には使わない)。
+// data-nav-current で宣言された class を比較対象から外す（vocabulary.md 5.1）。
+//
+// この class は**ページごとに付く場所が違うのが正しい**。付いていないと、モックを
+// 開いて回遊したときに現在地が分からない。だが共通領域は「全ページ同一」が条件なので、
+// 素直に書くと必ず違反になる。実測: mockup-real から active が丸ごと落ちていたのは、
+// リバース時の抜けではなくこの衝突が理由だった。
+//
+// 宣言は比較対象の**内側**にあることがある（data-common="header" の中の <nav> など）。
+// 外側の属性だけを見ていると拾えず、ヘッダー・フッターの比較で必ず落ちる。
+//
+// lint(L09) と変換器(model.js)の両方がこの関数を通る。片方だけに書くと必ずズレる。
+function stripCurrentClass(outerHtml) {
+  const declared = [...outerHtml.matchAll(/data-nav-current="([^"]+)"/g)].map((m) => m[1]);
+  if (!declared.length) return outerHtml;
+  let out = outerHtml;
+  for (const name of new Set(declared)) {
+    const c = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out
+      .replace(new RegExp(`(class="[^"]*?)\\s*\\b${c}\\b`, 'g'), '$1')
+      .replace(/\s*class="\s*"/g, '');
+  }
+  return out;
+}
+
 function normalizeOuterForCompare(outerHtml, pageRelPath) {
-  return outerHtml.replace(/(href|src)="([^"]*)"/g, (m, attr, val) => {
+  const stripped = stripCurrentClass(outerHtml);
+  return stripped.replace(/(href|src)="([^"]*)"/g, (m, attr, val) => {
     return `${attr}="${normalizeAttrValue(val, pageRelPath)}"`;
   });
 }
 
-module.exports = { normalizeAttrValue, normalizeOuterForCompare };
+module.exports = { normalizeAttrValue, normalizeOuterForCompare, stripCurrentClass };

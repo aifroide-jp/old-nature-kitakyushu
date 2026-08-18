@@ -10,6 +10,8 @@ const images = require('./images');
 const headings = require('./headings');
 const textCoverage = require('./text-coverage');
 const absoluteRefs = require('./absolute-refs');
+const linkTargets = require('./link-targets');
+const fieldTypes = require('./field-types');
 
 // 単一ページで完結するルール(L01,L02,L03,L04,L05,L06,L07,L10,L11,L12,L13,L14,L15,L18,L19,L20,L21)
 function runPerPageRules(page, rootDir) {
@@ -25,9 +27,15 @@ function runPerPageRules(page, rootDir) {
   ];
 }
 
-// ディレクトリ全体を見てから判定するルール(L08,L09,L16)
+// ディレクトリ全体を見てから判定するルール(L08,L09,L16,L30,L31)
 function runCrossPageRules(pages, rootDir) {
-  return [...crossCpt.run(pages), ...commonNav.run(pages), ...images.runImagesRegistry(rootDir)];
+  return [
+    ...crossCpt.run(pages),
+    ...commonNav.run(pages),
+    ...images.runImagesRegistry(rootDir),
+    ...linkTargets.run(pages),
+    ...fieldTypes.run(pages),
+  ];
 }
 
 module.exports = { runPerPageRules, runCrossPageRules };

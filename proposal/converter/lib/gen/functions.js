@@ -2,6 +2,13 @@
 
 const { CPT_PREFIX } = require('../constants');
 const { phpSingleQuote } = require('../php-util');
+
+// 管理画面に表示するメニュー位置の名前。宣言名から機械的に作れないものだけ持つ。
+const NAV_LABELS = {
+  global: 'グローバルナビゲーション',
+  mobile: 'モバイルナビゲーション',
+  footer: 'フッターナビゲーション',
+};
 const { generateNavWalkers } = require('./nav-walker');
 
 function generateFunctionsPhp(model, errors) {
@@ -22,7 +29,10 @@ function generateFunctionsPhp(model, errors) {
   lines.push("    add_theme_support( 'post-thumbnails' );");
   lines.push('    register_nav_menus( array(');
   for (const name of model.navMap.keys()) {
-    lines.push(`        ${phpSingleQuote(name)} => ${phpSingleQuote(`data-nav="${name}"`)},`);
+    // 第2引数は**管理画面に出る人間向けの名前**。宣言そのものを入れると
+    // 「外観 → メニュー」の位置選択に data-nav="global" と表示され、
+    // お客様がどれに割り当てるべきか判断できない。
+    lines.push(`        ${phpSingleQuote(name)} => ${phpSingleQuote(NAV_LABELS[name] || `${name} ナビゲーション`)},`);
   }
   lines.push('    ) );');
   lines.push('}');
@@ -44,7 +54,23 @@ function generateFunctionsPhp(model, errors) {
     lines.push(`            'singular_name' => ${phpSingleQuote(cpt)},`);
     lines.push('        ),');
     lines.push("        'public' => true,");
-    lines.push(`        'has_archive' => ${entry.archivePage ? 'true' : 'false'},`);
+    // URL のスラッグは archive ページの場所から決まる。指定しないと投稿タイプ名
+    // （nkk_event）がそのまま URL に出て、**モックで合意した URL と食い違う**。
+    // 実測: モックは /events/ なのに /nkk_event/ になっていた。
+    //   events/index.html   → events
+    //   about/spots.html    → about/spots （index.html 以外は拡張子を落として使う）
+    // archive が無い CPT は正解がモックに無いので指定しない（推測しない）。
+    let archiveSlug = null;
+    if (entry.archivePage) {
+      archiveSlug = entry.archivePage.relPath.replace(/\.html$/, '').replace(/(^|\/)index$/, '');
+      archiveSlug = archiveSlug.replace(/\/$/, '');
+    }
+    lines.push(`        'has_archive' => ${archiveSlug ? phpSingleQuote(archiveSlug) : 'false'},`);
+    if (archiveSlug) {
+      // with_front を false にしないと、パーマリンク設定の接頭辞が前に付いて
+      // モックのパスと合わなくなる。
+      lines.push(`        'rewrite' => array( 'slug' => ${phpSingleQuote(archiveSlug)}, 'with_front' => false ),`);
+    }
     lines.push("        'show_in_rest' => true,");
     lines.push("        'supports' => array( 'title' ),");
     lines.push(`        'menu_icon' => 'dashicons-admin-post',`);
@@ -53,6 +79,57 @@ function generateFunctionsPhp(model, errors) {
   lines.push('}');
   lines.push("add_action( 'init', 'nkk_register_post_types' );");
   lines.push('');
+
+  // --- data-page-variant: 同じ投稿の別テンプレート（vocabulary.md 1.1） ---
+  //
+  // add_rewrite_endpoint を使う。CPT の rewrite スラッグに依存せず
+  // /<投稿のパーマリンク>/<variant>/ が有効になるため、
+  // 「投稿を1つ作れば詳細ページと申込ページの両方ができる」を実現できる。
+  // 固定ページを1枚ずつ手で作らせない（お客様の操作を増やさない）。
+  const variants = [];
+  for (const [cpt, entry] of model.cptMap) {
+    for (const vname of (entry.variantPages || new Map()).keys()) {
+      variants.push({ postType: `${CPT_PREFIX}${cpt}`, variant: vname });
+    }
+  }
+  if (variants.length) {
+    const names = [...new Set(variants.map((v) => v.variant))];
+    lines.push('function nkk_register_variant_endpoints() {');
+    for (const n of names) {
+      // EP_ALL: CPT は独自の EP マスクを持たないため、限定すると効かない。
+      lines.push(`    add_rewrite_endpoint( ${phpSingleQuote(n)}, EP_ALL );`);
+    }
+    lines.push('}');
+    lines.push("add_action( 'init', 'nkk_register_variant_endpoints' );");
+    lines.push('');
+    // エンドポイントはリライト規則なので、追加しただけでは 404 になる。
+    // テーマ切替時に1回だけ flush する（毎回 flush すると重い）。
+    lines.push("add_action( 'after_switch_theme', function () {");
+    lines.push('    nkk_register_post_types();');
+    lines.push('    nkk_register_variant_endpoints();');
+    lines.push('    flush_rewrite_rules();');
+    lines.push('} );');
+    lines.push('');
+    lines.push('function nkk_variant_template( $template ) {');
+    lines.push('    $map = array(');
+    for (const v of variants) {
+      lines.push(`        array( ${phpSingleQuote(v.postType)}, ${phpSingleQuote(v.variant)} ),`);
+    }
+    lines.push('    );');
+    lines.push('    foreach ( $map as $m ) {');
+    lines.push('        list( $post_type, $variant ) = $m;');
+    lines.push('        if ( ! is_singular( $post_type ) ) { continue; }');
+    lines.push("        // エンドポイントが URL に在るときだけ get_query_var が '' を返す。");
+    lines.push('        // 既定を null にして「無い」と区別する。');
+    lines.push('        if ( null === get_query_var( $variant, null ) ) { continue; }');
+    lines.push('        $found = locate_template( array( "single-{$post_type}-{$variant}.php" ) );');
+    lines.push('        if ( $found ) { return $found; }');
+    lines.push('    }');
+    lines.push('    return $template;');
+    lines.push('}');
+    lines.push("add_filter( 'template_include', 'nkk_variant_template' );");
+    lines.push('');
+  }
 
   // --- アセット(css)のenqueue。vocabulary.md 7章の css/base.css + css/page/*.css 構成に対応 ---
   lines.push('function nkk_enqueue_assets() {');
@@ -156,6 +233,14 @@ function generateFunctionsPhp(model, errors) {
   // --- ナビ Walker(theme_location ごとに1クラス) ---
   // 実装は lib/gen/nav-walker.js。生成PHPを単体テストできるよう切り出してある。
   for (const line of generateNavWalkers(model.navInfo)) lines.push(line);
+  // 同じメニュー位置の2つ目以降の形にもウォーカーを作る（PC 用 / モバイル用など）
+  for (const [name, variants] of model.navVariants || []) {
+    if (!variants || variants.length < 2) continue;
+    for (const v of variants.slice(1)) {
+      const alias = new Map([[`${name}_${v.index + 1}`, v.info]]);
+      for (const line of generateNavWalkers(alias)) lines.push(line);
+    }
+  }
 
   // --- inc/ の読み込み ---
   lines.push('foreach ( glob( get_template_directory() . \'/inc/*.php\' ) as $nkk_inc_file ) {');

@@ -137,6 +137,22 @@ function scanPage(absPath, rootDir) {
   };
   if ($body.attr('data-cpt')) page.cpt = $body.attr('data-cpt');
   if ($body.attr('data-page-id')) page.page_id = $body.attr('data-page-id');
+  // data-page-variant: 同じ投稿の別テンプレート（vocabulary.md 1.1）。
+  // これが無いと申込ページ（single-<cpt>-<variant>.php）を作れない。
+  if ($body.attr('data-page-variant')) page.variant = $body.attr('data-page-variant');
+
+  // このページが読む CSS。どのページがどの CSS を読むかは
+  // acf-map.yaml だけからテーマを組むのに要る（vocabulary.md 7章）。
+  page.css = [];
+  $('link[rel="stylesheet"][href]').each((_, el) => {
+    const href = $(el).attr('href');
+    // 外部の CSS（Google Fonts 等）はテーマの assets に入らないのでそのまま持つ。
+    // 正規化するとパスとして壊れる（実測: events/https:/fonts.googleapis.com/... になった）。
+    if (/^(https?:)?\/\//i.test(href)) { page.css.push(href); return; }
+    // モックルートからの相対に正規化する（../css/page/event.css → css/page/event.css）
+    const dir = path.posix.dirname(rel);
+    page.css.push(path.posix.normalize(path.posix.join(dir === '.' ? '' : dir, href)));
+  });
 
   // sections（data-common は common 側へ回すのでここでは除く）
   page.sections = [];
@@ -156,6 +172,8 @@ function scanPage(absPath, rootDir) {
       cpt: $l.attr('data-loop'),
       order: $l.attr('data-loop-order') || 'date_desc',
       count: parseInt($l.attr('data-loop-count') || '-1', 10),
+      // data-loop-repeat: 同じ中身の子を複数持つループの周回数（vocabulary.md 3.1 / L27）
+      repeat: parseInt($l.attr('data-loop-repeat') || '1', 10),
       item_fields: extractFields($, $item, rel).map((f) => f.field_name),
     });
   });
