@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const cheerio = require('./lint/node_modules/cheerio');
+const cheerio = require('../.claude/ichiki/node_modules/cheerio');
 
 const ROOT = __dirname;
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));

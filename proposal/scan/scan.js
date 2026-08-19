@@ -26,8 +26,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const cheerio = require('../lint/node_modules/cheerio');
-const yaml = require('../lint/node_modules/js-yaml');
+const cheerio = require('../../.claude/ichiki/node_modules/cheerio');
+const yaml = require('../../.claude/ichiki/node_modules/js-yaml');
 
 // 型導出表・有効な型は proposal/shared/constants.js が唯一の定義場所（vocabulary.md 2.1）。
 // テキストの分類は proposal/shared/text-classify.js が唯一の実装で、lint L20 と共有する。

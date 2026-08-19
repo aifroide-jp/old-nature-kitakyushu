@@ -24,6 +24,9 @@ const os = require('os');
 const path = require('path');
 
 const ROOT = __dirname;
+// Ichiki 本体（submodule）。lint・語彙・自己検査はこちらへ移設済み。
+// proposal 側にコピーを残すと、本体を直しても届かない状態になる（今日 .fp-u43 で踏んだ形）。
+const ICHIKI = path.join(ROOT, '..', '.claude', 'ichiki');
 const argv = process.argv.slice(2);
 const allowUnresolved = argv.includes('--allow-unresolved-links');
 const withVisual = argv.includes('--visual');
@@ -47,11 +50,11 @@ function step(name, cmd, args, opts = {}) {
 }
 
 // 1. ルール自体が健全か（語彙・lint・プロンプトの3者が揃っているか）
-step('ルール同期', 'node', [path.join(ROOT, 'check-rule-sync.js')]);
+step('ルール同期', 'node', [path.join(ICHIKI, 'test', 'check-rule-sync.js')]);
 
 // 2. モックが規約に適合しているか
 step('lint', 'node', [
-  path.join(ROOT, 'lint', 'lint.js'),
+  path.join(ICHIKI, 'src', 'lint', 'lint.js'),
   mockupDir,
   // L30 の「行き先がモックにありません」は変換器の未解決リンクと同じ事実なので、
   // 片方だけ止めると「lint は通らないが変換は通る」というちぐはぐな状態になる。

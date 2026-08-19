@@ -23,7 +23,7 @@
 // 直したいときはモックを直して scan を回し直す。yaml だけを書き換えても通らない。
 
 const fs = require('fs');
-const yaml = require('../../lint/node_modules/js-yaml');
+const yaml = require('../../../.claude/ichiki/node_modules/js-yaml');
 
 // yaml から「ページ相対パス → フィールド名 → {type, default}」を作る。
 // common は全ページ共通なので別建てにする。
