@@ -1,17 +1,13 @@
 # 環境依存の設定（絶対パスを含むためコミットしない）
 .ichiki.json
-scripts/visual-diff/node_modules
-scripts/visual-diff/report.DS_Store
-scripts/test-spec/node_modules
-scripts/test-spec/out
-scripts/test-spec/.pa11yci.json
-scripts/test-spec/pa11y-report.json
+
+# OS / エディタ
 **/.DS_Store
-report
 .claude/settings.local.json
 
-# proposal/ の生成物（コマンドで再生成できるもの）
-proposal/*/node_modules
-proposal/out
+# 生成物（コマンドで再生成できるもの）
+# 例外: proposal/snapshot/expected.json は凍結の期待値なので追跡する
+docs/検収
 proposal/visual-check/out
-proposal/a11y/out
+pa11y-report.json
+.pa11yci.json
