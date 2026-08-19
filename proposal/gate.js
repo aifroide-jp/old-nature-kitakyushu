@@ -89,6 +89,11 @@ step(
 step('フィールド突合', 'node', [path.join(ROOT, 'converter', 'verify-coverage.js'), mockupDir, themeDir]);
 step('構造忠実性', 'node', [path.join(ROOT, 'converter', 'verify-structure.js'), mockupDir, themeDir]);
 
+// 6.5 出力の凍結（回帰ハーネス）
+// 移設・リファクタで出力が変わったら、どのファイルが変わったかを名指しで出す。
+// **意図した変更なら --update で凍結し直す。**黙って通さない。
+step('出力の凍結', 'node', [path.join(ROOT, 'snapshot.js')]);
+
 // 7. PHP の構文（php が無い環境ではスキップし、スキップした旨を必ず出す）
 step('php -l', null, null, { php: true });
 
