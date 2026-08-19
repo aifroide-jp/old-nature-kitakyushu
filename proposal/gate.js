@@ -77,7 +77,7 @@ step(
   '変換',
   'node',
   [
-    path.join(ROOT, 'converter', 'convert.js'),
+    path.join(ICHIKI, 'src', 'converter', 'convert.js'),
     mockupDir,
     themeDir,
     ...(allowUnresolved ? ['--allow-unresolved-links'] : []),
@@ -89,8 +89,8 @@ step(
 );
 
 // 6. 生成物の検証（宣言の出力漏れ／class の消失）
-step('フィールド突合', 'node', [path.join(ROOT, 'converter', 'verify-coverage.js'), mockupDir, themeDir]);
-step('構造忠実性', 'node', [path.join(ROOT, 'converter', 'verify-structure.js'), mockupDir, themeDir]);
+step('フィールド突合', 'node', [path.join(ICHIKI, 'src', 'verify', 'coverage.js'), mockupDir, themeDir]);
+step('構造忠実性', 'node', [path.join(ICHIKI, 'src', 'verify', 'structure.js'), mockupDir, themeDir]);
 
 // 6.5 出力の凍結（回帰ハーネス）
 // 移設・リファクタで出力が変わったら、どのファイルが変わったかを名指しで出す。

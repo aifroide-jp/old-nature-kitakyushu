@@ -71,7 +71,8 @@ function main() {
 
   // 走らせるコマンドは差し替え可能にする（移設後の出力と突き合わせるため）
   const scanCmd = process.env.ICHIKI_SCAN || `node ${path.join(ROOT, 'scan', 'scan.js')}`;
-  const buildCmd = process.env.ICHIKI_BUILD || `node ${path.join(ROOT, 'converter', 'convert.js')}`;
+  const ICHIKI = path.join(ROOT, '..', '.claude', 'ichiki');
+  const buildCmd = process.env.ICHIKI_BUILD || `node ${path.join(ICHIKI, 'src', 'converter', 'convert.js')}`;
   const sp = scanCmd.split(' ');
   const bp = buildCmd.split(' ');
 
