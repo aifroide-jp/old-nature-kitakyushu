@@ -156,6 +156,60 @@ proposal が `acf-map.yaml` を完全に保つことで**この実装を活か�
 
 ---
 
+## 6.1 決まったこと（2026-08-18）
+
+**推測版の scan は捨てる。** 後付けが現実的だと実測できたため（下記）。
+制約なしモックは lint の指摘を作業リストとして通せる。2系統を抱える理由が無い。
+
+> 実測: `about/biodiversity.html`（710行）を制約なしの状態から通した。
+> lint error 37件 → 0件、宣言139箇所、**7分**。ピクセル差 249px（フォント要因のみ）。
+> 工程の大半は共通領域のコピーと `<style>` の分離で、意味を考えるのは `data-acf` の命名だけ。
+
+**実装は本体に置く。案件リポジトリ依存にしない。** ルールだけ本体にあって実装が案件側にある
+現状（`rules/ichiki.md`「## 成果物」に対する `scripts/test-spec`）は逆になっている。
+
+### 移設コスト（実測）
+
+`scripts/` に埋まっている案件固有の記述は **3ファイル・7箇所**しかない。
+
+| ファイル | 箇所 | 中身 | 対処 |
+|---|---|---|---|
+| `visual-diff/pages.js` | 全26行 | 51ページのラベルとパスの表 | **acf-map.yaml から導出**（`file` / `title` が揃っている）。ファイルごと不要 |
+| `visual-diff/diff.js` | 3 | 既定の比較先 URL、レポートのタイトル | 引数・設定に出す |
+| `test-spec/lib/theme-model.js` | 3 | `nkk_seed_post()` の正規表現、`{news:'nkk_news', …}` | CPT 接頭辞を設定から受け取る |
+
+他のファイル（`test-spec/generate.js` `lib/checks/*` `lib/render-c1.js` `lib/render-c3.js`）に
+案件固有の記述は**無い**。
+
+### 統合後の入口（案）
+
+```
+ichiki lint       <mockup>
+ichiki a11y       <mockup>
+ichiki scan       <mockup> <out>        ← proposal/scan（推測版 src/scan.js は削除）
+ichiki build      <mockup> <theme>
+ichiki verify     <mockup> <theme>      ← coverage + structure（bin/gate.js を置き換え）
+ichiki verify:live <mockup> <URL>
+ichiki diff       <mockup>              ← 元モック ↔ 制約モック（「構造だけ変えた」の裏取り）
+ichiki diff:wp    <mockup> <URL>        ← 元モック ↔ WordPress（「変換が正しい」の裏取り）
+ichiki testspec   <acf-map> <theme> <URL>
+ichiki gate       <mockup>              ← 上を順に流す
+ichiki selftest                         ← ルール同期 + 負のテスト + scan 回帰
+```
+
+覚えるのは `ichiki gate` だけでよくなる。個別は切り分け用。
+
+**見た目の比較は2本に分けたままにする。** 比べる対象が違い、答える問いも違う。
+1本に束ねてオプションで切り替えると「どちらを流したか」が曖昧になり、
+「見た目は変わっていない」という主張の根拠がどちらなのか追えなくなる。
+
+### 残る判断
+
+- `test-spec` を本体へ移すとき、案件固有の上書き規定（Markdown 出力・PDF なし・出力先）を
+  どう渡すか。案件 `CLAUDE.md` に書いてある内容なので、設定ファイルか引数に出す必要がある
+
+---
+
 ## 7. 未解決（本 PoC の宿題）
 
 | | 状態 |

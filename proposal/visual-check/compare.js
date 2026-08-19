@@ -30,6 +30,7 @@ const PAIRS = [
   ['events-index', 'events/index.html', 'proposal/mockup-real/events/index.html'],
   ['events-sample', 'events/sample.html', 'proposal/mockup-real/events/sample.html'],
   ['events-apply', 'events/summer-camp-apply.html', 'proposal/mockup-real/events/summer-camp-apply.html'],
+  ['biodiversity', 'about/biodiversity.html', 'proposal/mockup-real/about/biodiversity.html'],
 ];
 
 // アニメーション・スライドショーで無関係な差分が出るのを止める。
