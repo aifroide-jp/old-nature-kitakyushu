@@ -67,7 +67,7 @@ step('a11y', 'node', [path.join(ROOT, 'a11y', 'check.js'), mockupDir], { blockin
 
 // 4. テキストの取りこぼしがゼロか／acf-map.yaml が出るか
 step('scan', 'node', [
-  path.join(ROOT, 'scan', 'scan.js'),
+  path.join(ICHIKI, 'src', 'scan.js'),
   mockupDir,
   path.join(ROOT, 'scan', 'out-gate'),
 ]);

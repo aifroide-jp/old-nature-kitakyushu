@@ -70,7 +70,7 @@ function main() {
   const themeOut = path.join(tmp, 'theme');
 
   // 走らせるコマンドは差し替え可能にする（移設後の出力と突き合わせるため）
-  const scanCmd = process.env.ICHIKI_SCAN || `node ${path.join(ROOT, 'scan', 'scan.js')}`;
+  const scanCmd = process.env.ICHIKI_SCAN || `node ${path.join(ROOT, '..', '.claude', 'ichiki', 'src', 'scan.js')}`;
   const ICHIKI = path.join(ROOT, '..', '.claude', 'ichiki');
   const buildCmd = process.env.ICHIKI_BUILD || `node ${path.join(ICHIKI, 'src', 'converter', 'convert.js')}`;
   const sp = scanCmd.split(' ');
