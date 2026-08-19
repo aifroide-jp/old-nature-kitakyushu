@@ -1,0 +1,688 @@
+{
+  "total_text_nodes": 1720,
+  "buckets": {
+    "acf": 443,
+    "nav": 913,
+    "cf7": 87,
+    "breadcrumb": 18,
+    "loop_sample": 112,
+    "deco": 24,
+    "unclaimed": 123
+  },
+  "sum_of_buckets": 1720,
+  "unaccounted": 0,
+  "per_page": [
+    {
+      "file": "about/biodiversity.html",
+      "total": 183,
+      "counts": {
+        "acf": 85,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 0,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 14
+      },
+      "unclaimed": [
+        {
+          "line": 35,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 86,
+          "text": "お問合せ"
+        },
+        {
+          "line": 159,
+          "text": "トップ"
+        },
+        {
+          "line": 160,
+          "text": "アーバンネイチャー北九州とは？"
+        },
+        {
+          "line": 161,
+          "text": "生物多様性とは？"
+        },
+        {
+          "line": 245,
+          "text": "例："
+        },
+        {
+          "line": 245,
+          "text": "土壌形成、光合成による酸素の生成、栄養塩の循環、水循環"
+        },
+        {
+          "line": 253,
+          "text": "例："
+        },
+        {
+          "line": 253,
+          "text": "食料（農作物・水産物）、淡水、木材・繊維、医薬品の原料、遺伝資源"
+        },
+        {
+          "line": 261,
+          "text": "例："
+        },
+        {
+          "line": 261,
+          "text": "自然景観の楽しみ、エコツーリズム、教育・研究、芸術・文化のインスピレーション"
+        },
+        {
+          "line": 269,
+          "text": "例："
+        },
+        {
+          "line": 269,
+          "text": "気候の調節、洪水の緩和、水質浄化、花粉媒介、病害虫の抑制"
+        },
+        {
+          "line": 450,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "about/spots.html",
+      "total": 119,
+      "counts": {
+        "acf": 13,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 3,
+        "loop_sample": 16,
+        "deco": 1,
+        "unclaimed": 3
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 347,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "about/spots/hiraodai.html",
+      "total": 132,
+      "counts": {
+        "acf": 32,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 4,
+        "loop_sample": 0,
+        "deco": 2,
+        "unclaimed": 11
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 211,
+          "text": "平尾台 基本情報・アクセス"
+        },
+        {
+          "line": 212,
+          "text": "所在地（自然観察センター）"
+        },
+        {
+          "line": 213,
+          "text": "自然観察センター"
+        },
+        {
+          "line": 214,
+          "text": "千仏鍾乳洞"
+        },
+        {
+          "line": 215,
+          "text": "車でのアクセス"
+        },
+        {
+          "line": 216,
+          "text": "公共交通"
+        },
+        {
+          "line": 217,
+          "text": "駐車場"
+        },
+        {
+          "line": 218,
+          "text": "公式サイト"
+        },
+        {
+          "line": 325,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "center/biotope.html",
+      "total": 128,
+      "counts": {
+        "acf": 30,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 3,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 11
+      },
+      "unclaimed": [
+        {
+          "line": 34,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 85,
+          "text": "お問合せ"
+        },
+        {
+          "line": 186,
+          "text": "住所"
+        },
+        {
+          "line": 188,
+          "text": "電話"
+        },
+        {
+          "line": 190,
+          "text": "URL"
+        },
+        {
+          "line": 192,
+          "text": "開園時間"
+        },
+        {
+          "line": 194,
+          "text": "休園日"
+        },
+        {
+          "line": 196,
+          "text": "入園料"
+        },
+        {
+          "line": 198,
+          "text": "アクセス"
+        },
+        {
+          "line": 200,
+          "text": "駐車場"
+        },
+        {
+          "line": 358,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "center/index.html",
+      "total": 158,
+      "counts": {
+        "acf": 30,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 2,
+        "loop_sample": 36,
+        "deco": 1,
+        "unclaimed": 6
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 326,
+          "text": "所在地"
+        },
+        {
+          "line": 328,
+          "text": "Email"
+        },
+        {
+          "line": 330,
+          "text": "アクセス"
+        },
+        {
+          "line": 430,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "contact/index.html",
+      "total": 130,
+      "counts": {
+        "acf": 18,
+        "nav": 83,
+        "cf7": 20,
+        "breadcrumb": 0,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 8
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 226,
+          "text": "受付時間"
+        },
+        {
+          "line": 227,
+          "text": "平日 9:00〜17:00"
+        },
+        {
+          "line": 227,
+          "text": "（土日祝日・年末年始を除く）"
+        },
+        {
+          "line": 230,
+          "text": "メール"
+        },
+        {
+          "line": 231,
+          "text": "kuc@iges.or.jp"
+        },
+        {
+          "line": 328,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "events/index.html",
+      "total": 152,
+      "counts": {
+        "acf": 14,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 0,
+        "loop_sample": 35,
+        "deco": 1,
+        "unclaimed": 19
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 171,
+          "text": "タイプ："
+        },
+        {
+          "line": 172,
+          "text": "すべて"
+        },
+        {
+          "line": 173,
+          "text": "双方向募集型"
+        },
+        {
+          "line": 174,
+          "text": "告知型"
+        },
+        {
+          "line": 177,
+          "text": "カテゴリ："
+        },
+        {
+          "line": 178,
+          "text": "すべて"
+        },
+        {
+          "line": 179,
+          "text": "循環・資源"
+        },
+        {
+          "line": 180,
+          "text": "生態系保全"
+        },
+        {
+          "line": 181,
+          "text": "教育・啓発"
+        },
+        {
+          "line": 182,
+          "text": "体験・レジャー"
+        },
+        {
+          "line": 185,
+          "text": "対象："
+        },
+        {
+          "line": 186,
+          "text": "すべて"
+        },
+        {
+          "line": 187,
+          "text": "子ども"
+        },
+        {
+          "line": 188,
+          "text": "個人"
+        },
+        {
+          "line": 189,
+          "text": "企業"
+        },
+        {
+          "line": 194,
+          "text": "イベント一覧"
+        },
+        {
+          "line": 404,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "events/sample.html",
+      "total": 194,
+      "counts": {
+        "acf": 84,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 3,
+        "loop_sample": 6,
+        "deco": 1,
+        "unclaimed": 17
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 283,
+          "text": "住所・電話"
+        },
+        {
+          "line": 290,
+          "text": "アクセス"
+        },
+        {
+          "line": 303,
+          "text": "このイベントをシェア"
+        },
+        {
+          "line": 306,
+          "text": "X でシェア"
+        },
+        {
+          "line": 311,
+          "text": "Facebook"
+        },
+        {
+          "line": 316,
+          "text": "LINE"
+        },
+        {
+          "line": 328,
+          "text": "開催概要"
+        },
+        {
+          "line": 330,
+          "text": "開催日時"
+        },
+        {
+          "line": 334,
+          "text": "会場"
+        },
+        {
+          "line": 338,
+          "text": "定員"
+        },
+        {
+          "line": 342,
+          "text": "参加費"
+        },
+        {
+          "line": 346,
+          "text": "対象"
+        },
+        {
+          "line": 350,
+          "text": "主催"
+        },
+        {
+          "line": 354,
+          "text": "申込締切"
+        },
+        {
+          "line": 493,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "events/summer-camp-apply.html",
+      "total": 84,
+      "counts": {
+        "acf": 9,
+        "nav": 0,
+        "cf7": 67,
+        "breadcrumb": 0,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 7
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 42,
+          "text": "← イベント詳細に戻る"
+        },
+        {
+          "line": 51,
+          "text": "トップ"
+        },
+        {
+          "line": 52,
+          "text": "イベント"
+        },
+        {
+          "line": 53,
+          "text": "夏休み自然体験キャンプ"
+        },
+        {
+          "line": 54,
+          "text": "参加申し込み"
+        },
+        {
+          "line": 259,
+          "text": "© 2026 アーバンネイチャー北九州"
+        }
+      ]
+    },
+    {
+      "file": "index.html",
+      "total": 224,
+      "counts": {
+        "acf": 90,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 0,
+        "loop_sample": 19,
+        "deco": 12,
+        "unclaimed": 20
+      },
+      "unclaimed": [
+        {
+          "line": 39,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 90,
+          "text": "お問合せ"
+        },
+        {
+          "line": 289,
+          "text": "お使いのブラウザは動画の再生に対応していません。テキスト版を下記よりご覧ください。"
+        },
+        {
+          "line": 294,
+          "text": "テキスト版を見る"
+        },
+        {
+          "line": 307,
+          "text": "お使いのブラウザは動画の再生に対応していません。テキスト版を下記よりご覧ください。"
+        },
+        {
+          "line": 313,
+          "text": "テキスト版を見る"
+        },
+        {
+          "line": 331,
+          "text": "テキスト版を見る"
+        },
+        {
+          "line": 376,
+          "text": "もっと見る"
+        },
+        {
+          "line": 475,
+          "text": "活動拠点をもっと見る"
+        },
+        {
+          "line": 475,
+          "text": "→"
+        },
+        {
+          "line": 494,
+          "text": "詳しく見る"
+        },
+        {
+          "line": 498,
+          "text": "地域との繋がりをもっと見る"
+        },
+        {
+          "line": 498,
+          "text": "→"
+        },
+        {
+          "line": 541,
+          "text": "すべてのイベントを見る"
+        },
+        {
+          "line": 541,
+          "text": "→"
+        },
+        {
+          "line": 561,
+          "text": "お知らせをもっと見る"
+        },
+        {
+          "line": 561,
+          "text": "→"
+        },
+        {
+          "line": 622,
+          "text": "すべての写真素材を見る"
+        },
+        {
+          "line": 622,
+          "text": "→"
+        },
+        {
+          "line": 742,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "news/index.html",
+      "total": 98,
+      "counts": {
+        "acf": 11,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 0,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 3
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 271,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    },
+    {
+      "file": "news/site-renewal.html",
+      "total": 118,
+      "counts": {
+        "acf": 27,
+        "nav": 83,
+        "cf7": 0,
+        "breadcrumb": 3,
+        "loop_sample": 0,
+        "deco": 1,
+        "unclaimed": 4
+      },
+      "unclaimed": [
+        {
+          "line": 33,
+          "text": "メインコンテンツへスキップ"
+        },
+        {
+          "line": 84,
+          "text": "お問合せ"
+        },
+        {
+          "line": 199,
+          "text": "お知らせ一覧に戻る"
+        },
+        {
+          "line": 297,
+          "text": "プライバシーポリシー"
+        }
+      ]
+    }
+  ]
+}

@@ -69,7 +69,7 @@ step('a11y', 'node', [path.join(ROOT, 'a11y', 'check.js'), mockupDir], { blockin
 step('scan', 'node', [
   path.join(ICHIKI, 'src', 'scan.js'),
   mockupDir,
-  path.join(ROOT, 'scan', 'out-gate'),
+  path.join(ROOT, 'out', 'scan'),
 ]);
 
 // 5. テーマ生成

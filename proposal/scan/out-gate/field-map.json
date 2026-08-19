@@ -1,0 +1,1357 @@
+{
+  "site_logo": {
+    "generated": "site_logo",
+    "semantic": "site_logo",
+    "scope": "common:header"
+  },
+  "cta_title": {
+    "generated": "cta_title",
+    "semantic": "cta_title",
+    "scope": "common:cta"
+  },
+  "cta_button_url": {
+    "generated": "cta_button_url",
+    "semantic": "cta_button_url",
+    "scope": "common:cta"
+  },
+  "cta_button_label": {
+    "generated": "cta_button_label",
+    "semantic": "cta_button_label",
+    "scope": "common:cta"
+  },
+  "footer_brand_name": {
+    "generated": "footer_brand_name",
+    "semantic": "footer_brand_name",
+    "scope": "common:footer"
+  },
+  "footer_desc": {
+    "generated": "footer_desc",
+    "semantic": "footer_desc",
+    "scope": "common:footer"
+  },
+  "footer_copyright": {
+    "generated": "footer_copyright",
+    "semantic": "footer_copyright",
+    "scope": "common:footer"
+  },
+  "hero_title": {
+    "generated": "hero_title",
+    "semantic": "hero_title",
+    "scope": "news_site_renewal:article"
+  },
+  "hero_lead": {
+    "generated": "hero_lead",
+    "semantic": "hero_lead",
+    "scope": "index:spots"
+  },
+  "importance_title": {
+    "generated": "importance_title",
+    "semantic": "importance_title",
+    "scope": "about_biodiversity:importance"
+  },
+  "importance_body": {
+    "generated": "importance_body",
+    "semantic": "importance_body",
+    "scope": "about_biodiversity:importance"
+  },
+  "stat_number_1": {
+    "generated": "stat_number_1",
+    "semantic": "stat_number_1",
+    "scope": "index:stats"
+  },
+  "stat_unit_1": {
+    "generated": "stat_unit_1",
+    "semantic": "stat_unit_1",
+    "scope": "about_biodiversity:importance"
+  },
+  "stat_label_1": {
+    "generated": "stat_label_1",
+    "semantic": "stat_label_1",
+    "scope": "index:stats"
+  },
+  "stat_number_2": {
+    "generated": "stat_number_2",
+    "semantic": "stat_number_2",
+    "scope": "index:stats"
+  },
+  "stat_unit_2": {
+    "generated": "stat_unit_2",
+    "semantic": "stat_unit_2",
+    "scope": "about_biodiversity:importance"
+  },
+  "stat_label_2": {
+    "generated": "stat_label_2",
+    "semantic": "stat_label_2",
+    "scope": "index:stats"
+  },
+  "stat_number_3": {
+    "generated": "stat_number_3",
+    "semantic": "stat_number_3",
+    "scope": "index:stats"
+  },
+  "stat_unit_3": {
+    "generated": "stat_unit_3",
+    "semantic": "stat_unit_3",
+    "scope": "about_biodiversity:importance"
+  },
+  "stat_label_3": {
+    "generated": "stat_label_3",
+    "semantic": "stat_label_3",
+    "scope": "index:stats"
+  },
+  "diversity_title": {
+    "generated": "diversity_title",
+    "semantic": "diversity_title",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_lead": {
+    "generated": "diversity_lead",
+    "semantic": "diversity_lead",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_icon_1": {
+    "generated": "diversity_icon_1",
+    "semantic": "diversity_icon_1",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_name_1": {
+    "generated": "diversity_name_1",
+    "semantic": "diversity_name_1",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_desc_1": {
+    "generated": "diversity_desc_1",
+    "semantic": "diversity_desc_1",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_icon_2": {
+    "generated": "diversity_icon_2",
+    "semantic": "diversity_icon_2",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_name_2": {
+    "generated": "diversity_name_2",
+    "semantic": "diversity_name_2",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_desc_2": {
+    "generated": "diversity_desc_2",
+    "semantic": "diversity_desc_2",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_icon_3": {
+    "generated": "diversity_icon_3",
+    "semantic": "diversity_icon_3",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_name_3": {
+    "generated": "diversity_name_3",
+    "semantic": "diversity_name_3",
+    "scope": "about_biodiversity:importance"
+  },
+  "diversity_desc_3": {
+    "generated": "diversity_desc_3",
+    "semantic": "diversity_desc_3",
+    "scope": "about_biodiversity:importance"
+  },
+  "keystone_title": {
+    "generated": "keystone_title",
+    "semantic": "keystone_title",
+    "scope": "about_biodiversity:importance"
+  },
+  "keystone_body": {
+    "generated": "keystone_body",
+    "semantic": "keystone_body",
+    "scope": "about_biodiversity:importance"
+  },
+  "services_title": {
+    "generated": "services_title",
+    "semantic": "services_title",
+    "scope": "about_biodiversity:services"
+  },
+  "services_lead": {
+    "generated": "services_lead",
+    "semantic": "services_lead",
+    "scope": "about_biodiversity:services"
+  },
+  "service_icon_1": {
+    "generated": "service_icon_1",
+    "semantic": "service_icon_1",
+    "scope": "about_biodiversity:services"
+  },
+  "service_name_1": {
+    "generated": "service_name_1",
+    "semantic": "service_name_1",
+    "scope": "about_biodiversity:services"
+  },
+  "service_desc_1": {
+    "generated": "service_desc_1",
+    "semantic": "service_desc_1",
+    "scope": "about_biodiversity:services"
+  },
+  "service_icon_2": {
+    "generated": "service_icon_2",
+    "semantic": "service_icon_2",
+    "scope": "about_biodiversity:services"
+  },
+  "service_name_2": {
+    "generated": "service_name_2",
+    "semantic": "service_name_2",
+    "scope": "about_biodiversity:services"
+  },
+  "service_desc_2": {
+    "generated": "service_desc_2",
+    "semantic": "service_desc_2",
+    "scope": "about_biodiversity:services"
+  },
+  "service_icon_3": {
+    "generated": "service_icon_3",
+    "semantic": "service_icon_3",
+    "scope": "about_biodiversity:services"
+  },
+  "service_name_3": {
+    "generated": "service_name_3",
+    "semantic": "service_name_3",
+    "scope": "about_biodiversity:services"
+  },
+  "service_desc_3": {
+    "generated": "service_desc_3",
+    "semantic": "service_desc_3",
+    "scope": "about_biodiversity:services"
+  },
+  "service_icon_4": {
+    "generated": "service_icon_4",
+    "semantic": "service_icon_4",
+    "scope": "about_biodiversity:services"
+  },
+  "service_name_4": {
+    "generated": "service_name_4",
+    "semantic": "service_name_4",
+    "scope": "about_biodiversity:services"
+  },
+  "service_desc_4": {
+    "generated": "service_desc_4",
+    "semantic": "service_desc_4",
+    "scope": "about_biodiversity:services"
+  },
+  "trends_title": {
+    "generated": "trends_title",
+    "semantic": "trends_title",
+    "scope": "about_biodiversity:trends"
+  },
+  "trends_lead": {
+    "generated": "trends_lead",
+    "semantic": "trends_lead",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_1": {
+    "generated": "framework_icon_1",
+    "semantic": "framework_icon_1",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_1": {
+    "generated": "framework_name_1",
+    "semantic": "framework_name_1",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_1": {
+    "generated": "framework_desc_1",
+    "semantic": "framework_desc_1",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_2": {
+    "generated": "framework_icon_2",
+    "semantic": "framework_icon_2",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_2": {
+    "generated": "framework_name_2",
+    "semantic": "framework_name_2",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_2": {
+    "generated": "framework_desc_2",
+    "semantic": "framework_desc_2",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_3": {
+    "generated": "framework_icon_3",
+    "semantic": "framework_icon_3",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_3": {
+    "generated": "framework_name_3",
+    "semantic": "framework_name_3",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_3": {
+    "generated": "framework_desc_3",
+    "semantic": "framework_desc_3",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_4": {
+    "generated": "framework_icon_4",
+    "semantic": "framework_icon_4",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_4": {
+    "generated": "framework_name_4",
+    "semantic": "framework_name_4",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_4": {
+    "generated": "framework_desc_4",
+    "semantic": "framework_desc_4",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_5": {
+    "generated": "framework_icon_5",
+    "semantic": "framework_icon_5",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_5": {
+    "generated": "framework_name_5",
+    "semantic": "framework_name_5",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_5": {
+    "generated": "framework_desc_5",
+    "semantic": "framework_desc_5",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_icon_6": {
+    "generated": "framework_icon_6",
+    "semantic": "framework_icon_6",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_name_6": {
+    "generated": "framework_name_6",
+    "semantic": "framework_name_6",
+    "scope": "about_biodiversity:trends"
+  },
+  "framework_desc_6": {
+    "generated": "framework_desc_6",
+    "semantic": "framework_desc_6",
+    "scope": "about_biodiversity:trends"
+  },
+  "issues_title": {
+    "generated": "issues_title",
+    "semantic": "issues_title",
+    "scope": "about_biodiversity:issues"
+  },
+  "issues_lead": {
+    "generated": "issues_lead",
+    "semantic": "issues_lead",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_name_1": {
+    "generated": "challenge_name_1",
+    "semantic": "challenge_name_1",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_desc_1": {
+    "generated": "challenge_desc_1",
+    "semantic": "challenge_desc_1",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_name_2": {
+    "generated": "challenge_name_2",
+    "semantic": "challenge_name_2",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_desc_2": {
+    "generated": "challenge_desc_2",
+    "semantic": "challenge_desc_2",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_name_3": {
+    "generated": "challenge_name_3",
+    "semantic": "challenge_name_3",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_desc_3": {
+    "generated": "challenge_desc_3",
+    "semantic": "challenge_desc_3",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_name_4": {
+    "generated": "challenge_name_4",
+    "semantic": "challenge_name_4",
+    "scope": "about_biodiversity:issues"
+  },
+  "challenge_desc_4": {
+    "generated": "challenge_desc_4",
+    "semantic": "challenge_desc_4",
+    "scope": "about_biodiversity:issues"
+  },
+  "archive_hero_image": {
+    "generated": "archive_hero_image",
+    "semantic": "archive_hero_image",
+    "scope": "news:hero"
+  },
+  "archive_title": {
+    "generated": "archive_title",
+    "semantic": "archive_title",
+    "scope": "news:hero"
+  },
+  "archive_lead": {
+    "generated": "archive_lead",
+    "semantic": "archive_lead",
+    "scope": "news:hero"
+  },
+  "resources_title": {
+    "generated": "resources_title",
+    "semantic": "resources_title",
+    "scope": "about_spots:resources"
+  },
+  "resources_lead": {
+    "generated": "resources_lead",
+    "semantic": "resources_lead",
+    "scope": "about_spots:resources"
+  },
+  "hero_image": {
+    "generated": "hero_image",
+    "semantic": "hero_image",
+    "scope": "index:events"
+  },
+  "info_title": {
+    "generated": "info_title",
+    "semantic": "info_title",
+    "scope": "center_biotope:facility_info"
+  },
+  "info_body": {
+    "generated": "info_body",
+    "semantic": "info_body",
+    "scope": "about_spots:resources"
+  },
+  "tag_1": {
+    "generated": "tag_1",
+    "semantic": "tag_1",
+    "scope": "events_sample:related"
+  },
+  "tag_2": {
+    "generated": "tag_2",
+    "semantic": "tag_2",
+    "scope": "events_sample:hero"
+  },
+  "tag_3": {
+    "generated": "tag_3",
+    "semantic": "tag_3",
+    "scope": "events_sample:hero"
+  },
+  "tag_4": {
+    "generated": "tag_4",
+    "semantic": "tag_4",
+    "scope": "events_sample:hero"
+  },
+  "overview_title": {
+    "generated": "overview_title",
+    "semantic": "overview_title",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "overview_body": {
+    "generated": "overview_body",
+    "semantic": "overview_body",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "season_title": {
+    "generated": "season_title",
+    "semantic": "season_title",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "season_body": {
+    "generated": "season_body",
+    "semantic": "season_body",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "related_note": {
+    "generated": "related_note",
+    "semantic": "related_note",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "address": {
+    "generated": "address",
+    "semantic": "address",
+    "scope": "center_biotope:facility_info"
+  },
+  "center_hours": {
+    "generated": "center_hours",
+    "semantic": "center_hours",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "cave_fee": {
+    "generated": "cave_fee",
+    "semantic": "cave_fee",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "access_car": {
+    "generated": "access_car",
+    "semantic": "access_car",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "access_transit": {
+    "generated": "access_transit",
+    "semantic": "access_transit",
+    "scope": "about_spots_hiraodai:detail"
+  },
+  "parking": {
+    "generated": "parking",
+    "semantic": "parking",
+    "scope": "center_biotope:facility_info"
+  },
+  "official_url": {
+    "generated": "official_url",
+    "semantic": "official_url",
+    "scope": "center_biotope:facility_info"
+  },
+  "official_label": {
+    "generated": "official_label",
+    "semantic": "official_label",
+    "scope": "center_biotope:facility_info"
+  },
+  "map_title": {
+    "generated": "map_title",
+    "semantic": "map_title",
+    "scope": "center:map"
+  },
+  "map_src": {
+    "generated": "map_src",
+    "semantic": "map_src",
+    "scope": "events_sample:detail"
+  },
+  "gallery_image": {
+    "generated": "gallery_image",
+    "semantic": "gallery_image",
+    "scope": "center_biotope:facility_info"
+  },
+  "tel": {
+    "generated": "tel",
+    "semantic": "tel",
+    "scope": "center_biotope:facility_info"
+  },
+  "hours": {
+    "generated": "hours",
+    "semantic": "hours",
+    "scope": "center_biotope:facility_info"
+  },
+  "closed": {
+    "generated": "closed",
+    "semantic": "closed",
+    "scope": "center_biotope:facility_info"
+  },
+  "fee": {
+    "generated": "fee",
+    "semantic": "fee",
+    "scope": "center_biotope:facility_info"
+  },
+  "access": {
+    "generated": "access",
+    "semantic": "access",
+    "scope": "center_biotope:facility_info"
+  },
+  "about_title": {
+    "generated": "about_title",
+    "semantic": "about_title",
+    "scope": "center:about"
+  },
+  "about_body": {
+    "generated": "about_body",
+    "semantic": "about_body",
+    "scope": "center:about"
+  },
+  "events_title": {
+    "generated": "events_title",
+    "semantic": "events_title",
+    "scope": "index:events"
+  },
+  "events_lead": {
+    "generated": "events_lead",
+    "semantic": "events_lead",
+    "scope": "center_biotope:events"
+  },
+  "events_empty": {
+    "generated": "events_empty",
+    "semantic": "events_empty",
+    "scope": "center_biotope:events"
+  },
+  "events_link_url": {
+    "generated": "events_link_url",
+    "semantic": "events_link_url",
+    "scope": "center_biotope:events"
+  },
+  "events_link_label": {
+    "generated": "events_link_label",
+    "semantic": "events_link_label",
+    "scope": "center_biotope:events"
+  },
+  "blog_title": {
+    "generated": "blog_title",
+    "semantic": "blog_title",
+    "scope": "center_biotope:blog"
+  },
+  "blog_lead": {
+    "generated": "blog_lead",
+    "semantic": "blog_lead",
+    "scope": "center_biotope:blog"
+  },
+  "blog_empty": {
+    "generated": "blog_empty",
+    "semantic": "blog_empty",
+    "scope": "center_biotope:blog"
+  },
+  "blog_link_url": {
+    "generated": "blog_link_url",
+    "semantic": "blog_link_url",
+    "scope": "center_biotope:blog"
+  },
+  "blog_link_label": {
+    "generated": "blog_link_label",
+    "semantic": "blog_link_label",
+    "scope": "center_biotope:blog"
+  },
+  "back_url": {
+    "generated": "back_url",
+    "semantic": "back_url",
+    "scope": "center_biotope:back"
+  },
+  "back_label": {
+    "generated": "back_label",
+    "semantic": "back_label",
+    "scope": "center_biotope:back"
+  },
+  "list_title": {
+    "generated": "list_title",
+    "semantic": "list_title",
+    "scope": "center:list"
+  },
+  "list_lead": {
+    "generated": "list_lead",
+    "semantic": "list_lead",
+    "scope": "center:list"
+  },
+  "center_type": {
+    "generated": "center_type",
+    "semantic": "center_type",
+    "scope": "center:list"
+  },
+  "card_more_label": {
+    "generated": "card_more_label",
+    "semantic": "card_more_label",
+    "scope": "center:list"
+  },
+  "map_lead": {
+    "generated": "map_lead",
+    "semantic": "map_lead",
+    "scope": "center:map"
+  },
+  "office_title": {
+    "generated": "office_title",
+    "semantic": "office_title",
+    "scope": "center:office"
+  },
+  "office_lead": {
+    "generated": "office_lead",
+    "semantic": "office_lead",
+    "scope": "center:office"
+  },
+  "office_image": {
+    "generated": "office_image",
+    "semantic": "office_image",
+    "scope": "center:office"
+  },
+  "office_body": {
+    "generated": "office_body",
+    "semantic": "office_body",
+    "scope": "center:office"
+  },
+  "office_address": {
+    "generated": "office_address",
+    "semantic": "office_address",
+    "scope": "center:office"
+  },
+  "office_email": {
+    "generated": "office_email",
+    "semantic": "office_email",
+    "scope": "center:office"
+  },
+  "office_access": {
+    "generated": "office_access",
+    "semantic": "office_access",
+    "scope": "center:office"
+  },
+  "form_title": {
+    "generated": "form_title",
+    "semantic": "form_title",
+    "scope": "contact:contact"
+  },
+  "sidebar_title": {
+    "generated": "sidebar_title",
+    "semantic": "sidebar_title",
+    "scope": "contact:contact"
+  },
+  "sidebar_office_label": {
+    "generated": "sidebar_office_label",
+    "semantic": "sidebar_office_label",
+    "scope": "contact:contact"
+  },
+  "sidebar_office_value": {
+    "generated": "sidebar_office_value",
+    "semantic": "sidebar_office_value",
+    "scope": "contact:contact"
+  },
+  "sidebar_address_label": {
+    "generated": "sidebar_address_label",
+    "semantic": "sidebar_address_label",
+    "scope": "contact:contact"
+  },
+  "sidebar_address_value": {
+    "generated": "sidebar_address_value",
+    "semantic": "sidebar_address_value",
+    "scope": "contact:contact"
+  },
+  "sidebar_tel_label": {
+    "generated": "sidebar_tel_label",
+    "semantic": "sidebar_tel_label",
+    "scope": "contact:contact"
+  },
+  "sidebar_tel_value": {
+    "generated": "sidebar_tel_value",
+    "semantic": "sidebar_tel_value",
+    "scope": "contact:contact"
+  },
+  "event_month": {
+    "generated": "event_month",
+    "semantic": "event_month",
+    "scope": "events:list"
+  },
+  "event_day": {
+    "generated": "event_day",
+    "semantic": "event_day",
+    "scope": "events:list"
+  },
+  "event_status": {
+    "generated": "event_status",
+    "semantic": "event_status",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "event_category": {
+    "generated": "event_category",
+    "semantic": "event_category",
+    "scope": "events:list"
+  },
+  "event_target": {
+    "generated": "event_target",
+    "semantic": "event_target",
+    "scope": "events:list"
+  },
+  "event_meta": {
+    "generated": "event_meta",
+    "semantic": "event_meta",
+    "scope": "index:events"
+  },
+  "event_date": {
+    "generated": "event_date",
+    "semantic": "event_date",
+    "scope": "index:events"
+  },
+  "detail_title": {
+    "generated": "detail_title",
+    "semantic": "detail_title",
+    "scope": "events_sample:detail"
+  },
+  "detail_body_1": {
+    "generated": "detail_body_1",
+    "semantic": "detail_body_1",
+    "scope": "events_sample:detail"
+  },
+  "detail_body_2": {
+    "generated": "detail_body_2",
+    "semantic": "detail_body_2",
+    "scope": "events_sample:detail"
+  },
+  "schedule_title": {
+    "generated": "schedule_title",
+    "semantic": "schedule_title",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_1": {
+    "generated": "schedule_time_1",
+    "semantic": "schedule_time_1",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_1": {
+    "generated": "schedule_desc_1",
+    "semantic": "schedule_desc_1",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_2": {
+    "generated": "schedule_time_2",
+    "semantic": "schedule_time_2",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_2": {
+    "generated": "schedule_desc_2",
+    "semantic": "schedule_desc_2",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_3": {
+    "generated": "schedule_time_3",
+    "semantic": "schedule_time_3",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_3": {
+    "generated": "schedule_desc_3",
+    "semantic": "schedule_desc_3",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_4": {
+    "generated": "schedule_time_4",
+    "semantic": "schedule_time_4",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_4": {
+    "generated": "schedule_desc_4",
+    "semantic": "schedule_desc_4",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_5": {
+    "generated": "schedule_time_5",
+    "semantic": "schedule_time_5",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_5": {
+    "generated": "schedule_desc_5",
+    "semantic": "schedule_desc_5",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_6": {
+    "generated": "schedule_time_6",
+    "semantic": "schedule_time_6",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_6": {
+    "generated": "schedule_desc_6",
+    "semantic": "schedule_desc_6",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_7": {
+    "generated": "schedule_time_7",
+    "semantic": "schedule_time_7",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_7": {
+    "generated": "schedule_desc_7",
+    "semantic": "schedule_desc_7",
+    "scope": "events_sample:detail"
+  },
+  "schedule_time_8": {
+    "generated": "schedule_time_8",
+    "semantic": "schedule_time_8",
+    "scope": "events_sample:detail"
+  },
+  "schedule_desc_8": {
+    "generated": "schedule_desc_8",
+    "semantic": "schedule_desc_8",
+    "scope": "events_sample:detail"
+  },
+  "notes_title": {
+    "generated": "notes_title",
+    "semantic": "notes_title",
+    "scope": "events_sample:detail"
+  },
+  "note_title_1": {
+    "generated": "note_title_1",
+    "semantic": "note_title_1",
+    "scope": "events_sample:detail"
+  },
+  "note_body_1": {
+    "generated": "note_body_1",
+    "semantic": "note_body_1",
+    "scope": "events_sample:detail"
+  },
+  "note_title_2": {
+    "generated": "note_title_2",
+    "semantic": "note_title_2",
+    "scope": "events_sample:detail"
+  },
+  "note_body_2": {
+    "generated": "note_body_2",
+    "semantic": "note_body_2",
+    "scope": "events_sample:detail"
+  },
+  "apply_label": {
+    "generated": "apply_label",
+    "semantic": "apply_label",
+    "scope": "events_sample:detail"
+  },
+  "apply_deadline": {
+    "generated": "apply_deadline",
+    "semantic": "apply_deadline",
+    "scope": "events_sample:detail"
+  },
+  "apply_button_label": {
+    "generated": "apply_button_label",
+    "semantic": "apply_button_label",
+    "scope": "events_sample:detail"
+  },
+  "apply_contact": {
+    "generated": "apply_contact",
+    "semantic": "apply_contact",
+    "scope": "events_sample:detail"
+  },
+  "venue_title": {
+    "generated": "venue_title",
+    "semantic": "venue_title",
+    "scope": "events_sample:detail"
+  },
+  "venue_intro": {
+    "generated": "venue_intro",
+    "semantic": "venue_intro",
+    "scope": "events_sample:detail"
+  },
+  "venue_address": {
+    "generated": "venue_address",
+    "semantic": "venue_address",
+    "scope": "events_sample:detail"
+  },
+  "venue_access": {
+    "generated": "venue_access",
+    "semantic": "venue_access",
+    "scope": "events_sample:detail"
+  },
+  "summary_title": {
+    "generated": "summary_title",
+    "semantic": "summary_title",
+    "scope": "events_sample:detail"
+  },
+  "summary_datetime": {
+    "generated": "summary_datetime",
+    "semantic": "summary_datetime",
+    "scope": "events_sample:detail"
+  },
+  "summary_venue": {
+    "generated": "summary_venue",
+    "semantic": "summary_venue",
+    "scope": "events_sample:detail"
+  },
+  "summary_capacity": {
+    "generated": "summary_capacity",
+    "semantic": "summary_capacity",
+    "scope": "events_sample:detail"
+  },
+  "summary_fee": {
+    "generated": "summary_fee",
+    "semantic": "summary_fee",
+    "scope": "events_sample:detail"
+  },
+  "summary_target": {
+    "generated": "summary_target",
+    "semantic": "summary_target",
+    "scope": "events_sample:detail"
+  },
+  "summary_host": {
+    "generated": "summary_host",
+    "semantic": "summary_host",
+    "scope": "events_sample:detail"
+  },
+  "summary_deadline": {
+    "generated": "summary_deadline",
+    "semantic": "summary_deadline",
+    "scope": "events_sample:detail"
+  },
+  "summary_remaining": {
+    "generated": "summary_remaining",
+    "semantic": "summary_remaining",
+    "scope": "events_sample:detail"
+  },
+  "summary_button_label": {
+    "generated": "summary_button_label",
+    "semantic": "summary_button_label",
+    "scope": "events_sample:detail"
+  },
+  "related_title": {
+    "generated": "related_title",
+    "semantic": "related_title",
+    "scope": "events_sample:related"
+  },
+  "related_lead": {
+    "generated": "related_lead",
+    "semantic": "related_lead",
+    "scope": "events_sample:related"
+  },
+  "apply_title": {
+    "generated": "apply_title",
+    "semantic": "apply_title",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "apply_note": {
+    "generated": "apply_note",
+    "semantic": "apply_note",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "event_image": {
+    "generated": "event_image",
+    "semantic": "event_image",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "event_title": {
+    "generated": "event_title",
+    "semantic": "event_title",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "apply_event_detail": {
+    "generated": "apply_event_detail",
+    "semantic": "apply_event_detail",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "optin_title": {
+    "generated": "optin_title",
+    "semantic": "optin_title",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "optin_note": {
+    "generated": "optin_note",
+    "semantic": "optin_note",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "submit_note": {
+    "generated": "submit_note",
+    "semantic": "submit_note",
+    "scope": "events_summer_camp_apply:apply"
+  },
+  "hero_catch": {
+    "generated": "hero_catch",
+    "semantic": "hero_catch",
+    "scope": "index:hero"
+  },
+  "hero_sub": {
+    "generated": "hero_sub",
+    "semantic": "hero_sub",
+    "scope": "index:hero"
+  },
+  "persona_section_title": {
+    "generated": "persona_section_title",
+    "semantic": "persona_section_title",
+    "scope": "index:persona"
+  },
+  "persona_label_1": {
+    "generated": "persona_label_1",
+    "semantic": "persona_label_1",
+    "scope": "index:persona"
+  },
+  "persona_name_1": {
+    "generated": "persona_name_1",
+    "semantic": "persona_name_1",
+    "scope": "index:persona"
+  },
+  "persona_desc_1": {
+    "generated": "persona_desc_1",
+    "semantic": "persona_desc_1",
+    "scope": "index:persona"
+  },
+  "persona_arrow_1": {
+    "generated": "persona_arrow_1",
+    "semantic": "persona_arrow_1",
+    "scope": "index:persona"
+  },
+  "persona_label_2": {
+    "generated": "persona_label_2",
+    "semantic": "persona_label_2",
+    "scope": "index:persona"
+  },
+  "persona_name_2": {
+    "generated": "persona_name_2",
+    "semantic": "persona_name_2",
+    "scope": "index:persona"
+  },
+  "persona_desc_2": {
+    "generated": "persona_desc_2",
+    "semantic": "persona_desc_2",
+    "scope": "index:persona"
+  },
+  "persona_arrow_2": {
+    "generated": "persona_arrow_2",
+    "semantic": "persona_arrow_2",
+    "scope": "index:persona"
+  },
+  "persona_label_3": {
+    "generated": "persona_label_3",
+    "semantic": "persona_label_3",
+    "scope": "index:persona"
+  },
+  "persona_name_3": {
+    "generated": "persona_name_3",
+    "semantic": "persona_name_3",
+    "scope": "index:persona"
+  },
+  "persona_desc_3": {
+    "generated": "persona_desc_3",
+    "semantic": "persona_desc_3",
+    "scope": "index:persona"
+  },
+  "persona_arrow_3": {
+    "generated": "persona_arrow_3",
+    "semantic": "persona_arrow_3",
+    "scope": "index:persona"
+  },
+  "persona_label_4": {
+    "generated": "persona_label_4",
+    "semantic": "persona_label_4",
+    "scope": "index:persona"
+  },
+  "persona_name_4": {
+    "generated": "persona_name_4",
+    "semantic": "persona_name_4",
+    "scope": "index:persona"
+  },
+  "persona_desc_4": {
+    "generated": "persona_desc_4",
+    "semantic": "persona_desc_4",
+    "scope": "index:persona"
+  },
+  "persona_arrow_4": {
+    "generated": "persona_arrow_4",
+    "semantic": "persona_arrow_4",
+    "scope": "index:persona"
+  },
+  "videos_title": {
+    "generated": "videos_title",
+    "semantic": "videos_title",
+    "scope": "index:videos"
+  },
+  "videos_subtitle": {
+    "generated": "videos_subtitle",
+    "semantic": "videos_subtitle",
+    "scope": "index:videos"
+  },
+  "video_caption_1": {
+    "generated": "video_caption_1",
+    "semantic": "video_caption_1",
+    "scope": "index:videos"
+  },
+  "video_transcript_1": {
+    "generated": "video_transcript_1",
+    "semantic": "video_transcript_1",
+    "scope": "index:videos"
+  },
+  "video_caption_2": {
+    "generated": "video_caption_2",
+    "semantic": "video_caption_2",
+    "scope": "index:videos"
+  },
+  "video_credit_2": {
+    "generated": "video_credit_2",
+    "semantic": "video_credit_2",
+    "scope": "index:videos"
+  },
+  "video_transcript_2": {
+    "generated": "video_transcript_2",
+    "semantic": "video_transcript_2",
+    "scope": "index:videos"
+  },
+  "video_caption_3": {
+    "generated": "video_caption_3",
+    "semantic": "video_caption_3",
+    "scope": "index:videos"
+  },
+  "video_credit_3": {
+    "generated": "video_credit_3",
+    "semantic": "video_credit_3",
+    "scope": "index:videos"
+  },
+  "video_transcript_3": {
+    "generated": "video_transcript_3",
+    "semantic": "video_transcript_3",
+    "scope": "index:videos"
+  },
+  "spots_title": {
+    "generated": "spots_title",
+    "semantic": "spots_title",
+    "scope": "index:spots"
+  },
+  "spots_subtitle": {
+    "generated": "spots_subtitle",
+    "semantic": "spots_subtitle",
+    "scope": "index:spots"
+  },
+  "facilities_title": {
+    "generated": "facilities_title",
+    "semantic": "facilities_title",
+    "scope": "index:facilities"
+  },
+  "facilities_subtitle": {
+    "generated": "facilities_subtitle",
+    "semantic": "facilities_subtitle",
+    "scope": "index:facilities"
+  },
+  "network_title": {
+    "generated": "network_title",
+    "semantic": "network_title",
+    "scope": "index:network"
+  },
+  "network_subtitle": {
+    "generated": "network_subtitle",
+    "semantic": "network_subtitle",
+    "scope": "index:network"
+  },
+  "network_image": {
+    "generated": "network_image",
+    "semantic": "network_image",
+    "scope": "index:network"
+  },
+  "network_badge": {
+    "generated": "network_badge",
+    "semantic": "network_badge",
+    "scope": "index:network"
+  },
+  "network_name": {
+    "generated": "network_name",
+    "semantic": "network_name",
+    "scope": "index:network"
+  },
+  "network_lead": {
+    "generated": "network_lead",
+    "semantic": "network_lead",
+    "scope": "index:network"
+  },
+  "network_desc": {
+    "generated": "network_desc",
+    "semantic": "network_desc",
+    "scope": "index:network"
+  },
+  "events_subtitle": {
+    "generated": "events_subtitle",
+    "semantic": "events_subtitle",
+    "scope": "index:events"
+  },
+  "news_title": {
+    "generated": "news_title",
+    "semantic": "news_title",
+    "scope": "index:news"
+  },
+  "news_subtitle": {
+    "generated": "news_subtitle",
+    "semantic": "news_subtitle",
+    "scope": "index:news"
+  },
+  "news_category": {
+    "generated": "news_category",
+    "semantic": "news_category",
+    "scope": "news_site_renewal:article"
+  },
+  "news_date": {
+    "generated": "news_date",
+    "semantic": "news_date",
+    "scope": "news_site_renewal:article"
+  },
+  "photos_title": {
+    "generated": "photos_title",
+    "semantic": "photos_title",
+    "scope": "index:photos"
+  },
+  "photos_subtitle": {
+    "generated": "photos_subtitle",
+    "semantic": "photos_subtitle",
+    "scope": "index:photos"
+  },
+  "photos_image_1": {
+    "generated": "photos_image_1",
+    "semantic": "photos_image_1",
+    "scope": "index:photos"
+  },
+  "photos_caption_1": {
+    "generated": "photos_caption_1",
+    "semantic": "photos_caption_1",
+    "scope": "index:photos"
+  },
+  "photos_image_2": {
+    "generated": "photos_image_2",
+    "semantic": "photos_image_2",
+    "scope": "index:photos"
+  },
+  "photos_caption_2": {
+    "generated": "photos_caption_2",
+    "semantic": "photos_caption_2",
+    "scope": "index:photos"
+  },
+  "photos_image_3": {
+    "generated": "photos_image_3",
+    "semantic": "photos_image_3",
+    "scope": "index:photos"
+  },
+  "photos_caption_3": {
+    "generated": "photos_caption_3",
+    "semantic": "photos_caption_3",
+    "scope": "index:photos"
+  },
+  "photos_image_4": {
+    "generated": "photos_image_4",
+    "semantic": "photos_image_4",
+    "scope": "index:photos"
+  },
+  "photos_caption_4": {
+    "generated": "photos_caption_4",
+    "semantic": "photos_caption_4",
+    "scope": "index:photos"
+  },
+  "photos_image_5": {
+    "generated": "photos_image_5",
+    "semantic": "photos_image_5",
+    "scope": "index:photos"
+  },
+  "photos_caption_5": {
+    "generated": "photos_caption_5",
+    "semantic": "photos_caption_5",
+    "scope": "index:photos"
+  },
+  "photos_image_6": {
+    "generated": "photos_image_6",
+    "semantic": "photos_image_6",
+    "scope": "index:photos"
+  },
+  "photos_caption_6": {
+    "generated": "photos_caption_6",
+    "semantic": "photos_caption_6",
+    "scope": "index:photos"
+  },
+  "photos_image_7": {
+    "generated": "photos_image_7",
+    "semantic": "photos_image_7",
+    "scope": "index:photos"
+  },
+  "photos_caption_7": {
+    "generated": "photos_caption_7",
+    "semantic": "photos_caption_7",
+    "scope": "index:photos"
+  },
+  "photos_image_8": {
+    "generated": "photos_image_8",
+    "semantic": "photos_image_8",
+    "scope": "index:photos"
+  },
+  "photos_caption_8": {
+    "generated": "photos_caption_8",
+    "semantic": "photos_caption_8",
+    "scope": "index:photos"
+  },
+  "stat_number_4": {
+    "generated": "stat_number_4",
+    "semantic": "stat_number_4",
+    "scope": "index:stats"
+  },
+  "stat_label_4": {
+    "generated": "stat_label_4",
+    "semantic": "stat_label_4",
+    "scope": "index:stats"
+  },
+  "news_excerpt": {
+    "generated": "news_excerpt",
+    "semantic": "news_excerpt",
+    "scope": "news:list"
+  },
+  "article_body": {
+    "generated": "article_body",
+    "semantic": "article_body",
+    "scope": "news_site_renewal:article"
+  }
+}
