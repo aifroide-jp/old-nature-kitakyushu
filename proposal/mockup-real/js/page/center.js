@@ -12,7 +12,7 @@
 
   var icon = L.divIcon({
     className: '',
-    html: '<div style="width:26px;height:26px;background:#2C5F2D;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);"></div>',
+    html: '<div class="center-map__pin"></div>',
     iconSize: [26, 26],
     iconAnchor: [13, 13],
     popupAnchor: [0, -16]
@@ -31,13 +31,24 @@
     { name: 'ソラランド平尾台',           lat: 33.7933, lng: 130.9139, url: 'soraland.html' }
   ];
 
+  // 行き先の決め方。**リンク自体は常に出す**（モックとしての見た目を保つため）。
+  //
+  // モックとして開いたときは s.url（モック内のパス）で回遊できる。
+  // 変換後は NKK_PERMALINKS（変換器が wp_localize_script で渡す）にスラッグがあれば
+  // そのパーマリンクを使う。まだ投稿が無いスラッグは表に載らないので '#' に落とす。
+  // 実測: モックのパスをそのまま出していたとき、10件中9件が 404 だった。
+  function hrefFor(s) {
+    if (typeof NKK_PERMALINKS === 'undefined') return s.url;    // モックとして開いている
+    return NKK_PERMALINKS[s.url.replace(/\.html$/, '')] || '#'; // 変換後。未作成は '#'
+  }
+
   spots.forEach(function (s) {
     L.marker([s.lat, s.lng], { icon: icon })
       .addTo(map)
       .bindPopup(
-        '<div style="text-align:center;min-width:140px;">' +
-        '<strong style="font-size:0.95rem;">' + s.name + '</strong><br>' +
-        '<a href="' + s.url + '" style="color:#2C5F2D;font-size:0.82rem;font-weight:600;">詳しく見る →</a>' +
+        '<div class="center-map__popup">' +
+        '<strong class="center-map__name">' + s.name + '</strong><br>' +
+        '<a href="' + hrefFor(s) + '" class="center-map__link">詳しく見る →</a>' +
         '</div>'
       );
   });

@@ -103,3 +103,17 @@
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
   margin-top: 24px;
 }
+
+/* 拠点マップのマーカーとポップアップ。
+   元は JS の文字列に style 属性で書かれていた（L12 は HTML しか見ないのですり抜けていた）。 */
+.center-map__pin {
+  width: 26px;
+  height: 26px;
+  background: #2C5F2D;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.center-map__popup { text-align: center; min-width: 140px; }
+.center-map__name { font-size: 0.95rem; }
+.center-map__link { color: #2C5F2D; font-size: 0.82rem; font-weight: 600; }
