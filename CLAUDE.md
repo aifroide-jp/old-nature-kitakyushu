@@ -68,11 +68,16 @@
 - 写真を投稿する | みんなの写真展 | アーバンネイチャー北九州 (photos/submit.html)
 - プライバシーポリシー | アーバンネイチャー北九州 (privacy/index.html)
 
-## 実装（後処理：Claude Code）
-- 入力は `acf-map.yaml`。固定ルール（@.claude/ichiki/rules/ichiki.md）とお手本に従って実装する
-- 1ページ・1CPTずつ構築し、各段で検収ゲート（カバレッジ照合・構成チェック・PHP lint・WCAG）を通す
-- `acf-map.yaml` の機械命名は意味ベースの名前にリネームし、対応を `field-map.json` に記録する
-- 型・ページ種別・トップ・nav解決・画像方式は固定ルールに従い、判断に迷う境界は止めて確認する
+## 構築（コマンド）
+```
+node .claude/ichiki/bin/ichiki.js gate <mockup>              # lint→scan→変換→検証を一括
+node .claude/ichiki/bin/ichiki.js convert <mockup> <themeDir>
+```
+- 入力はモックそのもの。`acf-map.yaml` はお客様と合意するための台帳で、変換の入力ではない
+- 型・ページ種別・トップ・nav解決・画像方式はモックの宣言で決まる（`rules/vocabulary.md`）
+- **以下の「トップページの仕様」「お手本」は、変換器が無かった頃に人手（AI）で
+  PHP を書いていた時期の申し送りである。** 現在の51ページのテーマはその方式で作られており
+  記録として残すが、制約語彙のモックから作り直す場合は不要になる。
 
 ## トップページ（front-page.php）の仕様
 - front-page.php は「お手本」対象外だが、CPT系お手本と同様に **mockup(`index.html`)のHTML構造・class名に1:1で合わせる**こと。独自のWP_Query整形・独自クラスへの置き換えは禁止（例: `.more-link`を`.btn`に変えない、`<ul><li>`への構造変更をしない）
