@@ -94,3 +94,12 @@
   white-space: nowrap;
 }
 .urban-center__table a { color: var(--primary); }
+
+/* 拠点マップ。元は style 属性だったもの（L12 に従いクラスへ移設）。見た目は同一。 */
+#center-map {
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+  margin-top: 24px;
+}
