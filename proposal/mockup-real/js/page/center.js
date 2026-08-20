@@ -31,18 +31,31 @@
     { name: 'ソラランド平尾台',           lat: 33.7933, lng: 130.9139, url: 'soraland.html' }
   ];
 
-  // 行き先の決め方。**リンク自体は常に出す**（モックとしての見た目を保つため）。
+  // 表示する拠点。
   //
-  // モックとして開いたときは s.url（モック内のパス）で回遊できる。
-  // 変換後は NKK_PERMALINKS（変換器が wp_localize_script で渡す）にスラッグがあれば
-  // そのパーマリンクを使う。まだ投稿が無いスラッグは表に載らないので '#' に落とす。
-  // 実測: モックのパスをそのまま出していたとき、10件中9件が 404 だった。
-  function hrefFor(s) {
-    if (typeof NKK_PERMALINKS === 'undefined') return s.url;    // モックとして開いている
-    return NKK_PERMALINKS[s.url.replace(/\.html$/, '')] || '#'; // 変換後。未作成は '#'
+  // 変換後は NKK_LOOP_center（変換器が data-loop-data から渡す）を使う。
+  // **投稿を増やせば地図にも出る。** モックとして開いたときは上のべた書きを使う
+  // （モックは単体で成立する必要があるため）。
+  //
+  // 以前は変換後もべた書きのままで、一覧カードは CPT 由来で増えるのに
+  // 地図のマーカーは10件で固定、しかもリンクが全部 404 だった。
+  var rows = spots;
+  if (typeof NKK_LOOP_center !== 'undefined' && NKK_LOOP_center.length) {
+    rows = NKK_LOOP_center
+      .filter(function (r) { return r.map_lat && r.map_lng; })
+      .map(function (r) {
+        return { name: r.title, lat: parseFloat(r.map_lat), lng: parseFloat(r.map_lng), url: r.url };
+      });
   }
 
-  spots.forEach(function (s) {
+  // 行き先。変換後は url が既にパーマリンク。モックではモック内のパス。
+  function hrefFor(s) {
+    if (typeof NKK_LOOP_center !== 'undefined' && NKK_LOOP_center.length) return s.url;
+    if (typeof NKK_PERMALINKS === 'undefined') return s.url;    // モックとして開いている
+    return NKK_PERMALINKS[s.url.replace(/\.html$/, '')] || '#';
+  }
+
+  rows.forEach(function (s) {
     L.marker([s.lat, s.lng], { icon: icon })
       .addTo(map)
       .bindPopup(
