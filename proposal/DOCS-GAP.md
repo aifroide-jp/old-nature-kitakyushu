@@ -17,9 +17,10 @@
 - `/mockup` と `/retrofit`（下の節を参照）
 - 制約に縛られない Ichiki テスト用 fixture と、そこから逆算した `mockup-bad`
 - snapshot の凍結解除
-- `--allow-unresolved-links` を外す（残り39ページのモック化が要る）。
-  **モックの置き場所の是正と同じ条件。** 39ページが揃った時点で、
-  制約版をルートへ・旧を `mockup-before/` へ移し、`proposal/` を消す
+- **残り39ページのモック化。** これ1つで下が全部片付く。
+  進捗は `ichiki doctor` が数える（`.ichiki.json` の `retrofit` 宣言による）
+  - 未解決リンク28件が消え、`retrofit` 宣言を削除できる
+  - 制約版をルートへ・旧を `mockup-before/` へ移し、`proposal/` が消える
 
 **「`proposal/` を全部『出力されるもの』で構成する」の内訳**
 
