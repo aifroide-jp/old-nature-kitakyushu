@@ -2,7 +2,29 @@
 
 読み手が誰かで性質が変わるので、そこで分けて並べる。
 
-計測日: 2026-08-18
+計測日: 2026-08-18 / 見直し: 2026-08-21
+
+## いま残っているもの（2026-08-21）
+
+**成果物**
+
+- **#5 リリース手順書** … 実装ゼロ。未解決リンク28件の受け皿にもなる。**次はここ**
+- #6 C3 検収ガイドの html 化と画像
+- #1 #2 #4 手順書（本体に1つ置く）
+
+**合意のうえ後回し**
+
+- `/mockup` と `/retrofit`（下の節を参照）
+- 制約に縛られない Ichiki テスト用 fixture と、そこから逆算した `mockup-bad`
+- snapshot の凍結解除
+- `--allow-unresolved-links` を外す（残り39ページのモック化が要る）
+
+**取り下げ**
+
+- 「`proposal/` を全部『出力されるもの』で構成する」…
+  この案件は**検証用**で、直下の旧51ページと `proposal/mockup-real` の**対**があること自体が
+  成果物（`ichiki diff` は両方が無いと動かない）。`mockup-real` は AI が作るので再現もしない。
+  一度きりの変換結果が新しい正になったもので、ビルド生成物ではない。
 
 ---
 
@@ -11,14 +33,17 @@
 | # | 必要なもの | 読み手 | 現状 | 出どころ |
 |---|---|---|---|---|
 | 1 | Ichiki セットアップ手順書 | 職員 | **△ 開発者向けの README しかない** | `.claude/ichiki/README.md`（構成説明・CLI仕様） |
-| 2 | AI使用のモックアップ作成手順書 | 職員 | **△ AI に渡すプロンプトはある。人向けの手順が無い** | `proposal/prompts/mockup-generation.md`（AI宛て） |
-| 3 | C1 人的検証項目の出力 | 開発 | **○ ある** | `scripts/test-spec/out/test-spec.md`（40KB） |
+| 2 | AI使用のモックアップ作成手順書 | 職員 | **△ AI に渡すプロンプトはある。人向けの手順が無い** | `.claude/ichiki/prompts/mockup-generation.md`（AI宛て） |
+| 3 | C1 人的検証項目の出力 | 開発 | **○ ある** | `docs/検収/test-spec.md`（47KB） |
 | 4 | C1 Ichiki実行・検証手順書 | 職員 | **× 無い** | — |
-| 5 | C2 リリース手順書の作成 | 職員 | **× ルールだけ。実装なし** | `rules/ichiki.md:45` に規定 |
-| 6 | C3 L1向け検収ガイド | L1 | **△ md はある。html と画像が無い** | `scripts/test-spec/out/l1-guide.md`（2KB） |
-| 6b | C3 検収シート | L1 | **○ ある** | `scripts/test-spec/out/l1-checklist.tsv`（15KB） |
+| 5 | C2 リリース手順書の作成 | 職員 | **× ルールだけ。実装なし** | `rules/ichiki.md` の成果物の節に規定 |
+| 6 | C3 L1向け検収ガイド | L1 | **△ md はある。html と画像が無い** | `docs/検収/l1-guide.md`（2.4KB） |
+| 6b | C3 検収シート | L1 | **○ ある** | `docs/検収/l1-checklist.tsv`（15KB） |
 
 **○ 2件 / △ 3件 / × 2件。**
+
+出力先は `ichiki testspec` が決める（既定 `docs/検収/`、`.ichiki.json` の
+`testspec.out_dir` で上書きできる）。移設前は `scripts/test-spec/out/` だった。
 
 ---
 
@@ -54,8 +79,8 @@ md を html にするだけなら小さいが、**画像を入れるなら実物
 これは既にある道具で撮れる。
 
 ```
-scripts/visual-diff/diff.js   ← ライブサイトのフルページを撮っている（report/*.png）
-proposal/visual-check/compare.js ← 同じく撮っている
+ichiki diff:wp   ← ライブサイトのフルページを撮っている
+ichiki diff      ← 元モック ↔ 制約モックを撮っている
 ```
 
 「この画面のここを見てください」を**実際の画面で示せる**。手で貼るのではなく、
@@ -78,22 +103,20 @@ proposal/visual-check/compare.js ← 同じく撮っている
 | 固定ページとテンプレートの対応 | `acf-map.yaml` の `pages[].page_type` / `page_id` |
 | CPT とパーマリンク | `acf-map.yaml` の `cpt` |
 | CF7 フォームと送信先 | 案件 `CLAUDE.md`「## フォーム設定」（未指定なら「送信先を設定」と明記する規定あり） |
-| **未解決のまま残っているリンク** | 変換器の `--allow-unresolved-links` の警告 |
+| **未解決のまま残っているリンク** | 変換器の `--allow-unresolved-links` の警告（2026-08-21 時点で28件） |
 
 最後の行が今の宿題に直結する。**「まだ作っていないページ」を手順書に列挙**できれば、
 `--allow-unresolved-links` を付けたまま先に進んでも、リリース時に取りこぼさない。
 
 ---
 
-## 手を付ける順（案）
+## 別件: data-section が編集画面の区切りに使われていない（**解決済み 2026-08-20**）
 
-1. **#5 リリース手順書** … 実装ゼロ。かつ `--allow-unresolved-links` の受け皿になる
-2. **#6 の html 化** … md はあるので、変換と画像埋め込みだけ
-3. **#1 #2 #4 の手順書** … 本体に1つ置く。案件ごとの生成は不要
-
----
-
-## 別件: data-section が編集画面の区切りに使われていない
+> **決着**: `data-section-label` を語彙に足し、`inc/acf-<slug>.php` の生成時に
+> `array('type' => 'tab', 'label' => <ラベル>)` を挟むようにした。
+> 日本語ラベルの出どころは**宣言**にした（見出しテキストからの推測はしない）。
+> 実測: event 10タブ / front 10タブ / center 7タブ。66件が平坦に並ぶ状態は解消。
+> 以下は当時の記録。
 
 `rules/ichiki.md` の食い違いを直す過程で見つけた**実装の抜け**。ルールの矛盾とは別。
 
@@ -121,6 +144,15 @@ hero_image / event_status / tag_1 / tag_2 / tag_3 / tag_4 / hero_title / event_d
 ---
 
 ## 後回し: AI が要るコマンドは /mockup と /retrofit（未着手）
+
+> **その後（2026-08-21）**: `/run` は廃止した（変換がコマンド化され、AI の出番が消えたため）。
+> `prompts/mockup-generation.md` は 530行 → 121行にして規約を持たせず、
+> `rules/vocabulary.md` を先に読ませる形にした。
+> 実装形態は**スラッシュコマンドより Skill** が有力。理由は起動条件で、
+> `/mockup` は人が打つのを覚えている必要があるが、Skill は description が
+> 合えば自動で入る（モック編集は合意まで何度も起きるので、後者が向く）。
+> Skill 本体に規約は持たせず、案件の submodule を読ませる。そうすればコピーが無く、
+> バージョンがズレない。**ただし自動起動は保証ではないので、正しさの担保は lint。**
 
 **設計が反転していた。** Ichiki が用意していた `/setup` `/run` はどちらも機械的な
 コマンドの羅列で、AI が判断する箇所が無かった。一方**本当に AI が要る仕事**である
