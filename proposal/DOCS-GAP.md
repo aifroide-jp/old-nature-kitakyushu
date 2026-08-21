@@ -30,7 +30,7 @@
 |---|---|
 | `mockup-real/` | **出力化は取り下げ。ただし置き場所は規約違反。** 出力にしないのは、この案件が検証用で、旧51ページと制約版12ページの**対**があること自体が成果物だから（`mockup-real` は AI が作るので再現もしない。一度きりの変換結果が新しい正になったもので、ビルド生成物ではない）。一方、規約（`rules/ichiki.md`「モックの置き場所」）はルート1つで、リバース前を `mockup-before/` に置く形。この案件は逆転している（ルートが旧51ページ、`proposal/mockup-real` が新12ページ）。39ページが揃うまで解消できないので保留。揃ったら制約版をルートへ、旧を `mockup-before/` へ移し、`proposal/` は消える |
 | `visual-check/` | **削除（2026-08-21）。** `pairs.json` はどこからも読まれていなかった（`compare.js` はページ一覧をハードコードしていた）。`compare.js` 自体も `diff.js` と同じことをしていたので統合し、`ichiki diff` 1本にした。比較先を URL で受けるので、旧モックは `ichiki serve` で配れば比較できる |
-| `snapshot/expected.json` | **保留（2026-08-21）。** まだ改修が続くので残す。**外すときに消すもの**は下の「凍結を外すとき」を参照 |
+| `snapshot/` | **`.ichiki/snapshot.json` へ移動（2026-08-21）。** Ichiki の状態ファイルなので、設定（`.ichiki.json`）の隣に置く。`proposal/` は成果物の置き場所であって道具の状態を置く場所ではない |
 | `README.md` / `DIFF-vs-ichiki.md` / `TOOLS.md` / このファイル | **対象外。** 人が読む文書で、出力にする対象ではない |
 | `.gitignore` | **済（2026-08-21）。** 移設で消えた `scan/out/` `scan/out-real/` の行を落とした |
 
@@ -40,7 +40,7 @@
 
 | 消すもの | 何か |
 |---|---|
-| `proposal/snapshot/expected.json` | 期待値（95ファイルのハッシュ） |
+| `.ichiki/snapshot.json` | 期待値（96ファイルのハッシュ） |
 | `.claude/ichiki/src/snapshot.js` | 本体 |
 | `bin/ichiki.js` の `snapshot` 行 | コマンド登録 |
 | `src/gate.js` の `--snapshot` と「出力の凍結」ステップ | gate からの呼び出し |
