@@ -32,7 +32,7 @@ node .claude/ichiki/bin/ichiki.js gate proposal/mockup-real --allow-unresolved-l
 
 ```bash
 node .claude/ichiki/bin/ichiki.js serve . 18081 &          # 旧モックを配る
-node .claude/ichiki/bin/ichiki.js diff proposal/mockup-real <pages.json> http://localhost:18081
+node .claude/ichiki/bin/ichiki.js diff proposal/mockup-real http://localhost:18081
 ```
 
 `--allow-unresolved-links` の扱い:

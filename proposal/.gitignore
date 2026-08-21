@@ -1,5 +1,3 @@
 # 依存ライブラリ（package.json から復元できる）
 node_modules/
 
-# 生成物（コマンドで再生成できる）
-visual-check/out/

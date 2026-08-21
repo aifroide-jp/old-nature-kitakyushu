@@ -27,9 +27,22 @@
 |---|---|
 | `mockup-real/` | **取り下げ（2026-08-21）。** この案件は検証用で、直下の旧51ページと制約版12ページの**対**があること自体が成果物（`ichiki diff` は両方が無いと動かない）。`mockup-real` は AI が作るので再現もしない。一度きりの変換結果が新しい正になったもので、ビルド生成物ではない |
 | `visual-check/` | **削除（2026-08-21）。** `pairs.json` はどこからも読まれていなかった（`compare.js` はページ一覧をハードコードしていた）。`compare.js` 自体も `diff.js` と同じことをしていたので統合し、`ichiki diff` 1本にした。比較先を URL で受けるので、旧モックは `ichiki serve` で配れば比較できる |
-| `snapshot/expected.json` | **未決。** 既に `ichiki snapshot --update` の出力。凍結解除で消えるので、その判断待ち |
+| `snapshot/expected.json` | **保留（2026-08-21）。** まだ改修が続くので残す。**外すときに消すもの**は下の「凍結を外すとき」を参照 |
 | `README.md` / `DIFF-vs-ichiki.md` / `TOOLS.md` / このファイル | **対象外。** 人が読む文書で、出力にする対象ではない |
 | `.gitignore` | **済（2026-08-21）。** 移設で消えた `scan/out/` `scan/out-real/` の行を落とした |
+
+### 凍結（snapshot）を外すとき
+
+改修が落ち着いたら外す。そのとき消すのはこの4つ。**忘れると死んだ検査が残る。**
+
+| 消すもの | 何か |
+|---|---|
+| `proposal/snapshot/expected.json` | 期待値（95ファイルのハッシュ） |
+| `.claude/ichiki/src/snapshot.js` | 本体 |
+| `bin/ichiki.js` の `snapshot` 行 | コマンド登録 |
+| `src/gate.js` の `--snapshot` と「出力の凍結」ステップ | gate からの呼び出し |
+
+`package.json` の `test:update` は `test/run.js`（scan の回帰）なので**別物。残す**。
 
 ---
 
