@@ -12,7 +12,6 @@
 | | 役割 |
 |---|---|
 | `mockup-real/` | 実物ページを見た目そのままで構造化したもの（12ページ） |
-| `visual-check/pairs.json` | 既存モックと制約版の比較ペア定義 |
 | `snapshot/expected.json` | 生成物のハッシュ。移設・改修で出力が変わったら名指しで出る |
 | `DIFF-vs-ichiki.md` `TOOLS.md` | 移設前の比較記録。**当時の記録であって現状ではない** |
 
@@ -25,7 +24,16 @@ node .claude/ichiki/bin/ichiki.js gate proposal/mockup-real --allow-unresolved-l
 ```
 
 ルール同期 → lint → a11y → scan → 変換 → 生成物の検証 → php -l を順に流す。
-`--visual` でピクセル比較、`--snapshot proposal/snapshot/expected.json` で出力の凍結比較も付く。
+`--snapshot proposal/snapshot/expected.json` を付けると出力の凍結比較も走る。
+
+**ピクセル比較は gate に入っていない。** 合意前のモックは見た目が変わるのが正しいので、
+毎回かけると正しい変更が FAIL になる。見た目の固定が要るのは retrofit のときだけなので、
+そのときに `ichiki diff` を明示的に叩く。
+
+```bash
+node .claude/ichiki/bin/ichiki.js serve . 18081 &          # 旧モックを配る
+node .claude/ichiki/bin/ichiki.js diff proposal/mockup-real <pages.json> http://localhost:18081
+```
 
 `--allow-unresolved-links` の扱い:
 

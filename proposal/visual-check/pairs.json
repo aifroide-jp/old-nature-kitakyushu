@@ -1,8 +1,0 @@
-[
-  { "label": "index",         "before": "index.html",                      "after": "proposal/mockup-real/index.html" },
-  { "label": "contact",       "before": "contact/index.html",              "after": "proposal/mockup-real/contact/index.html" },
-  { "label": "events-index",  "before": "events/index.html",               "after": "proposal/mockup-real/events/index.html" },
-  { "label": "events-sample", "before": "events/sample.html",              "after": "proposal/mockup-real/events/sample.html" },
-  { "label": "events-apply",  "before": "events/summer-camp-apply.html",   "after": "proposal/mockup-real/events/summer-camp-apply.html" },
-  { "label": "biodiversity",  "before": "about/biodiversity.html",         "after": "proposal/mockup-real/about/biodiversity.html" }
-]
