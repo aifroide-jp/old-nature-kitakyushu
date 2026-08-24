@@ -4,11 +4,17 @@
 そこから WordPress テーマを作るのが [Ichiki](.claude/ichiki/)（`.claude/ichiki` に submodule で入っています）。
 
 ```bash
-node .claude/ichiki/bin/ichiki.js gate      # lint → scan → 変換 → 生成物の検証 まで一括
+node .claude/ichiki/bin/ichiki.js gate      # モック → テーマ（lint → scan → 変換 → 生成物の検証）
+#   ここでテーマを WordPress に入れる
+node .claude/ichiki/bin/ichiki.js deliver   # 公開後の検査 → 検収成果物 → リリース手順書
 node .claude/ichiki/bin/ichiki.js --help    # コマンド一覧
 ```
 
-引数は要りません。モックの場所その他は [`.ichiki.json`](.ichiki.json) が持っています。
+引数は要りません。モックの場所・サイトの URL その他は [`.ichiki.json`](.ichiki.json) が持っています。
+
+`gate` はサイトが無くても動きます。`deliver` は**動いている WordPress が要ります**
+（見た目とアクセシビリティを実サイトで測り、その結果を検収成果物に取り込むため）。
+`--no-visual` で撮影を飛ばせます（速いが、C1 の表示確認は「未実行」になります）。
 
 ---
 

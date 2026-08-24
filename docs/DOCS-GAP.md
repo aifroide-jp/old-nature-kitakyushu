@@ -128,13 +128,17 @@ Ichiki 本体に1つ置いて、案件では原則そのまま使うもの。
 
 ## C1 の自動判定を全部埋める手順（2026-08-24）
 
+**`ichiki deliver` が全部やります。** 下は中で何が動いているかの説明。
+
 C1 の6種別のうち4つは自動判定できる。**レポートを置けば取り込まれる**（無ければ「未実行」のまま）。
 
 ```bash
-ichiki diff . <サイトURL> docs/visual --both   # 見た目（表示確認・レスポンシブ）
-ichiki a11y . --site <サイトURL>                # アクセシビリティ → pa11y-report.json
-ichiki testspec                                  # 取り込んで C1/C3 を出す
+ichiki deliver                  # 下の4つを正しい順で流す
+#   verify:live → diff --both → a11y --site → testspec → release
 ```
+
+順番に依存がある。`diff` と `a11y` を先に回さないと `testspec` が「未実行」で出る。
+**欠けても止まらず、欠けたまま成果物が出る**ので、手で順番を守る設計にしていない。
 
 `.ichiki.json` に出力先を書く。
 
