@@ -8,6 +8,8 @@
 # 生成物（コマンドで再生成できるもの）
 # 例外: .ichiki/snapshot.json は凍結の期待値なので追跡する
 docs/検収
+# ピクセル比較のスクリーンショット（ichiki diff で再生成できる。数十MB）
+docs/visual
 pa11y-report.json
 .pa11yci.json
 
