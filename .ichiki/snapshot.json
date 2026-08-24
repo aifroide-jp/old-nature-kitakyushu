@@ -1,8 +1,8 @@
 {
   "scan": {
-    "acf-map.yaml": "194c21937ef177d5",
-    "CLAUDE.md": "d806eb499b3d67e1",
-    "coverage.json": "4b0d2dbcc199a13a"
+    "acf-map.yaml": "b1f86c9293533674",
+    "CLAUDE.md": "a96237f815f427cc",
+    "coverage.json": "f0f5e46a0d94b819"
   },
   "theme": {
     "archive-nkk_center.php": "57a00f6b37b9b2f0",
@@ -72,21 +72,21 @@
     "header.php": "baf555273f984083",
     "inc/acf-about_biodiversity.php": "59c8eb8c1620dd6b",
     "inc/acf-center-archive.php": "9587362805460495",
-    "inc/acf-center.php": "e30d9bf59cf98312",
+    "inc/acf-center.php": "9adb78225148b589",
     "inc/acf-contact.php": "83988f388ce557f1",
     "inc/acf-event-archive.php": "2e553309f2286323",
     "inc/acf-event.php": "97d07fd55fc93311",
     "inc/acf-front.php": "52f076e324607edb",
     "inc/acf-news-archive.php": "39f65b2f771909f5",
     "inc/acf-news.php": "8d1ca24ee91e74e4",
-    "inc/acf-site-options.php": "d827e13ac3da37ed",
+    "inc/acf-site-options.php": "75e7a9aed90b5f18",
     "inc/acf-spot-archive.php": "12dde53f150a524f",
-    "inc/acf-spot.php": "2ad0e3d8a0700586",
+    "inc/acf-spot.php": "4bef6cde0e0cc343",
     "inc/cf7-dynamic.php": "845fd867f16c6e1e",
     "inc/retrofit-notice.php": "f5056090240d2654",
     "inc/seed-cf7.php": "8705cba07cdd3511",
     "inc/seed-menus.php": "46af893f715d848b",
-    "inc/seed-posts.php": "f384dde75e067e48",
+    "inc/seed-posts.php": "2cf9ec021ce7c3a9",
     "index.php": "e361f397261b9d16",
     "page-about_biodiversity.php": "caa5bb704859de7f",
     "page-contact.php": "7276d1673396f2a9",

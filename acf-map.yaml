@@ -1,4 +1,4 @@
-project: old-nature-kitakyushu
+project: nature-kitakyushu
 generated_by: ichiki scan（変換器のモデルから生成）
 common:
   - id: header
@@ -19,7 +19,7 @@ common:
         default: お問合せ
       - field_name: cta_button_url
         type: url
-        default: ../contact/
+        default: ''
   - id: footer
     fields:
       - field_name: footer_brand_name
@@ -32,6 +32,501 @@ common:
         type: text
         default: © 2026 アーバンネイチャー北九州
 pages:
+  - id: index
+    title: アーバンネイチャー北九州 | 都市と自然、近いからこそおもしろい。
+    file: index.html
+    page_type: front
+    css:
+      - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap
+      - css/base.css
+      - css/page/front.css
+    sections:
+      - id: hero
+        fields:
+          - field_name: hero_catch
+            type: text
+            default: 都市と自然、<br>近いからこそおもしろい。
+          - field_name: hero_sub
+            type: textarea
+            default: 北九州市の10の自然・環境施設が連携し、<br>市民・企業・団体とともにネイチャーポジティブな地域づくりに取り組んでいます。
+      - id: persona
+        fields:
+          - field_name: persona_section_title
+            type: text
+            default: 対象者別のご案内
+          - field_name: persona_label_1
+            type: textarea
+            default: 企業・団体の方へ
+          - field_name: persona_name_1
+            type: text
+            default: 自然への貢献が、<br>企業価値になる時代へ。
+          - field_name: persona_desc_1
+            type: textarea
+            default: 生物多様性保全はCSR・ESGの重要課題です。北九州での先進的な取り組み事例をご覧いただき、自社の活動のヒントにしてください。連携のご相談も歓迎します。
+          - field_name: persona_arrow_1
+            type: text
+            default: 活動事例を見る →
+          - field_name: persona_label_2
+            type: textarea
+            default: NPO・市民団体の方へ
+          - field_name: persona_name_2
+            type: text
+            default: 活動の輪を、<br>もっと広く、もっと深く。
+          - field_name: persona_desc_2
+            type: textarea
+            default: 自然保全や環境教育に取り組む団体同士がつながるネットワークです。情報共有・共同事業・行政との連携など、ひとりではできないことを一緒に実現しましょう。
+          - field_name: persona_arrow_2
+            type: text
+            default: ネットワークを知る →
+          - field_name: persona_label_3
+            type: textarea
+            default: 個人・市民の方へ
+          - field_name: persona_name_3
+            type: text
+            default: 週末、自然のなかへ<br>出かけませんか。
+          - field_name: persona_desc_3
+            type: textarea
+            default: 北九州には、森・海・湿地・カルストなど多様な自然が市内に広がっています。体験イベントや10の施設で、あなたのペースで自然と関わってみてください。
+          - field_name: persona_arrow_3
+            type: text
+            default: イベントを探す →
+          - field_name: persona_label_4
+            type: textarea
+            default: クリエイターの方へ
+          - field_name: persona_name_4
+            type: text
+            default: 北九州の自然を、<br>あなたの表現に。
+          - field_name: persona_desc_4
+            type: textarea
+            default: 教育・広報・制作活動に使える北九州の自然写真素材を無料で公開しています。美しい生態系の記録を、学校・行政・メディア・デザインの現場でご活用ください。
+          - field_name: persona_arrow_4
+            type: text
+            default: 写真素材を見る →
+      - id: videos
+        fields:
+          - field_name: videos_title
+            type: text
+            default: アーバンネイチャー北九州 動画一覧
+          - field_name: videos_subtitle
+            type: textarea
+            default: 北九州の自然とネイチャーポジティブを映像でご覧ください
+          - field_name: video_caption_1
+            type: textarea
+            default: アーバンネイチャー北九州
+          - field_name: video_transcript_1
+            type: wysiwyg
+            default: >-
+              <p>北九州市は、大都市の利便性と豊かな生態系が隣接する<strong>「アーバンネイチャー」という独自の魅力を発信しています。現在、世界的に生物多様性の損失が危惧される中、市は自然を再生させるネイチャーポジティブの実現を共通目標に掲げました。その具体的な施策として、環境保全活動を支援する拠点となるネイチャーポジティブセンター</strong>を新たに設立しています。この取り組みは、貴重な野生生物を守り育むことで、都市と自然が共生する価値をさらに高めることを目的としています。北九州市は、身近にある自然の面白さを伝えるとともに、持続可能な未来に向けた積極的な姿勢を強調しています。</p>
+          - field_name: video_caption_2
+            type: textarea
+            default: 北九州ネイチャーポジティブセンター PR動画：屋内施設編
+          - field_name: video_credit_2
+            type: textarea
+            default: 制作：北九州市立大学映像制作集団 ROMANDOM
+          - field_name: video_transcript_2
+            type: wysiwyg
+            default: >-
+              <p>北九州市は、自然環境の回復と経済活動を両立させるネイチャーポジティブを推進しており、その理念を学べる多様な屋内施設を紹介しています。いのちのたび博物館では生命の進化の歴史を辿ることができ、北九州市ほたる館や香月・黒川ほたる館では水辺の生態系の美しさや命の尊さを肌で感じられます。また、環境ミュージアムは過去の公害克服の歴史から未来へのヒントを提示し、水環境館では再生された河川の現状をリアルタイムで観察できる場となっています。これらの拠点を巡ることで、市民は<strong>都市と自然が共生する「アーバンネイチャー」</strong>の魅力を再発見し、環境保護の重要性を理解できます。最終的にこの動画は、一人ひとりが楽しみながら行動を起こすことで、次世代へ豊かな自然を繋いでいく大切さを呼びかけています。</p>
+          - field_name: video_caption_3
+            type: textarea
+            default: Kitakyushu — The City of Altruism and Regeneration
+          - field_name: video_credit_3
+            type: textarea
+            default: 『利他』と『再生』のまち、北九州市
+          - field_name: video_transcript_3
+            type: wysiwyg
+            default: >-
+              <p lang="en">Once known as "the city of pollution," Kitakyushu has transformed itself through the united
+              efforts of its citizens, businesses, and government. Today, it stands as one of the world's leading
+              sustainable cities.</p>
+                              <p lang="en">From offshore wind power along its coast, to Eco-Town—the hub of resource recycling, to urban nature where people and the environment coexist in harmony. Here, the spirit of altruism and regeneration thrives in everyday life.</p>
+                              <p lang="en">Kitakyushu — a city that overcame its past and creates the future. Discover the story of its "Deep Sustainability."</p>
+                              <p>かつて"公害の街"と呼ばれた北九州市。しかし、市民・企業・行政が手を取り合い、それを克服したこの街は、いまや世界でもトップクラスのサステナブルシティへと生まれ変わりました。</p>
+                              <p>沿岸に広がる洋上風力、資源循環の拠点であるエコタウン、人と自然が寄り添うアーバンネイチャー。そして、"利他"と"再生"の心が、市民の暮らしの中に息づいています。</p>
+                              <p>北九州－それは、過去を乗り越え、未来をつくる力。ぜひこのまちの"ディープ・サステナビリティ"の物語に触れてください。</p>
+      - id: spots
+        fields:
+          - field_name: spots_title
+            type: text
+            default: 北九州市の自然スポット
+          - field_name: spots_subtitle
+            type: textarea
+            default: 都市から近い距離に広がる、多彩な自然資源
+      - id: facilities
+        fields:
+          - field_name: facilities_title
+            type: text
+            default: 活動拠点
+          - field_name: facilities_subtitle
+            type: textarea
+            default: 北九州の自然と環境を体験できる拠点施設
+      - id: network
+        fields:
+          - field_name: network_title
+            type: text
+            default: 地域との繋がり
+          - field_name: network_subtitle
+            type: textarea
+            default: 企業・団体と連携した取り組みをご紹介
+          - field_name: network_image
+            type: image
+            default: images/2026/04/mine-450x269.png
+            alt: 株式会社マイン ─ 竹バイオマス循環モデル
+          - field_name: network_badge
+            type: text
+            default: 企業事例
+          - field_name: network_name
+            type: text
+            default: 株式会社マイン
+          - field_name: network_lead
+            type: textarea
+            default: 竹バイオマスと循環モデルで、未来をつなぐ
+          - field_name: network_desc
+            type: textarea
+            default: 放置竹林を資源として活用し、地域の環境課題を解決する循環型ビジネスモデル。企業の地域貢献とネイチャーポジティブ活動を両立する先進事例をご紹介します。
+      - id: events
+        fields:
+          - field_name: events_title
+            type: text
+            default: イベントを探す
+          - field_name: events_subtitle
+            type: textarea
+            default: 北九州の自然を体感するイベント情報
+      - id: news
+        fields:
+          - field_name: news_title
+            type: text
+            default: お知らせ
+          - field_name: news_subtitle
+            type: textarea
+            default: アーバンネイチャー北九州からの最新情報
+      - id: photos
+        fields:
+          - field_name: photos_title
+            type: text
+            default: みんなの写真展
+          - field_name: photos_subtitle
+            type: textarea
+            default: 北九州の自然写真を無料でご利用いただけます
+          - field_name: photos_image_1
+            type: image
+            default: images/2025/04/IMG_8716-450x450.jpg
+            alt: 海
+          - field_name: photos_caption_1
+            type: text
+            default: 海
+          - field_name: photos_image_2
+            type: image
+            default: images/2025/04/IMG_8742-450x450.jpg
+            alt: 山
+          - field_name: photos_caption_2
+            type: text
+            default: 山
+          - field_name: photos_image_3
+            type: image
+            default: images/2025/04/IMG_8789-450x450.jpg
+            alt: 川
+          - field_name: photos_caption_3
+            type: text
+            default: 川
+          - field_name: photos_image_4
+            type: image
+            default: images/2025/04/カルガモ-450x450.jpg
+            alt: 動物
+          - field_name: photos_caption_4
+            type: text
+            default: 動物
+          - field_name: photos_image_5
+            type: image
+            default: images/2025/04/カノコソウ-450x450.jpg
+            alt: 植物
+          - field_name: photos_caption_5
+            type: text
+            default: 植物
+          - field_name: photos_image_6
+            type: image
+            default: images/2025/04/IMG_8808-450x450.jpg
+            alt: 街と自然
+          - field_name: photos_caption_6
+            type: text
+            default: 街と自然
+          - field_name: photos_image_7
+            type: image
+            default: images/2025/04/IMG_8920-450x450.jpg
+            alt: 農産品
+          - field_name: photos_caption_7
+            type: text
+            default: 農産品
+          - field_name: photos_image_8
+            type: image
+            default: images/2025/04/ヨツボシトンボ-450x450.jpg
+            alt: 昆虫・その他
+          - field_name: photos_caption_8
+            type: text
+            default: 昆虫・その他
+      - id: stats
+        fields:
+          - field_name: stat_number_1
+            type: text
+            default: '10'
+          - field_name: stat_label_1
+            type: text
+            default: 連携施設
+          - field_name: stat_number_2
+            type: text
+            default: '34'
+          - field_name: stat_label_2
+            type: text
+            default: 企業会員
+          - field_name: stat_number_3
+            type: text
+            default: '13'
+          - field_name: stat_label_3
+            type: text
+            default: 団体会員
+          - field_name: stat_number_4
+            type: text
+            default: 800+
+          - field_name: stat_label_4
+            type: text
+            default: 種の生物
+    loops:
+      - cpt: spot
+        order: date_desc
+        count: 3
+        repeat: 1
+        item_fields:
+          - hero_image
+          - hero_title
+          - hero_lead
+      - cpt: center
+        order: menu_order
+        count: 10
+        repeat: 2
+        item_fields:
+          - hero_image
+          - hero_title
+      - cpt: event
+        order: date_desc
+        count: 3
+        repeat: 1
+        item_fields:
+          - hero_image
+          - event_date
+          - hero_title
+          - event_meta
+      - cpt: news
+        order: date_desc
+        count: 5
+        repeat: 1
+        item_fields:
+          - news_category
+          - news_date
+          - hero_title
+    nav:
+      - location: global
+        links:
+          - text: アーバンネイチャー北九州とは？
+            href: about/
+          - text: 全体像
+            href: about/
+          - text: 生物多様性とは？
+            href: about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: about/strategy.html
+          - text: 北九州市の自然スポット
+            href: about/spots.html
+          - text: 活動拠点
+            href: center/
+          - text: 拠点一覧
+            href: center/
+          - text: 響灘ビオトープ
+            href: center/biotope.html
+          - text: グリーンパーク
+            href: center/greenpark.html
+          - text: 北九州市ほたる館
+            href: center/hotarukan.html
+          - text: いのちのたび博物館
+            href: center/inochi.html
+          - text: 到津の森公園
+            href: center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: center/katsuki-hotaru.html
+          - text: 水環境館
+            href: center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: center/takamiya.html
+          - text: 山田緑地
+            href: center/yamada.html
+          - text: 地域との繋がり
+            href: network/
+          - text: 北九州ネイチャーポジティブネットワーク
+            href: network/
+          - text: 活動実績
+            href: network/cases/
+          - text: 活動ブログ
+            href: blog/
+          - text: 会員募集
+            href: join/
+          - text: イベントを探す
+            href: events/
+          - text: お知らせ
+            href: news/
+          - text: みんなの写真展
+            href: photos/
+      - location: global
+        links:
+          - text: アーバンネイチャー北九州とは？
+            href: about/
+          - text: 全体像
+            href: about/
+          - text: 生物多様性とは？
+            href: about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: about/strategy.html
+          - text: 北九州市の自然スポット
+            href: about/spots.html
+          - text: 活動拠点
+            href: center/
+          - text: 拠点一覧
+            href: center/
+          - text: 響灘ビオトープ
+            href: center/biotope.html
+          - text: グリーンパーク
+            href: center/greenpark.html
+          - text: 北九州市ほたる館
+            href: center/hotarukan.html
+          - text: いのちのたび博物館
+            href: center/inochi.html
+          - text: 到津の森公園
+            href: center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: center/katsuki-hotaru.html
+          - text: 水環境館
+            href: center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: center/takamiya.html
+          - text: 山田緑地
+            href: center/yamada.html
+          - text: 地域との繋がり
+            href: network/
+          - text: 北九州ネイチャーポジティブネットワーク
+            href: network/
+          - text: 活動実績
+            href: network/cases/
+          - text: 活動ブログ
+            href: blog/
+          - text: 会員募集
+            href: join/
+          - text: イベントを探す
+            href: events/
+          - text: お知らせ
+            href: news/
+          - text: みんなの写真展
+            href: photos/
+          - text: お問合せ
+            href: contact/
+      - location: footer
+        links:
+          - text: 全体像
+            href: about/
+          - text: 生物多様性とは？
+            href: about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: about/strategy.html
+          - text: 北九州市の自然スポット
+            href: about/spots.html
+          - text: 北九州NPネットワーク
+            href: network/
+          - text: 活動実績
+            href: network/cases/
+          - text: 活動ブログ
+            href: blog/
+          - text: 会員募集
+            href: join/
+          - text: 拠点一覧
+            href: center/
+          - text: 響灘ビオトープ
+            href: center/biotope.html
+          - text: グリーンパーク
+            href: center/greenpark.html
+          - text: 北九州市ほたる館
+            href: center/hotarukan.html
+          - text: いのちのたび博物館
+            href: center/inochi.html
+          - text: 到津の森公園
+            href: center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: center/katsuki-hotaru.html
+          - text: 水環境館
+            href: center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: center/takamiya.html
+          - text: 山田緑地
+            href: center/yamada.html
+          - text: イベントを探す
+            href: events/
+          - text: お知らせ
+            href: news/
+          - text: みんなの写真展
+            href: photos/
+          - text: お問合せ
+            href: contact/
+          - text: プライバシーポリシー
+            href: privacy/
+          - text: Facebook
+            href: '#'
+          - text: Instagram
+            href: '#'
+          - text: YouTube
+            href: '#'
+    forms: []
+    decoration:
+      - selector: span.header__logo-sub
+        reason: aria-hidden="true"
+      - selector: div.hero-slides
+        reason: aria-hidden="true"
+      - selector: div.hero-scroll
+        reason: aria-hidden="true"
+      - selector: svg
+        reason: aria-hidden="true"
+      - selector: svg
+        reason: aria-hidden="true"
+      - selector: svg
+        reason: aria-hidden="true"
+      - selector: svg
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: a.facility-card
+        reason: aria-hidden="true"
+      - selector: svg
+        reason: aria-hidden="true"
+    meta:
+      title: アーバンネイチャー北九州 | 都市と自然、近いからこそおもしろい。
+      description: アーバンネイチャー北九州は、北九州市の都市と自然の共生を推進するプラットフォームです。10の自然・環境施設が連携し、ネイチャーポジティブな地域づくりに取り組んでいます。
   - id: about_biodiversity
     title: 生物多様性とは？ | アーバンネイチャー北九州
     file: about/biodiversity.html
@@ -739,7 +1234,7 @@ pages:
             default: 平尾台自然観察センター
           - field_name: official_url
             type: url
-            default: https://sites.google.com/view/hiraodai/
+            default: ''
           - field_name: map_title
             type: text
             default: 地図・場所
@@ -918,302 +1413,6 @@ pages:
     meta:
       title: 平尾台 | アーバンネイチャー北九州
       description: 平尾台｜羊の群れのような石灰岩が点在する、九州最大のカルスト台地
-  - id: center_biotope
-    title: 北九州市響灘ビオトープ | アーバンネイチャー北九州
-    file: center/biotope.html
-    page_type: single
-    cpt: center
-    css:
-      - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap
-      - css/base.css
-      - css/page/center.css
-    sections:
-      - id: hero
-        fields:
-          - field_name: hero_image
-            type: image
-            default: images/2025/03/biotope.jpg
-            alt: 北九州市響灘ビオトープの湿地と草原
-          - field_name: hero_title
-            type: text
-            default: 北九州市響灘ビオトープ
-          - field_name: hero_lead
-            type: textarea
-            default: ビオトープ（41ha）
-      - id: facility_info
-        fields:
-          - field_name: gallery_image
-            type: image
-            default: images/2025/03/b-2-1-450x450.jpg
-            alt: 北九州市響灘ビオトープ
-          - field_name: info_title
-            type: text
-            default: 施設情報
-          - field_name: address
-            type: text
-            default: 〒808-0021 北九州市若松区響町1-126-1
-          - field_name: tel
-            type: text
-            default: 093-751-2023
-          - field_name: official_label
-            type: text
-            default: https://www.hibikinadabiotope.com/
-          - field_name: official_url
-            type: url
-            default: https://www.hibikinadabiotope.com/
-          - field_name: hours
-            type: text
-            default: 9:00〜17:00（入園は16:00まで）
-          - field_name: closed
-            type: text
-            default: 火曜日（祝日の場合は翌日）
-          - field_name: fee
-            type: text
-            default: 一般100円、小中学生50円
-          - field_name: access
-            type: text
-            default: JR若松駅から車で約20分
-          - field_name: parking
-            type: text
-            default: あり（無料）
-      - id: facility_about
-        fields:
-          - field_name: about_title
-            type: text
-            default: 施設について
-          - field_name: about_body
-            type: wysiwyg
-            default: |-
-              <p>北九州市響灘ビオトープは、約41ヘクタールの日本最大級のビオトープです。かつての廃棄物処分場跡地に自然が再生し、湿地、草原、淡水池など多様な環境が形成されています。</p>
-                          <p>園内では絶滅危惧種を含む多くの動植物が確認されており、特にトンボ類や野鳥の種類が豊富です。自然観察路を歩きながら、季節ごとに異なる生き物たちとの出会いを楽しむことができます。</p>
-                          <p>環境再生のモデルケースとして国内外から注目されており、自然の復元力を実感できる貴重な場所です。ガイド付きの自然観察会も定期的に開催されています。</p>
-      - id: map
-        fields:
-          - field_name: map_title
-            type: text
-            default: アクセスマップ
-          - field_name: map_lat
-            type: text
-            default: '33.9056'
-          - field_name: map_lng
-            type: text
-            default: '130.7253'
-          - field_name: map_src
-            type: url
-            default: >-
-              https://maps.google.com/maps?q=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E8%8B%A5%E6%9D%BE%E5%8C%BA%E9%9F%BF%E7%94%BA1-126-1&output=embed&hl=ja
-      - id: events
-        fields:
-          - field_name: events_title
-            type: text
-            default: この施設のイベント
-          - field_name: events_lead
-            type: textarea
-            default: 響灘ビオトープで開催予定のイベント
-          - field_name: events_empty
-            type: textarea
-            default: 現在予定されているイベントはありません。
-          - field_name: events_link_label
-            type: text
-            default: 全てのイベントを見る
-          - field_name: events_link_url
-            type: url
-            default: ../events/
-      - id: blog
-        fields:
-          - field_name: blog_title
-            type: text
-            default: この施設のブログ
-          - field_name: blog_lead
-            type: textarea
-            default: 響灘ビオトープに関する記事
-          - field_name: blog_empty
-            type: textarea
-            default: まだ記事がありません。
-          - field_name: blog_link_label
-            type: text
-            default: 全てのブログを見る
-          - field_name: blog_link_url
-            type: url
-            default: ../blog/
-      - id: back
-        fields:
-          - field_name: back_label
-            type: text
-            default: ← センター一覧に戻る
-          - field_name: back_url
-            type: url
-            default: ../center/
-    nav:
-      - location: global
-        links:
-          - text: アーバンネイチャー北九州とは？
-            href: ../about/
-          - text: 全体像
-            href: ../about/
-          - text: 生物多様性とは？
-            href: ../about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: ../about/strategy.html
-          - text: 北九州市の自然スポット
-            href: ../about/spots.html
-          - text: 活動拠点
-            href: ../center/
-          - text: 拠点一覧
-            href: ../center/
-          - text: 響灘ビオトープ
-            href: ../center/biotope.html
-          - text: グリーンパーク
-            href: ../center/greenpark.html
-          - text: 北九州市ほたる館
-            href: ../center/hotarukan.html
-          - text: いのちのたび博物館
-            href: ../center/inochi.html
-          - text: 到津の森公園
-            href: ../center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: ../center/katsuki-hotaru.html
-          - text: 水環境館
-            href: ../center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: ../center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: ../center/takamiya.html
-          - text: 山田緑地
-            href: ../center/yamada.html
-          - text: 地域との繋がり
-            href: ../network/
-          - text: 北九州ネイチャーポジティブネットワーク
-            href: ../network/
-          - text: 活動実績
-            href: ../network/cases/
-          - text: 活動ブログ
-            href: ../blog/
-          - text: 会員募集
-            href: ../join/
-          - text: イベントを探す
-            href: ../events/
-          - text: お知らせ
-            href: ../news/
-          - text: みんなの写真展
-            href: ../photos/
-      - location: global
-        links:
-          - text: アーバンネイチャー北九州とは？
-            href: ../about/
-          - text: 全体像
-            href: ../about/
-          - text: 生物多様性とは？
-            href: ../about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: ../about/strategy.html
-          - text: 北九州市の自然スポット
-            href: ../about/spots.html
-          - text: 活動拠点
-            href: ../center/
-          - text: 拠点一覧
-            href: ../center/
-          - text: 響灘ビオトープ
-            href: ../center/biotope.html
-          - text: グリーンパーク
-            href: ../center/greenpark.html
-          - text: 北九州市ほたる館
-            href: ../center/hotarukan.html
-          - text: いのちのたび博物館
-            href: ../center/inochi.html
-          - text: 到津の森公園
-            href: ../center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: ../center/katsuki-hotaru.html
-          - text: 水環境館
-            href: ../center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: ../center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: ../center/takamiya.html
-          - text: 山田緑地
-            href: ../center/yamada.html
-          - text: 地域との繋がり
-            href: ../network/
-          - text: 北九州ネイチャーポジティブネットワーク
-            href: ../network/
-          - text: 活動実績
-            href: ../network/cases/
-          - text: 活動ブログ
-            href: ../blog/
-          - text: 会員募集
-            href: ../join/
-          - text: イベントを探す
-            href: ../events/
-          - text: お知らせ
-            href: ../news/
-          - text: みんなの写真展
-            href: ../photos/
-          - text: お問合せ
-            href: ../contact/
-      - location: footer
-        links:
-          - text: 全体像
-            href: ../about/
-          - text: 生物多様性とは？
-            href: ../about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: ../about/strategy.html
-          - text: 北九州市の自然スポット
-            href: ../about/spots.html
-          - text: 北九州NPネットワーク
-            href: ../network/
-          - text: 活動実績
-            href: ../network/cases/
-          - text: 活動ブログ
-            href: ../blog/
-          - text: 会員募集
-            href: ../join/
-          - text: 拠点一覧
-            href: ../center/
-          - text: 響灘ビオトープ
-            href: ../center/biotope.html
-          - text: グリーンパーク
-            href: ../center/greenpark.html
-          - text: 北九州市ほたる館
-            href: ../center/hotarukan.html
-          - text: いのちのたび博物館
-            href: ../center/inochi.html
-          - text: 到津の森公園
-            href: ../center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: ../center/katsuki-hotaru.html
-          - text: 水環境館
-            href: ../center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: ../center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: ../center/takamiya.html
-          - text: 山田緑地
-            href: ../center/yamada.html
-          - text: イベントを探す
-            href: ../events/
-          - text: お知らせ
-            href: ../news/
-          - text: みんなの写真展
-            href: ../photos/
-          - text: お問合せ
-            href: ../contact/
-          - text: プライバシーポリシー
-            href: ../privacy/
-          - text: Facebook
-            href: '#'
-          - text: Instagram
-            href: '#'
-          - text: YouTube
-            href: '#'
-    forms: []
-    decoration:
-      - selector: span.header__logo-sub
-        reason: aria-hidden="true"
-    meta:
-      title: 北九州市響灘ビオトープ | アーバンネイチャー北九州
-      description: 北九州市響灘ビオトープ - 日本最大級41ヘクタールのビオトープ。希少な動植物が生息する自然再生エリア。
   - id: center
     title: 活動拠点 | アーバンネイチャー北九州
     file: center/index.html
@@ -1471,54 +1670,132 @@ pages:
     meta:
       title: 活動拠点 | アーバンネイチャー北九州
       description: 北九州市が認定した10の自然体験・環境学習拠点をご紹介します。
-  - id: contact
-    title: お問合せ | アーバンネイチャー北九州
-    file: contact/index.html
-    page_type: page
-    page_id: contact
+  - id: center_biotope
+    title: 北九州市響灘ビオトープ | アーバンネイチャー北九州
+    file: center/biotope.html
+    page_type: single
+    cpt: center
     css:
       - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap
       - css/base.css
-      - css/page/contact.css
+      - css/page/center.css
     sections:
       - id: hero
         fields:
           - field_name: hero_image
             type: image
-            default: images/2025/03/sarakurayama.jpg
-            alt: 皿倉山からの眺望
+            default: images/2025/03/biotope.jpg
+            alt: 北九州市響灘ビオトープの湿地と草原
           - field_name: hero_title
             type: text
-            default: お問合せ
+            default: 北九州市響灘ビオトープ
           - field_name: hero_lead
             type: textarea
-            default: ご質問・ご相談など、お気軽にお問合せください
-      - id: contact
+            default: ビオトープ（41ha）
+      - id: facility_info
         fields:
-          - field_name: form_title
+          - field_name: gallery_image
+            type: image
+            default: images/2025/03/b-2-1-450x450.jpg
+            alt: 北九州市響灘ビオトープ
+          - field_name: info_title
             type: text
-            default: お問合せフォーム
-          - field_name: sidebar_title
+            default: 施設情報
+          - field_name: address
             type: text
-            default: 事務局情報
-          - field_name: sidebar_office_label
+            default: 〒808-0021 北九州市若松区響町1-126-1
+          - field_name: tel
             type: text
-            default: 事務局
-          - field_name: sidebar_office_value
+            default: 093-751-2023
+          - field_name: official_label
+            type: text
+            default: https://www.hibikinadabiotope.com/
+          - field_name: official_url
+            type: url
+            default: ''
+          - field_name: hours
+            type: text
+            default: 9:00〜17:00（入園は16:00まで）
+          - field_name: closed
+            type: text
+            default: 火曜日（祝日の場合は翌日）
+          - field_name: fee
+            type: text
+            default: 一般100円、小中学生50円
+          - field_name: access
+            type: text
+            default: JR若松駅から車で約20分
+          - field_name: parking
+            type: text
+            default: あり（無料）
+      - id: facility_about
+        fields:
+          - field_name: about_title
+            type: text
+            default: 施設について
+          - field_name: about_body
             type: wysiwyg
-            default: IGES北九州アーバンセンター<br>（公益財団法人 地球環境戦略研究機関）
-          - field_name: sidebar_address_label
+            default: |-
+              <p>北九州市響灘ビオトープは、約41ヘクタールの日本最大級のビオトープです。かつての廃棄物処分場跡地に自然が再生し、湿地、草原、淡水池など多様な環境が形成されています。</p>
+                          <p>園内では絶滅危惧種を含む多くの動植物が確認されており、特にトンボ類や野鳥の種類が豊富です。自然観察路を歩きながら、季節ごとに異なる生き物たちとの出会いを楽しむことができます。</p>
+                          <p>環境再生のモデルケースとして国内外から注目されており、自然の復元力を実感できる貴重な場所です。ガイド付きの自然観察会も定期的に開催されています。</p>
+      - id: map
+        fields:
+          - field_name: map_title
             type: text
-            default: 所在地
-          - field_name: sidebar_address_value
-            type: wysiwyg
-            default: 〒802-0001<br>福岡県北九州市小倉北区浅野三丁目8-1<br>AIMビル6階
-          - field_name: sidebar_tel_label
+            default: アクセスマップ
+          - field_name: map_lat
             type: text
-            default: 電話番号
-          - field_name: sidebar_tel_value
-            type: wysiwyg
-            default: 093-513-3711
+            default: '33.9056'
+          - field_name: map_lng
+            type: text
+            default: '130.7253'
+          - field_name: map_src
+            type: url
+            default: >-
+              https://maps.google.com/maps?q=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E8%8B%A5%E6%9D%BE%E5%8C%BA%E9%9F%BF%E7%94%BA1-126-1&output=embed&hl=ja
+      - id: events
+        fields:
+          - field_name: events_title
+            type: text
+            default: この施設のイベント
+          - field_name: events_lead
+            type: textarea
+            default: 響灘ビオトープで開催予定のイベント
+          - field_name: events_empty
+            type: textarea
+            default: 現在予定されているイベントはありません。
+          - field_name: events_link_label
+            type: text
+            default: 全てのイベントを見る
+          - field_name: events_link_url
+            type: url
+            default: ''
+      - id: blog
+        fields:
+          - field_name: blog_title
+            type: text
+            default: この施設のブログ
+          - field_name: blog_lead
+            type: textarea
+            default: 響灘ビオトープに関する記事
+          - field_name: blog_empty
+            type: textarea
+            default: まだ記事がありません。
+          - field_name: blog_link_label
+            type: text
+            default: 全てのブログを見る
+          - field_name: blog_link_url
+            type: url
+            default: ''
+      - id: back
+        fields:
+          - field_name: back_label
+            type: text
+            default: ← センター一覧に戻る
+          - field_name: back_url
+            type: url
+            default: ''
     nav:
       - location: global
         links:
@@ -1682,45 +1959,13 @@ pages:
             href: '#'
           - text: YouTube
             href: '#'
-    forms:
-      - id: contact
-        fields:
-          - name: your-name
-            tag: input
-            type: text
-            required: true
-            placeholder: 例：山田 太郎
-          - name: your-email
-            tag: input
-            type: email
-            required: true
-            placeholder: 例：example@email.com
-          - name: your-tel
-            tag: input
-            type: tel
-            required: false
-            placeholder: 例：093-000-0000
-          - name: your-category
-            tag: select
-            type: select
-            required: true
-            placeholder: ''
-          - name: your-message
-            tag: textarea
-            type: textarea
-            required: true
-            placeholder: お問合せ内容をご記入ください
-          - name: privacy
-            tag: input
-            type: checkbox
-            required: true
-            placeholder: ''
+    forms: []
     decoration:
       - selector: span.header__logo-sub
         reason: aria-hidden="true"
     meta:
-      title: お問合せ | アーバンネイチャー北九州
-      description: アーバンネイチャー北九州へのお問合せはこちらのフォームからご連絡ください。
+      title: 北九州市響灘ビオトープ | アーバンネイチャー北九州
+      description: 北九州市響灘ビオトープ - 日本最大級41ヘクタールのビオトープ。希少な動植物が生息する自然再生エリア。
   - id: events
     title: イベント | アーバンネイチャー北九州
     file: events/index.html
@@ -2460,501 +2705,6 @@ pages:
     meta:
       title: 参加申し込み｜夏休み自然体験キャンプ ― 2泊3日で学ぶ北九州の自然 | アーバンネイチャー北九州
       description: 夏休み自然体験キャンプ（2026年7月26日〜28日）の参加申し込みフォームです。
-  - id: index
-    title: アーバンネイチャー北九州 | 都市と自然、近いからこそおもしろい。
-    file: index.html
-    page_type: front
-    css:
-      - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap
-      - css/base.css
-      - css/page/front.css
-    sections:
-      - id: hero
-        fields:
-          - field_name: hero_catch
-            type: text
-            default: 都市と自然、<br>近いからこそおもしろい。
-          - field_name: hero_sub
-            type: textarea
-            default: 北九州市の10の自然・環境施設が連携し、<br>市民・企業・団体とともにネイチャーポジティブな地域づくりに取り組んでいます。
-      - id: persona
-        fields:
-          - field_name: persona_section_title
-            type: text
-            default: 対象者別のご案内
-          - field_name: persona_label_1
-            type: textarea
-            default: 企業・団体の方へ
-          - field_name: persona_name_1
-            type: text
-            default: 自然への貢献が、<br>企業価値になる時代へ。
-          - field_name: persona_desc_1
-            type: textarea
-            default: 生物多様性保全はCSR・ESGの重要課題です。北九州での先進的な取り組み事例をご覧いただき、自社の活動のヒントにしてください。連携のご相談も歓迎します。
-          - field_name: persona_arrow_1
-            type: text
-            default: 活動事例を見る →
-          - field_name: persona_label_2
-            type: textarea
-            default: NPO・市民団体の方へ
-          - field_name: persona_name_2
-            type: text
-            default: 活動の輪を、<br>もっと広く、もっと深く。
-          - field_name: persona_desc_2
-            type: textarea
-            default: 自然保全や環境教育に取り組む団体同士がつながるネットワークです。情報共有・共同事業・行政との連携など、ひとりではできないことを一緒に実現しましょう。
-          - field_name: persona_arrow_2
-            type: text
-            default: ネットワークを知る →
-          - field_name: persona_label_3
-            type: textarea
-            default: 個人・市民の方へ
-          - field_name: persona_name_3
-            type: text
-            default: 週末、自然のなかへ<br>出かけませんか。
-          - field_name: persona_desc_3
-            type: textarea
-            default: 北九州には、森・海・湿地・カルストなど多様な自然が市内に広がっています。体験イベントや10の施設で、あなたのペースで自然と関わってみてください。
-          - field_name: persona_arrow_3
-            type: text
-            default: イベントを探す →
-          - field_name: persona_label_4
-            type: textarea
-            default: クリエイターの方へ
-          - field_name: persona_name_4
-            type: text
-            default: 北九州の自然を、<br>あなたの表現に。
-          - field_name: persona_desc_4
-            type: textarea
-            default: 教育・広報・制作活動に使える北九州の自然写真素材を無料で公開しています。美しい生態系の記録を、学校・行政・メディア・デザインの現場でご活用ください。
-          - field_name: persona_arrow_4
-            type: text
-            default: 写真素材を見る →
-      - id: videos
-        fields:
-          - field_name: videos_title
-            type: text
-            default: アーバンネイチャー北九州 動画一覧
-          - field_name: videos_subtitle
-            type: textarea
-            default: 北九州の自然とネイチャーポジティブを映像でご覧ください
-          - field_name: video_caption_1
-            type: textarea
-            default: アーバンネイチャー北九州
-          - field_name: video_transcript_1
-            type: wysiwyg
-            default: >-
-              <p>北九州市は、大都市の利便性と豊かな生態系が隣接する<strong>「アーバンネイチャー」という独自の魅力を発信しています。現在、世界的に生物多様性の損失が危惧される中、市は自然を再生させるネイチャーポジティブの実現を共通目標に掲げました。その具体的な施策として、環境保全活動を支援する拠点となるネイチャーポジティブセンター</strong>を新たに設立しています。この取り組みは、貴重な野生生物を守り育むことで、都市と自然が共生する価値をさらに高めることを目的としています。北九州市は、身近にある自然の面白さを伝えるとともに、持続可能な未来に向けた積極的な姿勢を強調しています。</p>
-          - field_name: video_caption_2
-            type: textarea
-            default: 北九州ネイチャーポジティブセンター PR動画：屋内施設編
-          - field_name: video_credit_2
-            type: textarea
-            default: 制作：北九州市立大学映像制作集団 ROMANDOM
-          - field_name: video_transcript_2
-            type: wysiwyg
-            default: >-
-              <p>北九州市は、自然環境の回復と経済活動を両立させるネイチャーポジティブを推進しており、その理念を学べる多様な屋内施設を紹介しています。いのちのたび博物館では生命の進化の歴史を辿ることができ、北九州市ほたる館や香月・黒川ほたる館では水辺の生態系の美しさや命の尊さを肌で感じられます。また、環境ミュージアムは過去の公害克服の歴史から未来へのヒントを提示し、水環境館では再生された河川の現状をリアルタイムで観察できる場となっています。これらの拠点を巡ることで、市民は<strong>都市と自然が共生する「アーバンネイチャー」</strong>の魅力を再発見し、環境保護の重要性を理解できます。最終的にこの動画は、一人ひとりが楽しみながら行動を起こすことで、次世代へ豊かな自然を繋いでいく大切さを呼びかけています。</p>
-          - field_name: video_caption_3
-            type: textarea
-            default: Kitakyushu — The City of Altruism and Regeneration
-          - field_name: video_credit_3
-            type: textarea
-            default: 『利他』と『再生』のまち、北九州市
-          - field_name: video_transcript_3
-            type: wysiwyg
-            default: >-
-              <p lang="en">Once known as "the city of pollution," Kitakyushu has transformed itself through the united
-              efforts of its citizens, businesses, and government. Today, it stands as one of the world's leading
-              sustainable cities.</p>
-                              <p lang="en">From offshore wind power along its coast, to Eco-Town—the hub of resource recycling, to urban nature where people and the environment coexist in harmony. Here, the spirit of altruism and regeneration thrives in everyday life.</p>
-                              <p lang="en">Kitakyushu — a city that overcame its past and creates the future. Discover the story of its "Deep Sustainability."</p>
-                              <p>かつて"公害の街"と呼ばれた北九州市。しかし、市民・企業・行政が手を取り合い、それを克服したこの街は、いまや世界でもトップクラスのサステナブルシティへと生まれ変わりました。</p>
-                              <p>沿岸に広がる洋上風力、資源循環の拠点であるエコタウン、人と自然が寄り添うアーバンネイチャー。そして、"利他"と"再生"の心が、市民の暮らしの中に息づいています。</p>
-                              <p>北九州－それは、過去を乗り越え、未来をつくる力。ぜひこのまちの"ディープ・サステナビリティ"の物語に触れてください。</p>
-      - id: spots
-        fields:
-          - field_name: spots_title
-            type: text
-            default: 北九州市の自然スポット
-          - field_name: spots_subtitle
-            type: textarea
-            default: 都市から近い距離に広がる、多彩な自然資源
-      - id: facilities
-        fields:
-          - field_name: facilities_title
-            type: text
-            default: 活動拠点
-          - field_name: facilities_subtitle
-            type: textarea
-            default: 北九州の自然と環境を体験できる拠点施設
-      - id: network
-        fields:
-          - field_name: network_title
-            type: text
-            default: 地域との繋がり
-          - field_name: network_subtitle
-            type: textarea
-            default: 企業・団体と連携した取り組みをご紹介
-          - field_name: network_image
-            type: image
-            default: images/2026/04/mine-450x269.png
-            alt: 株式会社マイン ─ 竹バイオマス循環モデル
-          - field_name: network_badge
-            type: text
-            default: 企業事例
-          - field_name: network_name
-            type: text
-            default: 株式会社マイン
-          - field_name: network_lead
-            type: textarea
-            default: 竹バイオマスと循環モデルで、未来をつなぐ
-          - field_name: network_desc
-            type: textarea
-            default: 放置竹林を資源として活用し、地域の環境課題を解決する循環型ビジネスモデル。企業の地域貢献とネイチャーポジティブ活動を両立する先進事例をご紹介します。
-      - id: events
-        fields:
-          - field_name: events_title
-            type: text
-            default: イベントを探す
-          - field_name: events_subtitle
-            type: textarea
-            default: 北九州の自然を体感するイベント情報
-      - id: news
-        fields:
-          - field_name: news_title
-            type: text
-            default: お知らせ
-          - field_name: news_subtitle
-            type: textarea
-            default: アーバンネイチャー北九州からの最新情報
-      - id: photos
-        fields:
-          - field_name: photos_title
-            type: text
-            default: みんなの写真展
-          - field_name: photos_subtitle
-            type: textarea
-            default: 北九州の自然写真を無料でご利用いただけます
-          - field_name: photos_image_1
-            type: image
-            default: images/2025/04/IMG_8716-450x450.jpg
-            alt: 海
-          - field_name: photos_caption_1
-            type: text
-            default: 海
-          - field_name: photos_image_2
-            type: image
-            default: images/2025/04/IMG_8742-450x450.jpg
-            alt: 山
-          - field_name: photos_caption_2
-            type: text
-            default: 山
-          - field_name: photos_image_3
-            type: image
-            default: images/2025/04/IMG_8789-450x450.jpg
-            alt: 川
-          - field_name: photos_caption_3
-            type: text
-            default: 川
-          - field_name: photos_image_4
-            type: image
-            default: images/2025/04/カルガモ-450x450.jpg
-            alt: 動物
-          - field_name: photos_caption_4
-            type: text
-            default: 動物
-          - field_name: photos_image_5
-            type: image
-            default: images/2025/04/カノコソウ-450x450.jpg
-            alt: 植物
-          - field_name: photos_caption_5
-            type: text
-            default: 植物
-          - field_name: photos_image_6
-            type: image
-            default: images/2025/04/IMG_8808-450x450.jpg
-            alt: 街と自然
-          - field_name: photos_caption_6
-            type: text
-            default: 街と自然
-          - field_name: photos_image_7
-            type: image
-            default: images/2025/04/IMG_8920-450x450.jpg
-            alt: 農産品
-          - field_name: photos_caption_7
-            type: text
-            default: 農産品
-          - field_name: photos_image_8
-            type: image
-            default: images/2025/04/ヨツボシトンボ-450x450.jpg
-            alt: 昆虫・その他
-          - field_name: photos_caption_8
-            type: text
-            default: 昆虫・その他
-      - id: stats
-        fields:
-          - field_name: stat_number_1
-            type: text
-            default: '10'
-          - field_name: stat_label_1
-            type: text
-            default: 連携施設
-          - field_name: stat_number_2
-            type: text
-            default: '34'
-          - field_name: stat_label_2
-            type: text
-            default: 企業会員
-          - field_name: stat_number_3
-            type: text
-            default: '13'
-          - field_name: stat_label_3
-            type: text
-            default: 団体会員
-          - field_name: stat_number_4
-            type: text
-            default: 800+
-          - field_name: stat_label_4
-            type: text
-            default: 種の生物
-    loops:
-      - cpt: spot
-        order: date_desc
-        count: 3
-        repeat: 1
-        item_fields:
-          - hero_image
-          - hero_title
-          - hero_lead
-      - cpt: center
-        order: menu_order
-        count: 10
-        repeat: 2
-        item_fields:
-          - hero_image
-          - hero_title
-      - cpt: event
-        order: date_desc
-        count: 3
-        repeat: 1
-        item_fields:
-          - hero_image
-          - event_date
-          - hero_title
-          - event_meta
-      - cpt: news
-        order: date_desc
-        count: 5
-        repeat: 1
-        item_fields:
-          - news_category
-          - news_date
-          - hero_title
-    nav:
-      - location: global
-        links:
-          - text: アーバンネイチャー北九州とは？
-            href: about/
-          - text: 全体像
-            href: about/
-          - text: 生物多様性とは？
-            href: about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: about/strategy.html
-          - text: 北九州市の自然スポット
-            href: about/spots.html
-          - text: 活動拠点
-            href: center/
-          - text: 拠点一覧
-            href: center/
-          - text: 響灘ビオトープ
-            href: center/biotope.html
-          - text: グリーンパーク
-            href: center/greenpark.html
-          - text: 北九州市ほたる館
-            href: center/hotarukan.html
-          - text: いのちのたび博物館
-            href: center/inochi.html
-          - text: 到津の森公園
-            href: center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: center/katsuki-hotaru.html
-          - text: 水環境館
-            href: center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: center/takamiya.html
-          - text: 山田緑地
-            href: center/yamada.html
-          - text: 地域との繋がり
-            href: network/
-          - text: 北九州ネイチャーポジティブネットワーク
-            href: network/
-          - text: 活動実績
-            href: network/cases/
-          - text: 活動ブログ
-            href: blog/
-          - text: 会員募集
-            href: join/
-          - text: イベントを探す
-            href: events/
-          - text: お知らせ
-            href: news/
-          - text: みんなの写真展
-            href: photos/
-      - location: global
-        links:
-          - text: アーバンネイチャー北九州とは？
-            href: about/
-          - text: 全体像
-            href: about/
-          - text: 生物多様性とは？
-            href: about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: about/strategy.html
-          - text: 北九州市の自然スポット
-            href: about/spots.html
-          - text: 活動拠点
-            href: center/
-          - text: 拠点一覧
-            href: center/
-          - text: 響灘ビオトープ
-            href: center/biotope.html
-          - text: グリーンパーク
-            href: center/greenpark.html
-          - text: 北九州市ほたる館
-            href: center/hotarukan.html
-          - text: いのちのたび博物館
-            href: center/inochi.html
-          - text: 到津の森公園
-            href: center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: center/katsuki-hotaru.html
-          - text: 水環境館
-            href: center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: center/takamiya.html
-          - text: 山田緑地
-            href: center/yamada.html
-          - text: 地域との繋がり
-            href: network/
-          - text: 北九州ネイチャーポジティブネットワーク
-            href: network/
-          - text: 活動実績
-            href: network/cases/
-          - text: 活動ブログ
-            href: blog/
-          - text: 会員募集
-            href: join/
-          - text: イベントを探す
-            href: events/
-          - text: お知らせ
-            href: news/
-          - text: みんなの写真展
-            href: photos/
-          - text: お問合せ
-            href: contact/
-      - location: footer
-        links:
-          - text: 全体像
-            href: about/
-          - text: 生物多様性とは？
-            href: about/biodiversity.html
-          - text: 北九州市の取り組み
-            href: about/strategy.html
-          - text: 北九州市の自然スポット
-            href: about/spots.html
-          - text: 北九州NPネットワーク
-            href: network/
-          - text: 活動実績
-            href: network/cases/
-          - text: 活動ブログ
-            href: blog/
-          - text: 会員募集
-            href: join/
-          - text: 拠点一覧
-            href: center/
-          - text: 響灘ビオトープ
-            href: center/biotope.html
-          - text: グリーンパーク
-            href: center/greenpark.html
-          - text: 北九州市ほたる館
-            href: center/hotarukan.html
-          - text: いのちのたび博物館
-            href: center/inochi.html
-          - text: 到津の森公園
-            href: center/itouzu.html
-          - text: 香月・黒川ほたる館
-            href: center/katsuki-hotaru.html
-          - text: 水環境館
-            href: center/mizukankyokan.html
-          - text: ソラランド平尾台
-            href: center/soraland.html
-          - text: タカミヤ環境ミュージアム
-            href: center/takamiya.html
-          - text: 山田緑地
-            href: center/yamada.html
-          - text: イベントを探す
-            href: events/
-          - text: お知らせ
-            href: news/
-          - text: みんなの写真展
-            href: photos/
-          - text: お問合せ
-            href: contact/
-          - text: プライバシーポリシー
-            href: privacy/
-          - text: Facebook
-            href: '#'
-          - text: Instagram
-            href: '#'
-          - text: YouTube
-            href: '#'
-    forms: []
-    decoration:
-      - selector: span.header__logo-sub
-        reason: aria-hidden="true"
-      - selector: div.hero-slides
-        reason: aria-hidden="true"
-      - selector: div.hero-scroll
-        reason: aria-hidden="true"
-      - selector: svg
-        reason: aria-hidden="true"
-      - selector: svg
-        reason: aria-hidden="true"
-      - selector: svg
-        reason: aria-hidden="true"
-      - selector: svg
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: a.facility-card
-        reason: aria-hidden="true"
-      - selector: svg
-        reason: aria-hidden="true"
-    meta:
-      title: アーバンネイチャー北九州 | 都市と自然、近いからこそおもしろい。
-      description: アーバンネイチャー北九州は、北九州市の都市と自然の共生を推進するプラットフォームです。10の自然・環境施設が連携し、ネイチャーポジティブな地域づくりに取り組んでいます。
   - id: news
     title: お知らせ | アーバンネイチャー北九州
     file: news/index.html
@@ -3373,3 +3123,253 @@ pages:
     meta:
       title: アーバンネイチャー北九州のサイトをリニューアルしました | お知らせ | アーバンネイチャー北九州
       description: ウェブサイトを全面的にリニューアルしました。自然スポット詳細ページの新設、イベント情報の充実、活動拠点ページの整備などを行っています。
+  - id: contact
+    title: お問合せ | アーバンネイチャー北九州
+    file: contact/index.html
+    page_type: page
+    page_id: contact
+    css:
+      - https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap
+      - css/base.css
+      - css/page/contact.css
+    sections:
+      - id: hero
+        fields:
+          - field_name: hero_image
+            type: image
+            default: images/2025/03/sarakurayama.jpg
+            alt: 皿倉山からの眺望
+          - field_name: hero_title
+            type: text
+            default: お問合せ
+          - field_name: hero_lead
+            type: textarea
+            default: ご質問・ご相談など、お気軽にお問合せください
+      - id: contact
+        fields:
+          - field_name: form_title
+            type: text
+            default: お問合せフォーム
+          - field_name: sidebar_title
+            type: text
+            default: 事務局情報
+          - field_name: sidebar_office_label
+            type: text
+            default: 事務局
+          - field_name: sidebar_office_value
+            type: wysiwyg
+            default: IGES北九州アーバンセンター<br>（公益財団法人 地球環境戦略研究機関）
+          - field_name: sidebar_address_label
+            type: text
+            default: 所在地
+          - field_name: sidebar_address_value
+            type: wysiwyg
+            default: 〒802-0001<br>福岡県北九州市小倉北区浅野三丁目8-1<br>AIMビル6階
+          - field_name: sidebar_tel_label
+            type: text
+            default: 電話番号
+          - field_name: sidebar_tel_value
+            type: wysiwyg
+            default: 093-513-3711
+    nav:
+      - location: global
+        links:
+          - text: アーバンネイチャー北九州とは？
+            href: ../about/
+          - text: 全体像
+            href: ../about/
+          - text: 生物多様性とは？
+            href: ../about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: ../about/strategy.html
+          - text: 北九州市の自然スポット
+            href: ../about/spots.html
+          - text: 活動拠点
+            href: ../center/
+          - text: 拠点一覧
+            href: ../center/
+          - text: 響灘ビオトープ
+            href: ../center/biotope.html
+          - text: グリーンパーク
+            href: ../center/greenpark.html
+          - text: 北九州市ほたる館
+            href: ../center/hotarukan.html
+          - text: いのちのたび博物館
+            href: ../center/inochi.html
+          - text: 到津の森公園
+            href: ../center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: ../center/katsuki-hotaru.html
+          - text: 水環境館
+            href: ../center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: ../center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: ../center/takamiya.html
+          - text: 山田緑地
+            href: ../center/yamada.html
+          - text: 地域との繋がり
+            href: ../network/
+          - text: 北九州ネイチャーポジティブネットワーク
+            href: ../network/
+          - text: 活動実績
+            href: ../network/cases/
+          - text: 活動ブログ
+            href: ../blog/
+          - text: 会員募集
+            href: ../join/
+          - text: イベントを探す
+            href: ../events/
+          - text: お知らせ
+            href: ../news/
+          - text: みんなの写真展
+            href: ../photos/
+      - location: global
+        links:
+          - text: アーバンネイチャー北九州とは？
+            href: ../about/
+          - text: 全体像
+            href: ../about/
+          - text: 生物多様性とは？
+            href: ../about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: ../about/strategy.html
+          - text: 北九州市の自然スポット
+            href: ../about/spots.html
+          - text: 活動拠点
+            href: ../center/
+          - text: 拠点一覧
+            href: ../center/
+          - text: 響灘ビオトープ
+            href: ../center/biotope.html
+          - text: グリーンパーク
+            href: ../center/greenpark.html
+          - text: 北九州市ほたる館
+            href: ../center/hotarukan.html
+          - text: いのちのたび博物館
+            href: ../center/inochi.html
+          - text: 到津の森公園
+            href: ../center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: ../center/katsuki-hotaru.html
+          - text: 水環境館
+            href: ../center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: ../center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: ../center/takamiya.html
+          - text: 山田緑地
+            href: ../center/yamada.html
+          - text: 地域との繋がり
+            href: ../network/
+          - text: 北九州ネイチャーポジティブネットワーク
+            href: ../network/
+          - text: 活動実績
+            href: ../network/cases/
+          - text: 活動ブログ
+            href: ../blog/
+          - text: 会員募集
+            href: ../join/
+          - text: イベントを探す
+            href: ../events/
+          - text: お知らせ
+            href: ../news/
+          - text: みんなの写真展
+            href: ../photos/
+          - text: お問合せ
+            href: ../contact/
+      - location: footer
+        links:
+          - text: 全体像
+            href: ../about/
+          - text: 生物多様性とは？
+            href: ../about/biodiversity.html
+          - text: 北九州市の取り組み
+            href: ../about/strategy.html
+          - text: 北九州市の自然スポット
+            href: ../about/spots.html
+          - text: 北九州NPネットワーク
+            href: ../network/
+          - text: 活動実績
+            href: ../network/cases/
+          - text: 活動ブログ
+            href: ../blog/
+          - text: 会員募集
+            href: ../join/
+          - text: 拠点一覧
+            href: ../center/
+          - text: 響灘ビオトープ
+            href: ../center/biotope.html
+          - text: グリーンパーク
+            href: ../center/greenpark.html
+          - text: 北九州市ほたる館
+            href: ../center/hotarukan.html
+          - text: いのちのたび博物館
+            href: ../center/inochi.html
+          - text: 到津の森公園
+            href: ../center/itouzu.html
+          - text: 香月・黒川ほたる館
+            href: ../center/katsuki-hotaru.html
+          - text: 水環境館
+            href: ../center/mizukankyokan.html
+          - text: ソラランド平尾台
+            href: ../center/soraland.html
+          - text: タカミヤ環境ミュージアム
+            href: ../center/takamiya.html
+          - text: 山田緑地
+            href: ../center/yamada.html
+          - text: イベントを探す
+            href: ../events/
+          - text: お知らせ
+            href: ../news/
+          - text: みんなの写真展
+            href: ../photos/
+          - text: お問合せ
+            href: ../contact/
+          - text: プライバシーポリシー
+            href: ../privacy/
+          - text: Facebook
+            href: '#'
+          - text: Instagram
+            href: '#'
+          - text: YouTube
+            href: '#'
+    forms:
+      - id: contact
+        fields:
+          - name: your-name
+            tag: input
+            type: text
+            required: true
+            placeholder: 例：山田 太郎
+          - name: your-email
+            tag: input
+            type: email
+            required: true
+            placeholder: 例：example@email.com
+          - name: your-tel
+            tag: input
+            type: tel
+            required: false
+            placeholder: 例：093-000-0000
+          - name: your-category
+            tag: select
+            type: select
+            required: true
+            placeholder: ''
+          - name: your-message
+            tag: textarea
+            type: textarea
+            required: true
+            placeholder: お問合せ内容をご記入ください
+          - name: privacy
+            tag: input
+            type: checkbox
+            required: true
+            placeholder: ''
+    decoration:
+      - selector: span.header__logo-sub
+        reason: aria-hidden="true"
+    meta:
+      title: お問合せ | アーバンネイチャー北九州
+      description: アーバンネイチャー北九州へのお問合せはこちらのフォームからご連絡ください。
