@@ -110,10 +110,10 @@ Contact Form 7
 **プラグインを入れる場合**
 
 1. 本ファイル（上記）に選定したプラグイン名・バージョン・確認結果を記録
-2. `proposal/converter/lib/gen/cf7.js` の `fieldTagFor()`（`type === 'file'` の分岐）に
+2. `.claude/ichiki/src/converter/lib/gen/cf7.js` の `fieldTagFor()`（`type === 'file'` の分岐）に
    そのプラグインのタグ書式を追加
-3. `proposal/vocabulary.md` 6.1節「ファイル欄」の `multiple` の記述を更新
-4. `proposal/prompts/mockup-generation.md` の同じ記述も更新（3ファイル同期）
+3. `.claude/ichiki/rules/vocabulary.md` 6.1節「ファイル欄」の `multiple` の記述を更新
+4. `.claude/ichiki/prompts/mockup-generation.md` の同じ記述も更新（3ファイル同期）
 
 **複数枚を諦める場合**
 

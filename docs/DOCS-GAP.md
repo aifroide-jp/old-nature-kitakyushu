@@ -31,21 +31,27 @@
   | `verify:live` の nav-short 1件 | 残る |
   | `retrofit` 宣言 | 消さない |
 
-  **モックの置き場所の是正は、39ページとは無関係にいつでもできる。**
-  12ページをルートへ、旧51ページを `.ichiki/mockup-before/` へ移すだけ
-  （`rules/ichiki.md`「モックの置き場所」）。`retrofit` 宣言は残したまま規約どおりの形になる
+  **モックの置き場所の是正は 2026-08-24 に実施済み。** 39ページとは無関係にできた。
+  12ページをルートへ、旧51ページを `.ichiki/mockup-before/` へ移し、規約どおりの形になった。
+  `retrofit` 宣言は残したまま。
 
-**「`proposal/` を全部『出力されるもの』で構成する」の内訳**
+**`proposal/` は無くなった（2026-08-24）**
 
-項目ごとに性質が違うので分ける。まとめて扱わない。
+「`proposal/` を全部『出力されるもの』で構成する」という当初の目標は、
+**`proposal/` 自体を畳む**ことで終わった。行き先はこう。
 
-| | 判断 |
+| かつて | いま |
 |---|---|
-| `mockup-real/` | **出力化は取り下げ。ただし置き場所は規約違反。** 出力にしないのは、この案件が検証用で、旧51ページと制約版12ページの**対**があること自体が成果物だから（`mockup-real` は AI が作るので再現もしない。一度きりの変換結果が新しい正になったもので、ビルド生成物ではない）。一方、規約（`rules/ichiki.md`「モックの置き場所」）はルート1つで、リバース前を `mockup-before/` に置く形。この案件は逆転している（ルートが旧51ページ、`proposal/mockup-real` が新12ページ）。是正はいつでもできる（39ページのモック化とは無関係）。制約版をルートへ、旧を `.ichiki/mockup-before/` へ移せば規約どおりの形になり、`proposal/` は消える |
-| `visual-check/` | **削除（2026-08-21）。** `pairs.json` はどこからも読まれていなかった（`compare.js` はページ一覧をハードコードしていた）。`compare.js` 自体も `diff.js` と同じことをしていたので統合し、`ichiki diff` 1本にした。比較先を URL で受けるので、旧モックは `ichiki serve` で配れば比較できる |
-| `snapshot/` | **`.ichiki/snapshot.json` へ移動（2026-08-21）。** Ichiki の状態ファイルなので、設定（`.ichiki.json`）の隣に置く。`proposal/` は成果物の置き場所であって道具の状態を置く場所ではない |
-| `README.md` / このファイル | **対象外。** 人が読む文書で、出力にする対象ではない。`DIFF-vs-ichiki.md` と `TOOLS.md` は削除（2026-08-21）— 移設前の比較記録で、内容は実現済みか反転していた。残す価値があった2件（リバースの所要時間の実測・既知の残差）は `rules/ichiki.md` と本ファイルへ移した |
-| `.gitignore` | **済（2026-08-21）。** 移設で消えた `scan/out/` `scan/out-real/` の行を落とした |
+| `proposal/mockup-real/`（制約版12ページ） | **リポジトリのルート**。規約（`rules/ichiki.md`「モックの置き場所」）どおり |
+| ルート（旧51ページ） | `.ichiki/mockup-before/`。リバース前の記録 |
+| `proposal/snapshot/expected.json` | `.ichiki/snapshot.json` |
+| `proposal/visual-check/` | 削除。`pairs.json` はどこからも読まれておらず、`compare.js` は `diff.js` と同じことをしていた |
+| `proposal/TOOLS.md` `proposal/DIFF-vs-ichiki.md` | 削除。移設前の記録で、内容は実現済みか反転していた |
+| `proposal/DOCS-GAP.md` | このファイル（`docs/` へ） |
+| `proposal/README.md` | ルートの `README.md` へ |
+
+`mockup-real` を「出力されるもの」にはしなかった。作るのが AI なので再現せず、
+一度きりの変換結果が新しい正になったものだから（ビルド生成物ではない）。
 
 ### 凍結（snapshot）を外すとき
 

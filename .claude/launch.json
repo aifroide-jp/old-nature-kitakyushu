@@ -4,7 +4,7 @@
     {
       "name": "urban-nature-real",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["proposal/serve.js", "proposal/mockup-real", "8081"],
+      "runtimeArgs": [".claude/ichiki/src/serve.js", ".", "8081"],
       "port": 8081
     }
   ]

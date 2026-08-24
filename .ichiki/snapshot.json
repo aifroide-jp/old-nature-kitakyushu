@@ -1,7 +1,7 @@
 {
   "scan": {
-    "acf-map.yaml": "763a49feee85aa65",
-    "CLAUDE.md": "c9d811a26162cbcf",
+    "acf-map.yaml": "194c21937ef177d5",
+    "CLAUDE.md": "d806eb499b3d67e1",
     "coverage.json": "4b0d2dbcc199a13a"
   },
   "theme": {
@@ -83,7 +83,7 @@
     "inc/acf-spot-archive.php": "12dde53f150a524f",
     "inc/acf-spot.php": "2ad0e3d8a0700586",
     "inc/cf7-dynamic.php": "845fd867f16c6e1e",
-    "inc/retrofit-notice.php": "a4141beaf7c423d8",
+    "inc/retrofit-notice.php": "f5056090240d2654",
     "inc/seed-cf7.php": "8705cba07cdd3511",
     "inc/seed-menus.php": "46af893f715d848b",
     "inc/seed-posts.php": "f384dde75e067e48",
