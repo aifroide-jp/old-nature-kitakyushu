@@ -6,8 +6,10 @@
 .claude/settings.local.json
 
 # 生成物（コマンドで再生成できるもの）
-# 例外: proposal/snapshot/expected.json は凍結の期待値なので追跡する
+# 例外: .ichiki/snapshot.json は凍結の期待値なので追跡する
 docs/検収
-proposal/visual-check/out
 pa11y-report.json
 .pa11yci.json
+
+# ichiki scan のレポート（acf-map.yaml と違い、合意の対象ではない）
+coverage.json
