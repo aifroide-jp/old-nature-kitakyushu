@@ -49,6 +49,8 @@
 | `proposal/TOOLS.md` `proposal/DIFF-vs-ichiki.md` | 削除。移設前の記録で、内容は実現済みか反転していた |
 | `proposal/DOCS-GAP.md` | このファイル（`docs/` へ） |
 | `proposal/README.md` | ルートの `README.md` へ |
+| ルートの `field-map.json` | 削除（2026-08-24）。295件すべて `source === target` の恒等写像で、誰も読んでいなかった。宣言名がそのままフィールド名になるので、機械命名→意味名のリネーム工程自体が無い |
+| ルートの `scripts/` | 削除（2026-08-24）。中身は `.DS_Store` だけ。test-spec は `ichiki testspec` へ移設済み |
 
 `mockup-real` を「出力されるもの」にはしなかった。作るのが AI なので再現せず、
 一度きりの変換結果が新しい正になったものだから（ビルド生成物ではない）。
