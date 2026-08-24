@@ -22,6 +22,7 @@ node .claude/ichiki/bin/ichiki.js --help    # コマンド一覧
 | `.ichiki/snapshot.json` | 生成物の凍結。出力が変わったら名指しで出る |
 | `docs/検収/` | C1 テスト仕様書 / C3 検収シート・ガイド（`ichiki testspec` の出力。gitignore） |
 | `docs/検収-51p/` | 人手で作った51ページ版の検収成果物。**再生成できないので記録として追跡する** |
+| `docs/リリース手順書.md` | 本番公開の手順（`ichiki release` の出力） |
 | `docs/DOCS-GAP.md` | 必要な成果物と現状の差。**残件はここを見る** |
 | `acf-map.yaml` | フィールド台帳。`ichiki scan . .` で出し直せる |
 | `CLAUDE.md` / `PROJECT-NOTES.md` | 実装ルール / リスクと未確認事項 |
