@@ -167,6 +167,18 @@ ichiki diff . http://localhost:10009 docs/visual --both   # 撮って比べる
 ichiki testspec                                            # 差異率を取り込む
 ```
 
+### レポートは人が見るもの、results.json が機械が読むもの
+
+`ichiki diff` は出力先に2つ置く。
+
+| | 誰が読むか |
+|---|---|
+| `index.html` | **人**。日本語。表示は自由に変えてよい |
+| `results.json` | **機械**。`testspec` が差異率を取り込む |
+
+以前は `testspec` が `index.html` を正規表現で読んでいた。**表示を直したら壊れる。**
+実測: 列見出しを日本語にしただけで viewport の照合が効かなくなった。
+
 ### 差異率をそのまま読んではいけない
 
 一覧ページはモックがサンプルを何枚も並べているのに対し、WordPress は実際の投稿数しか出さない。
