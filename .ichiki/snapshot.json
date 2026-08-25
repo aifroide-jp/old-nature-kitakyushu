@@ -2,7 +2,8 @@
   "scan": {
     "acf-map.yaml": "b1f86c9293533674",
     "CLAUDE.md": "a96237f815f427cc",
-    "coverage.json": "f0f5e46a0d94b819"
+    "coverage.json": "f0f5e46a0d94b819",
+    "README.md": "876b8b66bf97b2df"
   },
   "theme": {
     "archive-nkk_center.php": "57a00f6b37b9b2f0",
