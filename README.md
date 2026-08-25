@@ -3,6 +3,20 @@
 このリポジトリの**ルートがモックアップ**です。`index.html` をブラウザで開けばサイトが見られます。
 そこから WordPress テーマを作るのが [Ichiki](.claude/ichiki/)（`.claude/ichiki` に submodule で入っています）。
 
+## やりたいことから探す
+
+| | |
+|---|---|
+| **はじめて触る / エラーで止まった** | [セットアップと詰まりどころ](.claude/ichiki/docs/01-セットアップ.md) |
+| **モックを作る・直す** | [モックアップを作る](.claude/ichiki/docs/02-モックアップを作る.md) |
+| **WordPress にする・検査する** | [変換して検査する](.claude/ichiki/docs/03-変換して検査する.md) |
+| **本番に載せる** | [リリース手順書](docs/リリース手順書.md)（`ichiki release` の出力） |
+| **検収する** | [検収シート](docs/検収/l1-checklist.tsv) と [使い方](docs/検収/l1-guide.html) |
+| **残件を知りたい** | [DOCS-GAP.md](docs/DOCS-GAP.md) |
+| Ichiki の中身を知りたい | [Ichiki の README](.claude/ichiki/README.md) |
+
+## いつも使う2つ
+
 ```bash
 node .claude/ichiki/bin/ichiki.js gate      # モック → テーマ（lint → scan → 変換 → 生成物の検証）
 #   ここでテーマを WordPress に入れる
