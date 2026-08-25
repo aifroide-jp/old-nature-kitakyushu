@@ -12,7 +12,7 @@
 | **WordPress にする・検査する** | [変換して検査する](.claude/ichiki/docs/03-変換して検査する.md) |
 | **本番に載せる** | [リリース手順書](docs/リリース手順書.md)（`ichiki release` の出力） |
 | **検収する** | [検収シート](docs/検収/l1-checklist.tsv) と [使い方](docs/検収/l1-guide.html) |
-| **残件を知りたい** | [DOCS-GAP.md](docs/DOCS-GAP.md) |
+| **この案件の状態を知りたい** | [この案件の状態](docs/この案件の状態.md)（許容している差・やらないこと） |
 | Ichiki の中身を知りたい | [Ichiki の README](.claude/ichiki/README.md) |
 
 ## いつも使う2つ
@@ -43,7 +43,7 @@ node .claude/ichiki/bin/ichiki.js --help    # コマンド一覧
 | `docs/検収/` | C1 テスト仕様書 / C3 検収シート・ガイド（`ichiki testspec` の出力。gitignore） |
 | `docs/検収-51p/` | 人手で作った51ページ版の検収成果物。**再生成できないので記録として追跡する** |
 | `docs/リリース手順書.md` | 本番公開の手順（`ichiki release` の出力） |
-| `docs/DOCS-GAP.md` | 必要な成果物と現状の差。**残件はここを見る** |
+| `docs/この案件の状態.md` | 許容している差・やらないと決めたこと・後回し |
 | `acf-map.yaml` | フィールド台帳。`ichiki scan . .` で出し直せる |
 | `CLAUDE.md` / `PROJECT-NOTES.md` | 実装ルール / リスクと未確認事項 |
 
