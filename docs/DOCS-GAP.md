@@ -6,15 +6,16 @@
 
 ## いま残っているもの（2026-08-21）
 
-**成果物**
-
-- #1 #2 #4 手順書（本体に1つ置く）
+**成果物** — **2026-08-25 で全部出せるようになった**（○7件）。
+`ichiki gate` → テーマを入れる → `ichiki deliver` で、検収成果物とリリース手順書まで出る。
 
 **合意のうえ後回し**
 
 - `/mockup` と `/retrofit`（下の節を参照）
 - 制約に縛られない Ichiki テスト用 fixture と、そこから逆算した `mockup-bad`
 - snapshot の凍結解除
+- `publish-mockup --zip`（お客様への HTML 直渡し用）
+- `ichiki serve --all`（開発者が旧モック・モック・WP を見比べる用）
 
 **やらないと決めたこと**
 
@@ -86,15 +87,15 @@
 
 | # | 必要なもの | 読み手 | 現状 | 出どころ |
 |---|---|---|---|---|
-| 1 | Ichiki セットアップ手順書 | 職員 | **△ 開発者向けの README しかない** | `.claude/ichiki/README.md`（構成説明・CLI仕様） |
-| 2 | AI使用のモックアップ作成手順書 | 職員 | **△ AI に渡すプロンプトはある。人向けの手順が無い** | `.claude/ichiki/prompts/mockup-generation.md`（AI宛て） |
+| 1 | Ichiki セットアップ手順書 | 職員 | **○ ある（2026-08-25）** | `.claude/ichiki/docs/01-セットアップ.md` |
+| 2 | AI使用のモックアップ作成手順書 | 職員 | **○ ある（2026-08-25）** | `.claude/ichiki/docs/02-モックアップを作る.md` |
 | 3 | C1 人的検証項目の出力 | 開発 | **○ ある** | `docs/検収/test-spec.md` |
-| 4 | C1 Ichiki実行・検証手順書 | 職員 | **× 無い** | — |
+| 4 | C1 Ichiki実行・検証手順書 | 職員 | **○ ある（2026-08-25）** | `.claude/ichiki/docs/03-変換して検査する.md` |
 | 5 | C2 リリース手順書の作成 | 職員 | **○ ある（2026-08-24）** | `ichiki release` → `docs/リリース手順書.md` |
 | 6 | C3 L1向け検収ガイド | L1 | **○ ある（2026-08-24）** | `docs/検収/l1-guide.md` と `l1-guide.html`（絵つき） |
 | 6b | C3 検収シート | L1 | **○ ある** | `docs/検収/l1-checklist.tsv`（15KB） |
 
-**○ 4件 / △ 2件 / × 1件。**
+**○ 7件 / △ 0件 / × 0件。**
 
 出力先は `ichiki testspec` が決める（既定 `docs/検収/`、`.ichiki.json` の
 `testspec.out_dir` で上書きできる）。移設前は `scripts/test-spec/out/` だった。
