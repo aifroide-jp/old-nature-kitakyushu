@@ -5,13 +5,22 @@
 このリポジトリの**ルートがモックアップ**です。`index.html` をブラウザで開けばサイトが見られます。
 そこから WordPress テーマを作るのが [Ichiki](.claude/ichiki/)（`.claude/ichiki` に submodule で入っています）。
 
+> **コマンドの書き方**
+> `ichiki` という名前のコマンドは**ありません**。実際にはこう打ちます。
+> 文書中の `ichiki xxx` は、この省略表記です。
+>
+> ```bash
+> node .claude/ichiki/bin/ichiki.js xxx
+> ```
+
 ## やりたいことから探す
 
 | | |
 |---|---|
 | **はじめて触る / エラーで止まった** | [セットアップと詰まりどころ](.claude/ichiki/docs/01-セットアップ.md) |
-| **モックを作る・直す** | [モックアップを作る](.claude/ichiki/docs/02-モックアップを作る.md) |
-| **WordPress にする・検査する** | [変換して検査する](.claude/ichiki/docs/03-変換して検査する.md) |
+| **モックを作る・直す** | [モックアップを作る](.claude/ichiki/docs/021-モックアップを作る.md) |
+| **既存の HTML から作る（構造化）** | [既存htmlからモックアップを作る](.claude/ichiki/docs/022-既存htmlからモックアップを作る.md) |
+| **WordPress にする・検査する** | [変換して検査する](.claude/ichiki/docs/04-変換して検査する.md) |
 | **本番に載せる** | [リリース手順書](docs/リリース手順書.md)（`ichiki release` の出力） |
 | **検収する** | [検収シート](docs/検収/l1-checklist.tsv) と [使い方](docs/検収/l1-guide.html) |
 | **この案件の状態を知りたい** | [この案件の状態](docs/この案件の状態.md)（許容している差・やらないこと） |
@@ -42,7 +51,7 @@ node .claude/ichiki/bin/ichiki.js --help    # コマンド一覧
 | ルート直下の `*.html` / `css/` / `js/` / `images/` | **モックアップ**。お客様と合意するもの |
 | `.ichiki.json` | 案件の設定。モックの場所・テーマの出力先・サイトURL・`<title>` の区切り |
 | `.ichiki/snapshot.json` | 生成物の凍結。出力が変わったら名指しで出る |
-| `acf-map.yaml` | フィールド台帳。`ichiki scan . .` で出し直せる |
+| `acf-map.yaml` | フィールド台帳。`ichiki scan` で出し直せる |
 | `CLAUDE.md` | 案件の実装ルール |
 | `.ichiki/mockup-before/` | **合意デザイン**（構造化前）。記録用。見た目が変わっていないかの比較に使う |
 | `docs/検収/` | C1 テスト仕様書 / C3 検収シート・ガイド（`ichiki testspec` の出力。gitignore） |
